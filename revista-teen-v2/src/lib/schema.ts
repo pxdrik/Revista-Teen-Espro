@@ -47,6 +47,14 @@ export const imageSchema = z.object({
   alt: z.string().min(10),
   /** Detentor dos direitos. Obrigatório: sem crédito não publica. */
   credit: z.string().min(1),
+  /**
+   * Enquadramento no card.
+   *
+   * "cover" (padrao) preenche o card e corta as bordas, que e o certo para foto.
+   * "contain" mostra a imagem inteira sem cortar, necessario para captura de tela
+   * e peca grafica com texto: cortada, ela vira fragmento ilegivel.
+   */
+  fit: z.enum(["cover", "contain"]).optional(),
 });
 
 const SLUG_RX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

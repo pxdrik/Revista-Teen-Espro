@@ -48,7 +48,8 @@ const shareText = article.title;
     <img
       src={article.image.src}
       alt={article.image.alt}
-      class="absolute inset-0 h-full w-full object-cover"
+      class="absolute inset-0 h-full w-full"
+      style={`object-fit:${article.image.fit ?? "cover"}`}
       width="1600"
       height="900"
       fetchpriority="high"
@@ -60,7 +61,7 @@ const shareText = article.title;
     </figcaption>
   </figure>
 
-  <div class="container-rt relative z-10 -mt-24 pb-24">
+  <div class="container-rt relative z-10 -mt-24 pb-12">
     <div class="mx-auto max-w-[720px]">
       <Breadcrumb
         items={[

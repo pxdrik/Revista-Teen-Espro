@@ -30,6 +30,8 @@ const isCompact = variant === "compact";
 
 // Proporções fixas evitam layout shift enquanto a imagem carrega.
 const ratio = isLead ? "16 / 10" : "3 / 2";
+// Captura de tela precisa aparecer inteira; foto pode ser cortada para preencher.
+const objectFit = article.image.fit ?? "cover";
 const titleClass = isLead ? "type-display-md" : "type-heading";
 ---
 
@@ -40,6 +42,7 @@ const titleClass = isLead ? "type-display-md" : "type-heading";
         src={article.image.src}
         alt={article.image.alt}
         class="card-image"
+        style={`object-fit:${objectFit}`}
         width={isLead ? 1600 : 800}
         height={isLead ? 1000 : 533}
         loading={priority ? "eager" : "lazy"}

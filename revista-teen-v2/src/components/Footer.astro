@@ -6,6 +6,16 @@
  */
 import { categories, edition } from "@/lib/content";
 
+/**
+ * Perfis oficiais da revista.
+ *
+ * Vazio de proposito: a Revista Teen ainda nao tem perfis publicados, e apontar
+ * "Siga a Revista" para instagram.com ou x.com genericos e uma promessa quebrada
+ * ao leitor. Quando os perfis existirem, basta preencher esta lista e a coluna
+ * volta a aparecer sozinha.
+ */
+const REDES: { nome: string; url: string }[] = [];
+
 const year = new Date().getFullYear();
 const main = categories.slice(0, 8);
 ---
@@ -56,44 +66,53 @@ const main = categories.slice(0, 8);
         </ul>
       </nav>
 
-      <nav aria-labelledby="footer-social">
-        <h2 id="footer-social" class="type-overline mb-4" style="color: var(--text-muted)">Siga a Revista</h2>
-        <ul class="space-y-3">
-          <li>
-            <a
-              href="https://www.instagram.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="type-body-sm underline-grow"
-              style="color: var(--text-secondary)"
-            >
-              Instagram
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.tiktok.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="type-body-sm underline-grow"
-              style="color: var(--text-secondary)"
-            >
-              TikTok
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://x.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="type-body-sm underline-grow"
-              style="color: var(--text-secondary)"
-            >
-              Twitter / X
-            </a>
-          </li>
-        </ul>
-      </nav>
+      {
+        REDES.length > 0 ? (
+          <nav aria-labelledby="footer-social">
+            <h2 id="footer-social" class="type-overline mb-4" style="color: var(--text-muted)">
+              Siga a Revista
+            </h2>
+            <ul class="space-y-3">
+              {REDES.map((rede) => (
+                <li>
+                  <a
+                    href={rede.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="type-body-sm underline-grow"
+                    style="color: var(--text-secondary)"
+                  >
+                    {rede.nome}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ) : (
+          <nav aria-labelledby="footer-navegar">
+            <h2 id="footer-navegar" class="type-overline mb-4" style="color: var(--text-muted)">
+              Navegar
+            </h2>
+            <ul class="space-y-3">
+              <li>
+                <a href="/artigos" class="type-body-sm underline-grow" style="color: var(--text-secondary)">
+                  Todas as matérias
+                </a>
+              </li>
+              <li>
+                <a href="/busca" class="type-body-sm underline-grow" style="color: var(--text-secondary)">
+                  Buscar na edição
+                </a>
+              </li>
+              <li>
+                <a href="/eventos" class="type-body-sm underline-grow" style="color: var(--text-secondary)">
+                  Agenda 2026
+                </a>
+              </li>
+            </ul>
+          </nav>
+        )
+      }
     </div>
 
     <div

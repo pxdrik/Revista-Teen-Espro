@@ -1566,8 +1566,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/anatomia-de-um-meme.jpg",
-      alt: "Celular exibindo feed de rede social cheio de memes",
+      alt: "Captura de tela de uma publicação de rede social com piada em texto sobre futebol",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Todo dia surgem centenas de piadas na internet e praticamente todas desaparecem em algumas horas. Uma ou outra atravessa semanas. Uma em cada muitas atravessa anos e vira referência que as pessoas usam sem lembrar de onde veio. Essa diferença não é aleatória, e quem passa tempo suficiente online começa a reconhecer o padrão antes mesmo de conseguir explicá-lo. Entender essa lógica deixou de ser curiosidade e virou algo próximo de alfabetização: memes carregam opinião política, disputa cultural e publicidade disfarçada, e quem não percebe a estrutura acaba repassando conteúdo sem enxergar o que está sendo dito.",
@@ -1642,7 +1643,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/resultados-copa-viralizam-redes.jpg",
-      alt: "Torcedores reagindo diante da televisão durante jogo",
+      alt: "Goleiro de Cabo Verde ergue a bandeira do país no gramado após a partida",
       credit: "Reprodução",
     },
     body: [
