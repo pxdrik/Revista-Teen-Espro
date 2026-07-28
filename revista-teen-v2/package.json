@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "audit:content": "node scripts/audit.mjs"
+    "audit:content": "node scripts/audit.mjs",
+    "check:sources": "node scripts/check-sources.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

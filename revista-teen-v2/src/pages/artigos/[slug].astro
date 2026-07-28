@@ -169,6 +169,38 @@ const shareText = article.title;
         </ul>
       </div>
 
+      <!-- ═══ FONTES ═══ -->
+      {
+        article.sources && article.sources.length > 0 && (
+          <section class="mt-10 rounded-2xl border p-5" style="background: var(--bg-surface); border-color: var(--border-subtle)" aria-labelledby="fontes">
+            <h2 id="fontes" class="type-overline mb-3" style="color: var(--text-muted)">
+              Fontes consultadas
+            </h2>
+            <ul class="space-y-2">
+              {article.sources.map((fonte) => (
+                <li>
+                  <a
+                    href={fonte.url}
+                    target="_blank"
+                    rel="noopener noreferrer nofollow"
+                    class="type-body-sm underline-grow inline-flex items-baseline gap-2"
+                    style="color: var(--accent-blue)"
+                  >
+                    {fonte.outlet}
+                    {fonte.byline && <span style="color: var(--text-muted)">/ {fonte.byline}</span>}
+                    <span class="sr-only">(abre em nova aba)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <p class="type-caption mt-4" style="color: var(--text-muted)">
+              Reportagem produzida pela redação da Revista Teen a partir das fontes acima.
+              O texto é original e não reproduz o conteúdo publicado por esses veículos.
+            </p>
+          </section>
+        )
+      }
+
       <div class="star-separator" aria-hidden="true"><span class="star">✦</span></div>
 
       <!-- ═══ RELACIONADOS ═══ -->

@@ -22,6 +22,25 @@ export const authorSchema = z.object({
   role: z.string().min(1),
 });
 
+/**
+ * Fonte consultada na apuracao.
+ *
+ * A assinatura da materia (campo `author`) continua sendo da redacao, porque o
+ * texto foi escrito aqui. Este bloco credita o veiculo que publicou a reportagem
+ * original e, quando disponivel, quem a assinou. Nunca usar o nome do jornalista
+ * da fonte como autor da nossa materia: isso seria atribuicao falsa.
+ */
+export const sourceSchema = z.object({
+  /** Nome do veiculo, ex.: "CNN Brasil". */
+  outlet: z.string().min(2),
+  /** URL da reportagem consultada. Precisa ser um link real e acessivel. */
+  url: z.string().url(),
+  /** Quem assinou a reportagem no veiculo de origem, quando informado. */
+  byline: z.string().min(2).optional(),
+});
+
+export type Source = z.infer<typeof sourceSchema>;
+
 export const imageSchema = z.object({
   src: z.string().startsWith("/images/artigos/"),
   /** Descreve a imagem para quem não a enxerga. Nunca repete o título. */
@@ -48,6 +67,8 @@ export const articleSchema = z.object({
   body: z.array(z.string().min(40)).length(4, "o corpo precisa ter 4 parágrafos"),
   /** Sobrescreve a seleção automática de relacionados, quando houver decisão editorial. */
   relatedSlugs: z.array(z.string()).max(3).optional(),
+  /** Fontes consultadas. Exibidas ao pe da materia, com link para o original. */
+  sources: z.array(sourceSchema).max(4).optional(),
   /**
    * Fecha a capa manualmente. Opcional: sem nenhum `cover`, o hero é 100% automático.
    * No máximo um artigo por edição pode marcar true (validado no content layer).

@@ -49,6 +49,9 @@ export const articles: ArticleInput[] = [
   {
     id: 1,
     slug: "febre-amarela-sp-seis-mortes-2026",
+    sources: [
+      { outlet: "Agência Brasil", url: "https://agenciabrasil.ebc.com.br/saude/noticia/2026-05/estado-de-sp-confirma-mais-duas-mortes-por-febre-amarela" },
+    ],
     title: "Febre Amarela em SP: Seis Mortes em 2026 e Nenhuma Vítima Estava Vacinada",
     subtitle: "Lagoinha, no Vale do Paraíba, concentra a maior parte dos casos confirmados no estado",
     excerpt: "São Paulo confirmou dez casos de febre amarela e seis mortes em 2026. Nenhum dos infectados tinha histórico de vacinação, segundo a secretaria estadual de Saúde.",
@@ -95,6 +98,9 @@ export const articles: ArticleInput[] = [
   {
     id: 3,
     slug: "met-gala-2026-fashion-is-art",
+    sources: [
+      { outlet: "NiT", url: "https://www.nit.pt/compras/moda/met-gala-2026-os-looks-que-estao-a-dar-que-falar-por-bons-e-maus-motivos" },
+    ],
     title: "Met Gala 2026: o Tapete Foi Verde e o Tema Era Tratar Roupa como Obra de Arte",
     subtitle: "Com dress code Fashion Is Art, a noite de 4 de maio trocou a tradição do vermelho por um cenário impressionista",
     excerpt: "A edição de 2026 do Met Gala adotou o dress code Fashion Is Art e recebeu convidados sobre um tapete verde, em cenário inspirado na pintura impressionista.",
@@ -141,6 +147,10 @@ export const articles: ArticleInput[] = [
   {
     id: 5,
     slug: "duna-parte-tres-villeneuve",
+    sources: [
+      { outlet: "Space.com", url: "https://www.space.com/entertainment/space-movies-shows/everything-we-know-about-dune-messiah" },
+      { outlet: "GamesRadar+", url: "https://www.gamesradar.com/entertainment/sci-fi-movies/dune-3-release-date-cast-trailer-plot/" },
+    ],
     title: "Duna: Parte Três Já Está Pronto e Chega aos Cinemas em Dezembro",
     subtitle: "As filmagens terminaram em novembro de 2025 e o filme entra na reta final de pós-produção",
     excerpt: "Duna: Parte Três, adaptação de Messias de Duna, foi rodado em Budapeste e Abu Dhabi e tem estreia marcada para 18 de dezembro de 2026.",
@@ -164,6 +174,9 @@ export const articles: ArticleInput[] = [
   {
     id: 6,
     slug: "barbie-2-sequencia-nao-confirmada",
+    sources: [
+      { outlet: "The Hollywood Reporter", url: "https://www.hollywoodreporter.com/movies/movie-news/barbie-sequel-status-greta-grewig-noah-baumbach-warner-bros-1236083434/" },
+    ],
     title: "Barbie 2: Por Que a Sequência Mais Comentada de Hollywood Ainda Não Existe",
     subtitle: "Relatos sobre a continuação circulam há mais de um ano, mas estúdio e produtores negam o projeto",
     excerpt: "Apesar de manchetes recorrentes sobre uma sequência de Barbie, a Warner Bros. e representantes de Greta Gerwig negaram os relatos. Entenda o que se sabe.",
@@ -233,6 +246,10 @@ export const articles: ArticleInput[] = [
   {
     id: 9,
     slug: "rock-in-rio-2026-lineup",
+    sources: [
+      { outlet: "Rolling Stone Brasil", url: "https://rollingstone.com.br/musica/rock-in-rio-2026-line-up-completo-por-dia/" },
+      { outlet: "Rock in Rio", url: "https://rockinrio.com/rio/pt-br/informacoes/" },
+    ],
     title: "Rock in Rio 2026: Lineup Confirmado com Maiores Nomes da Música",
     subtitle: "Foo Fighters, Stray Kids e o encontro de Elton John com Gilberto Gil marcam os sete dias de setembro",
     excerpt: "O Rock in Rio 2026 acontece em 4, 5, 6, 7, 11, 12 e 13 de setembro na Cidade do Rock, com um line-up que atravessa rock, K-pop, eletrônica e MPB.",
@@ -256,6 +273,10 @@ export const articles: ArticleInput[] = [
   {
     id: 10,
     slug: "grammy-2026-bad-bunny-e-kendrick-lamar",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/entretenimento/grammy-2026-confira-a-lista-completa-de-vencedores/" },
+      { outlet: "Omelete", url: "https://www.omelete.com.br/musica/grammy-2026-lista-vencedores" },
+    ],
     title: "Grammy 2026: Bad Bunny Quebra uma Barreira Histórica e Kendrick Lamar Domina a Noite",
     subtitle: "Pela primeira vez um álbum inteiramente em espanhol venceu a categoria principal da premiação",
     excerpt: "Bad Bunny levou Álbum do Ano com Debí Tirar Más Fotos, um marco para a música em espanhol. Kendrick Lamar venceu cinco das nove categorias em que concorria.",
@@ -302,6 +323,10 @@ export const articles: ArticleInput[] = [
   {
     id: 12,
     slug: "tomorrowland-2026-boom-belgica",
+    sources: [
+      { outlet: "DJ Mag", url: "https://djmag.com/news/tomorrowland-belgium-2026-dates-announced" },
+      { outlet: "Tomorrowland", url: "https://www.tomorrowland.com/" },
+    ],
     title: "Tomorrowland 2026: o Festival que Virou Destino Turístico Fechou Mais Dois Fins de Semana",
     subtitle: "Boom, na Bélgica, recebeu a edição deste ano entre 17 e 26 de julho, com público de mais de 200 países",
     excerpt: "O maior festival de música eletrônica do mundo ocupou o parque De Schorre em dois fins de semana de julho, encerrando a edição de 2026 no domingo passado.",
@@ -325,6 +350,10 @@ export const articles: ArticleInput[] = [
   {
     id: 13,
     slug: "show-intervalo-final-copa-2026",
+    sources: [
+      { outlet: "FIFA", url: "https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/madonna-shakira-bts-co-headline-historic-final-halftime-show" },
+      { outlet: "Billboard", url: "https://www.billboard.com/lists/2026-world-cup-halftime-show-shakira-madonna-bieber-bts/" },
+    ],
     title: "O Primeiro Show de Intervalo de uma Final de Copa Durou 11 Minutos e Entrou para a História",
     subtitle: "Madonna, Shakira, BTS, Justin Bieber e Burna Boy dividiram o gramado do MetLife em 19 de julho",
     excerpt: "A final da Copa de 2026 teve o primeiro show de intervalo da história do torneio, com Madonna chegando de dune buggy ao lado de Ronaldo e Ronaldinho.",
@@ -348,6 +377,9 @@ export const articles: ArticleInput[] = [
   {
     id: 14,
     slug: "lollapalooza-brasil-2026-interlagos",
+    sources: [
+      { outlet: "Billboard Brasil", url: "https://billboard.com.br/tudo-sobre-lollapalooza-brasil-2026/" },
+    ],
     title: "Lollapalooza Brasil 2026: o Que Ficou dos Três Dias em Interlagos",
     subtitle: "Sabrina Carpenter, Chappell Roan, Tyler, the Creator e Deftones passaram pelo Autódromo em março",
     excerpt: "O Lollapalooza Brasil aconteceu de 20 a 22 de março no Autódromo de Interlagos, com um line-up que misturou pop de arena, rock pesado e eletrônica.",
@@ -509,6 +541,9 @@ export const articles: ArticleInput[] = [
   {
     id: 21,
     slug: "games-lancamentos-segundo-semestre-2026",
+    sources: [
+      { outlet: "Adrenaline", url: "https://www.adrenaline.com.br/games/jogos-mais-esperados-2026/" },
+    ],
     title: "Games: Lançamentos Esperados para o Segundo Semestre de 2026",
     subtitle: "GTA 6 em novembro lidera um calendário que ainda tem Wolverine, Final Fantasy e o retorno de Gears",
     excerpt: "O segundo semestre de 2026 concentra os lançamentos mais aguardados do ano, com GTA 6 marcado para 19 de novembro depois de dois adiamentos.",
@@ -532,6 +567,9 @@ export const articles: ArticleInput[] = [
   {
     id: 22,
     slug: "roblox-jogos-mais-populares",
+    sources: [
+      { outlet: "PostBox", url: "https://postbox.com.br/melhores-jogos-do-roblox/" },
+    ],
     title: "Roblox: Os Jogos Mais Populares Entre Crianças e Adolescentes",
     subtitle: "Blox Fruits, Brookhaven e Dress to Impress explicam por que a plataforma virou rede social",
     excerpt: "O Roblox deixou de ser um catálogo de joguinhos e virou o lugar onde uma geração inteira socializa. As experiências mais jogadas mostram o porquê.",
@@ -877,6 +915,9 @@ export const articles: ArticleInput[] = [
   {
     id: 37,
     slug: "league-of-legends-mundial-2026",
+    sources: [
+      { outlet: "Movistar eSports", url: "https://movistaresports.com/worlds-2026-calendario-sedes-estadio-final/" },
+    ],
     title: "League of Legends: O Campeonato Mundial de 2026",
     subtitle: "Três cidades americanas, 19 equipes e duas vagas para o CBLOL: o que esperar da temporada que decide em novembro",
     excerpt: "O Mundial de League of Legends 2026 vai de outubro a novembro em Los Angeles, Allen e Brooklyn, com final marcada para 14 de novembro no Barclays Center.",
@@ -969,6 +1010,9 @@ export const articles: ArticleInput[] = [
   {
     id: 41,
     slug: "brasil-1x1-marrocos-estreia",
+    sources: [
+      { outlet: "Poder360", url: "https://www.poder360.com.br/copa-2026/veja-tabela-da-1a-fase-da-copa-com-os-resultados-e-times-classificados/" },
+    ],
     cover: true,
     title: "Brasil 1×1 Marrocos na Estreia",
     subtitle: "O empate de 13 de junho já dizia quase tudo sobre a campanha que terminaria nas oitavas",
@@ -993,6 +1037,10 @@ export const articles: ArticleInput[] = [
   {
     id: 42,
     slug: "goals-anitta-lisa-rema-copa",
+    sources: [
+      { outlet: "Billboard Brasil", url: "https://billboard.com.br/lisa-anitta-copa-goals-clipe/" },
+      { outlet: "Vagalume", url: "https://www.vagalume.com.br/news/2026/05/21/anitta-lanca-musica-para-a-copa-do-mundo-2026-com-lisa-e-rema-ouca-goals-com-letra-e-traducao.html" },
+    ],
     title: "'Goals': Anitta, Lisa e Rema para a Copa",
     subtitle: "A faixa que juntou Brasil, Coreia do Sul e Nigéria virou a trilha de um Mundial em três países",
     excerpt: "Anitta, Lisa e Rema lançaram Goals em 21 de maio como música oficial da Copa de 2026. A mistura de pop latino, K-pop e afrobeats casou com o formato do torneio.",
@@ -1016,6 +1064,9 @@ export const articles: ArticleInput[] = [
   {
     id: 43,
     slug: "26-convocados-selecao-brasileira",
+    sources: [
+      { outlet: "Lance!", url: "https://www.lance.com.br/selecao-brasileira/conheca-os-26-convocados-por-ancelotti-para-a-copa-do-mundo.html" },
+    ],
     title: "Os 26 Convocados da Seleção Brasileira",
     subtitle: "A lista anunciada no Museu do Amanhã em 18 de maio revelou as apostas de Ancelotti antes do Mundial",
     excerpt: "Carlo Ancelotti divulgou os 26 nomes do Brasil para a Copa de 2026 no Rio de Janeiro. O ataque concentrou as escolhas mais comentadas da convocação.",
@@ -1039,6 +1090,9 @@ export const articles: ArticleInput[] = [
   {
     id: 44,
     slug: "copa-2026-streaming-e-audiencia",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/sensacao-da-copa-do-mundo-goleiro-vozinha-e-oferecido-a-clube-brasileiro/" },
+    ],
     title: "A Copa que Foi Assistida Duas Vezes: TV Aberta de Um Lado, Stream do Outro",
     subtitle: "Transmissões alternativas e reação em tempo real mudaram a forma como a geração Z consumiu o Mundial",
     excerpt: "Entre a transmissão tradicional e as lives de criadores, a Copa de 2026 consolidou um segundo circuito de audiência que já move carreiras e seguidores.",
@@ -1062,6 +1116,10 @@ export const articles: ArticleInput[] = [
   {
     id: 45,
     slug: "alemanha-7x1-curacao-estreia",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/la-vem-eles-de-novo-alemanha-goleia-curacao-por-7-a-1-na-copa-do-mundo/" },
+      { outlet: "Lance!", url: "https://www.lance.com.br/copa-do-mundo/curacao-marca-gol-historico-mas-alemanha-faz-7-a-1-em-estreia-pela-copa-do-mundo.html" },
+    ],
     title: "Alemanha estreia repetindo 7x1 sobre Curaçao",
     subtitle: "O placar que o Brasil não queria ver de novo apareceu na estreia alemã, e o gol de Curaçao virou história",
     excerpt: "A Alemanha venceu Curaçao por 7 a 1 em Houston e reabriu uma ferida de 2014. Do outro lado, um país de 150 mil habitantes marcava seu primeiro gol em Copas.",
@@ -1085,6 +1143,10 @@ export const articles: ArticleInput[] = [
   {
     id: 46,
     slug: "arbitro-somali-barrado-imigracao-eua",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/fifa-confirma-exclusao-de-arbitro-da-copa-do-mundo-que-foi-barrado-nos-eua/" },
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/arbitro-da-copa-desabafa-apos-ser-barrado-nos-eua/" },
+    ],
     title: "Barrado pela Imigração dos EUA, Árbitro Somali Fica Fora da Copa",
     subtitle: "Omar Abdulkadir Artan seria o primeiro somali a apitar um Mundial, mas teve a entrada negada nos Estados Unidos",
     excerpt: "Eleito melhor árbitro da África em 2025, Artan estava entre os 52 escalados para a Copa de 2026. A CBP negou sua entrada e a FIFA disse não poder intervir.",
@@ -1108,6 +1170,10 @@ export const articles: ArticleInput[] = [
   {
     id: 47,
     slug: "power-ranking-final-copa-2026",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/espanha-domina-bate-argentina-na-prorrogacao-e-e-bicampea-da-copa-do-mundo/" },
+      { outlet: "Wikipedia", url: "https://pt.wikipedia.org/wiki/Final_da_Copa_do_Mundo_FIFA_de_2026" },
+    ],
     title: "O Power Ranking Final da Copa 2026: Quem Cresceu e Quem Decepcionou",
     subtitle: "Com a taça entregue à Espanha, o balanço das seleções que mais e menos entregaram no Mundial",
     excerpt: "A Copa de 2026 terminou com a Espanha bicampeã, a Noruega como pedra no caminho do Brasil e Cabo Verde como maior revelação entre os estreantes.",
@@ -1131,6 +1197,9 @@ export const articles: ArticleInput[] = [
   {
     id: 48,
     slug: "mbappe-chuteira-de-ouro-copa-2026",
+    sources: [
+      { outlet: "FIFA", url: "https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/articles/adidas-chuteira-ouro-disputa-artilharia" },
+    ],
     title: "Mbappé Leva a Chuteira de Ouro e Se Torna o Maior Artilheiro da História das Copas",
     subtitle: "O francês fechou o Mundial com 10 gols, superou Messi na disputa e chegou a 22 no total de Copas",
     excerpt: "Kylian Mbappé conquistou sua segunda Chuteira de Ouro seguida com 10 gols e ultrapassou a marca histórica de artilharia acumulada em Mundiais.",
@@ -1154,6 +1223,10 @@ export const articles: ArticleInput[] = [
   {
     id: 49,
     slug: "ira-base-em-tijuana-copa-2026",
+    sources: [
+      { outlet: "Brasil de Fato", url: "https://www.brasildefato.com.br/2026/06/16/jogador-do-ira-tem-visto-expirado-e-delegacao-enfrenta-problemas-para-sair-dos-eua-apos-jogo-de-estreia-na-copa-do-mundo/" },
+      { outlet: "Poder360", url: "https://www.poder360.com.br/copa-2026/selecao-do-ira-protesta-a-fifa-por-problemas-com-vistos-nos-eua/" },
+    ],
     title: "Sem Poder Ficar nos EUA, o Irã Disputou a Copa a Partir do México",
     subtitle: "Base em Tijuana, vistos vencidos e horas de espera na fronteira marcaram a campanha iraniana",
     excerpt: "A delegação do Irã não teve autorização para permanecer nos Estados Unidos e montou base em Tijuana. Cerca de 12 integrantes enfrentaram problemas de visto.",
@@ -1177,6 +1250,9 @@ export const articles: ArticleInput[] = [
   {
     id: 50,
     slug: "ira-2x2-nova-zelandia-estreia",
+    sources: [
+      { outlet: "Brasil de Fato", url: "https://www.brasildefato.com.br/2026/06/16/jogador-do-ira-tem-visto-expirado-e-delegacao-enfrenta-problemas-para-sair-dos-eua-apos-jogo-de-estreia-na-copa-do-mundo/" },
+    ],
     title: "Irã 2 x 2 Nova Zelândia: o Empate que Virou Assunto Fora de Campo",
     subtitle: "A estreia iraniana em Los Angeles terminou dividida no placar e travada na fronteira",
     excerpt: "Irã e Nova Zelândia empataram por 2 a 2 na estreia das duas seleções. Depois do apito, a delegação iraniana ficou horas retida por questões de documentação.",
@@ -1200,6 +1276,9 @@ export const articles: ArticleInput[] = [
   {
     id: 51,
     slug: "portugal-tropeca-na-estreia",
+    sources: [
+      { outlet: "SOL", url: "https://sol.iol.pt/desporto/noticias/portugal-eliminado-do-mundial-2026-e-cristiano-ronaldo-despede-se-sem-o-unico-grande-trofeu-que-lhe-escapou/20260706/6a4c1b900cf2d0ed34b87bdb" },
+    ],
     title: "Portugal tropeça na estreia",
     subtitle: "O tropeço inicial cobrou seu preço: Portugal se classificou no sufoco e caiu logo depois",
     excerpt: "Portugal começou a Copa de 2026 perdendo pontos, ainda ficou sem Cristiano Ronaldo por suspensão e não conseguiu recuperar o tempo perdido no mata-mata.",
@@ -1223,6 +1302,10 @@ export const articles: ArticleInput[] = [
   {
     id: 52,
     slug: "cristiano-ronaldo-quebra-tabu-copa-2026",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/cristiano-ronaldo-derruba-tabu-e-portugal-elimina-croacia-nos-acrescimos/" },
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/fim-de-tabu-cristiano-ronaldo-finalmente-marca-um-gol-em-mata-mata-de-copa/" },
+    ],
     title: "Cristiano Ronaldo Quebra o Tabu nas Oitavas e Se Despede da Copa aos 41",
     subtitle: "O gol contra a Croácia encerrou um jejum que perseguia o português desde 2006, e foi o último ato dele em Mundiais",
     excerpt: "Cristiano Ronaldo marcou seu primeiro gol em mata-mata de Copa nas oitavas contra a Croácia, mas Portugal caiu na sequência e ele se despede sem o título.",
@@ -1246,6 +1329,9 @@ export const articles: ArticleInput[] = [
   {
     id: 53,
     slug: "brasil-empata-estreia-quarta-vez",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/brasil-e-eliminado-da-copa-pela-noruega-e-chega-a-maior-jejum-sem-titulos/" },
+    ],
     title: "Brasil empata estreia pela quarta vez",
     subtitle: "Pela quarta vez na história a seleção começou um Mundial empatando, e o padrão diz mais do que parece",
     excerpt: "O 1 a 1 com Marrocos entrou para uma lista curta de estreias travadas do Brasil em Copas. O que aconteceu nas outras três ajuda a entender 2026.",
@@ -1269,6 +1355,9 @@ export const articles: ArticleInput[] = [
   {
     id: 54,
     slug: "endrick-dilema-dos-minutos-copa-2026",
+    sources: [
+      { outlet: "Lance!", url: "https://www.lance.com.br/selecao-brasileira/conheca-os-26-convocados-por-ancelotti-para-a-copa-do-mundo.html" },
+    ],
     title: "Endrick e o Dilema dos Minutos: o Debate que Acompanhou o Brasil na Copa",
     subtitle: "Convocado entre os 26, o atacante virou o centro da discussão sobre quem deveria começar os jogos",
     excerpt: "Endrick esteve na lista de Ancelotti para a Copa de 2026, mas seu tempo em campo alimentou a maior discussão tática da campanha brasileira.",
@@ -1292,6 +1381,10 @@ export const articles: ArticleInput[] = [
   {
     id: 55,
     slug: "neymar-marca-na-eliminacao-copa-2026",
+    sources: [
+      { outlet: "Lance!", url: "https://www.lance.com.br/copa-do-mundo/brasil-se-curva-a-haaland-e-da-adeus-a-copa-do-mundo.html" },
+      { outlet: "FIFA", url: "https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/articles/ancelotti-ja-vira-chave-para-2030-nao-e-o-fim-mas-o-inicio" },
+    ],
     title: "Neymar Chega a Tempo, Marca na Eliminação e Fecha um Ciclo em Aberto",
     subtitle: "A recuperação que parecia arriscada terminou com o camisa 10 em campo e com o último gol brasileiro da Copa",
     excerpt: "Neymar entrou na lista de Ancelotti vindo de recuperação física, disputou o Mundial e marcou de pênalti na derrota para a Noruega que eliminou o Brasil.",
@@ -1315,6 +1408,9 @@ export const articles: ArticleInput[] = [
   {
     id: 56,
     slug: "poatan-perde-para-gane-na-casa-branca",
+    sources: [
+      { outlet: "Forbes", url: "https://www.forbes.com/sites/brianmazique/2026/06/18/alex-pereira-handed-6-month-suspension-after-controversial-tko-loss-at-ufc-freedom-250-to-gane/" },
+    ],
     title: "Poatan Perde para Gane em Luta Marcada por Polêmica na Casa Branca",
     subtitle: "Nocaute técnico no segundo round custou ao brasileiro a chance de ser campeão em três divisões",
     excerpt: "Alex Pereira foi derrotado por Ciryl Gane no UFC Freedom 250, em evento realizado no gramado da Casa Branca, e protesta contra cotoveladas na nuca.",
@@ -1338,6 +1434,9 @@ export const articles: ArticleInput[] = [
   {
     id: 57,
     slug: "joao-fonseca-e-o-desafio-da-grama",
+    sources: [
+      { outlet: "Band", url: "https://www.band.com.br/esportes/joao-fonseca-sofre-na-grama-e-se-despede-com-derrota-na-estreia-do-atp-500-de-halle-202606160942" },
+    ],
     title: "João Fonseca Cai na Estreia do Simples em Halle e Encontra a Grama pelo Caminho Difícil",
     subtitle: "Derrota rápida para Hanfmann no simples contrastou com uma boa campanha nas duplas",
     excerpt: "João Fonseca foi eliminado na primeira rodada do ATP 500 de Halle por Yannick Hanfmann, mas chegou à final de duplas ao lado de Daniel Altmaier.",
@@ -1361,6 +1460,10 @@ export const articles: ArticleInput[] = [
   {
     id: 58,
     slug: "knicks-encerram-53-anos-de-espera",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/basquete/knicks-e-letal-no-fim-vence-os-spurs-e-e-campeao-da-nba-apos-53-anos/" },
+      { outlet: "Wikipedia", url: "https://en.wikipedia.org/wiki/2026_NBA_Finals" },
+    ],
     title: "Knicks Batem os Spurs e Encerram 53 Anos de Espera na NBA",
     subtitle: "Jalen Brunson marcou 45 pontos no jogo decisivo, fechado em 94 a 90 no dia 13 de junho",
     excerpt: "O New York Knicks venceu o San Antonio Spurs por 4 a 1 nas finais da NBA e conquistou o título após 53 anos, com atuação decisiva de Jalen Brunson.",
@@ -1476,6 +1579,10 @@ export const articles: ArticleInput[] = [
   {
     id: 63,
     slug: "ccxp-2026",
+    sources: [
+      { outlet: "CCXP", url: "https://ccxp.com.br/" },
+      { outlet: "São Paulo Expo", url: "https://www.saopauloexpo.com.br/pt/evento-spe/ccxp/" },
+    ],
     title: "CCXP26 Chega em Dezembro e o Ingresso Já É Assunto de Julho",
     subtitle: "O maior evento de cultura pop do mundo ocupa o São Paulo Expo de 3 a 6 de dezembro",
     excerpt: "A CCXP26 acontece de 3 a 6 de dezembro no São Paulo Expo, precedida pela Spoiler Night em 2 de dezembro, exclusiva para alguns tipos de ingresso.",
@@ -1522,6 +1629,9 @@ export const articles: ArticleInput[] = [
   {
     id: 65,
     slug: "resultados-copa-viralizam-redes",
+    sources: [
+      { outlet: "Band", url: "https://www.band.com.br/esportes/futebol/copa-do-mundo/noticias/maior-que-neuer-e-minha-vo-pegava-web-exalta-vozinha-veja-memes-202606151547" },
+    ],
     title: "As Zebras da Copa Renderam Mais Meme do Que os Favoritos Renderam Gol",
     subtitle: "Cabo Verde, o 7 a 1 alemão e o goleiro Vozinha dominaram a conversa online do Mundial",
     excerpt: "A Copa de 2026 produziu resultados improváveis que viraram material infinito nas redes, e alguns deles mudaram a vida de quem estava em campo.",
@@ -1568,6 +1678,9 @@ export const articles: ArticleInput[] = [
   {
     id: 67,
     slug: "virginia-fonseca-numeros-do-imperio",
+    sources: [
+      { outlet: "Exame", url: "https://exame.com/negocios/qual-a-fortuna-de-virginia-veja-qual-o-patrimonio-de-influencer-envolvida-em-cpi-das-bets/" },
+    ],
     title: "Virgínia Fonseca: os Números Confirmados por Trás do Império Digital",
     subtitle: "Do primeiro mês da WePink ao depoimento na CPI das Bets, o que é dado público e o que é estimativa",
     excerpt: "Estimativas sobre a fortuna de Virgínia Fonseca variam bastante entre veículos. Os números que ela própria confirmou em depoimento oficial contam uma história mais precisa.",
@@ -1614,6 +1727,10 @@ export const articles: ArticleInput[] = [
   {
     id: 69,
     slug: "goleiro-vozinha-fenomeno-digital",
+    sources: [
+      { outlet: "CNN Brasil", url: "https://www.cnnbrasil.com.br/esportes/futebol/copa-do-mundo/sensacao-da-copa-do-mundo-goleiro-vozinha-e-oferecido-a-clube-brasileiro/" },
+      { outlet: "Band", url: "https://www.band.com.br/esportes/futebol/copa-do-mundo/noticias/maior-que-neuer-e-minha-vo-pegava-web-exalta-vozinha-veja-memes-202606151547" },
+    ],
     title: "Vozinha: o Goleiro de 40 Anos que Saiu de 50 Mil para Milhões de Seguidores",
     subtitle: "A atuação contra a Espanha e um gesto no gramado transformaram o cabo-verdiano no personagem da Copa",
     excerpt: "Vozinha foi eleito melhor em campo no empate de Cabo Verde com a Espanha e viu seu perfil explodir em poucas horas durante a Copa de 2026.",
