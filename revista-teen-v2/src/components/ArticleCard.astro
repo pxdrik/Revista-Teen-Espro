@@ -1,0 +1,78 @@
+---
+/**
+ * Card de matéria - componente único usado em toda a revista.
+ *
+ * Home, listagem, categoria, busca e relacionados usam ESTE componente. Não existe
+ * segunda implementação de card no projeto, então um ajuste visual vale para o site
+ * inteiro (na V1 havia markup de card repetido em quatro páginas).
+ *
+ * Todo card mostra: imagem, editoria, título, resumo, autor, data e tempo de leitura.
+ */
+import type { Article } from "@/lib/schema";
+import CategoryBadge from "./CategoryBadge.astro";
+import { formatDate } from "@/lib/content";
+
+export interface Props {
+  article: Article;
+  /** lead = destaque grande | default = grade | compact = sem resumo */
+  variant?: "lead" | "default" | "compact";
+  /** Carrega a imagem imediatamente (usar só no que está acima da dobra). */
+  priority?: boolean;
+  /** Nível do heading, para manter a hierarquia correta em cada página. */
+  headingLevel?: 2 | 3;
+}
+
+const { article, variant = "default", priority = false, headingLevel = 3 } = Astro.props;
+
+const Heading = `h${headingLevel}` as "h2" | "h3";
+const isLead = variant === "lead";
+const isCompact = variant === "compact";
+
+// Proporções fixas evitam layout shift enquanto a imagem carrega.
+const ratio = isLead ? "16 / 10" : "3 / 2";
+const titleClass = isLead ? "type-display-md" : "type-heading";
+---
+
+<article class="card-editorial group h-full">
+  <a href={article.href} class="block h-full focus:outline-none">
+    <div class="card-media" style={`aspect-ratio:${ratio}`}>
+      <img
+        src={article.image.src}
+        alt={article.image.alt}
+        class="card-image"
+        width={isLead ? 1600 : 800}
+        height={isLead ? 1000 : 533}
+        loading={priority ? "eager" : "lazy"}
+        decoding={priority ? "sync" : "async"}
+        fetchpriority={priority ? "high" : "auto"}
+      />
+    </div>
+
+    <div class="mt-4">
+      <CategoryBadge category={article.categoryRef} />
+
+      <Heading
+        class={`${titleClass} clamp-2 mt-2 transition-colors group-hover:text-[var(--accent-blue)]`}
+        style="color: var(--text-primary)"
+      >
+        {article.title}
+      </Heading>
+
+      {
+        !isCompact && (
+          <p class="type-body-sm clamp-2 mt-2" style="color: var(--text-secondary)">
+            {article.excerpt}
+          </p>
+        )
+      }
+
+      <div class="type-caption mt-3 flex flex-wrap items-center gap-x-2 gap-y-1" style="color: var(--text-muted)">
+        <span>{article.author.name}</span>
+        <span aria-hidden="true">•</span>
+        <time datetime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
+        <span aria-hidden="true">•</span>
+        <span>{article.readingTime} min de leitura</span>
+      </div>
+    </div>
+  </a>
+</article>

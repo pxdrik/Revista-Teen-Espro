@@ -1,0 +1,152 @@
+---
+/**
+ * HOME - "A capa da revista".
+ *
+ * Nada aqui é escrito à mão: hero, destaques, "Em Alta" e "Últimas" saem do score
+ * editorial calculado em src/lib/content.ts. Cada matéria aparece no máximo uma vez
+ * na página - as listas são construídas descontando o que já foi usado.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArticleCard from "@/components/ArticleCard.astro";
+import CategoryBadge from "@/components/CategoryBadge.astro";
+import {
+  heroArticle,
+  featuredArticles,
+  trendingArticles,
+  latestArticles,
+  categories,
+  formatDate,
+  edition,
+} from "@/lib/content";
+
+const description =
+  "Games, Copa do Mundo 2026, música, cultura pop e tecnologia. A " +
+  edition.name +
+  " da Revista Teen, com " +
+  edition.totalArticles +
+  " matérias para quem tem de 14 a 24 anos.";
+---
+
+<BaseLayout
+  title="Revista Teen | Edição 2026"
+  description={description}
+  image={heroArticle.image.src}
+  imageAlt={heroArticle.image.alt}
+>
+  <!-- ═══ HERO ═══ -->
+  <section class="relative min-h-[600px] h-[85vh] overflow-hidden">
+    <img
+      src={heroArticle.image.src}
+      alt={heroArticle.image.alt}
+      class="absolute inset-0 h-full w-full object-cover"
+      width="1600"
+      height="900"
+      fetchpriority="high"
+      decoding="sync"
+    />
+    <div class="absolute inset-0" style="background: linear-gradient(to top, #08080D 0%, rgba(8,8,13,.6) 45%, transparent 100%)"></div>
+    <div class="absolute inset-0" style="background: linear-gradient(to right, rgba(8,8,13,.45), transparent 60%)"></div>
+
+    <div class="container-rt absolute inset-x-0 bottom-0 pb-10 sm:pb-14 lg:pb-20">
+      <div class="max-w-4xl">
+        <CategoryBadge category={heroArticle.categoryRef} asLink />
+        <h1 class="type-display-xl mb-4 mt-4" style="color: var(--text-primary)">
+          <a href={heroArticle.href} class="transition-colors hover:text-[var(--accent-blue)]">
+            {heroArticle.title}
+          </a>
+        </h1>
+        <p class="type-body clamp-2 mb-6 max-w-2xl" style="color: var(--text-secondary)">
+          {heroArticle.subtitle}
+        </p>
+        <div class="type-caption flex flex-wrap items-center gap-x-3 gap-y-1" style="color: var(--text-muted)">
+          <span>{heroArticle.author.name}</span>
+          <span aria-hidden="true">•</span>
+          <time datetime={heroArticle.publishedAt}>{formatDate(heroArticle.publishedAt)}</time>
+          <span aria-hidden="true">•</span>
+          <span>{heroArticle.readingTime} min de leitura</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ DESTAQUES ═══ -->
+  <div class="star-separator" aria-hidden="true"><span class="star">✦</span></div>
+
+  <section class="container-rt" aria-labelledby="destaques">
+    <h2 id="destaques" class="sr-only">Destaques da edição</h2>
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      {
+        featuredArticles[0] && (
+          <div class="reveal lg:col-span-8">
+            <ArticleCard article={featuredArticles[0]} variant="lead" headingLevel={3} />
+          </div>
+        )
+      }
+      <div class="flex flex-col gap-6 lg:col-span-4">
+        {featuredArticles.slice(1, 3).map((a) => (
+          <div class="reveal">
+            <ArticleCard article={a} variant="compact" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ EDITORIAS ═══ -->
+  <div class="star-separator" aria-hidden="true"><span class="star">✦</span></div>
+
+  <section class="container-rt" aria-labelledby="editorias">
+    <h2 id="editorias" class="type-overline mb-6" style="color: var(--text-muted)">Explore por editoria</h2>
+    <ul class="flex flex-wrap gap-x-6 gap-y-3">
+      {
+        categories.map((cat) => (
+          <li>
+            <a
+              href={cat.href}
+              class="underline-grow type-subheading inline-flex items-center gap-2 py-1 transition-colors hover:text-[var(--text-primary)]"
+              style="color: var(--text-secondary)"
+            >
+              <span class="h-2 w-2 shrink-0 rounded-full" style={`background:${cat.color}`} aria-hidden="true" />
+              {cat.emoji} {cat.name}
+              <span class="type-caption" style="color: var(--text-muted)">{cat.count}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- ═══ EM ALTA ═══ -->
+  <div class="star-separator" aria-hidden="true"><span class="star">✦</span></div>
+
+  <section class="container-rt" aria-labelledby="em-alta">
+    <div class="mb-8 flex items-center justify-between gap-4">
+      <h2 id="em-alta" class="type-display-lg" style="color: var(--text-primary)">Em Alta</h2>
+      <a href="/artigos" class="underline-grow type-body-sm" style="color: var(--accent-blue)">Ver todos →</a>
+    </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {trendingArticles.map((a) => (
+        <div class="reveal">
+          <ArticleCard article={a} />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ═══ ÚLTIMAS ═══ -->
+  <div class="star-separator" aria-hidden="true"><span class="star">✦</span></div>
+
+  <section class="container-rt pb-24" aria-labelledby="ultimas">
+    <div class="mb-8 flex items-center justify-between gap-4">
+      <h2 id="ultimas" class="type-display-lg" style="color: var(--text-primary)">Últimas Matérias</h2>
+      <a href="/artigos" class="underline-grow type-body-sm" style="color: var(--accent-blue)">Ver todos →</a>
+    </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {latestArticles.map((a) => (
+        <div class="reveal">
+          <ArticleCard article={a} />
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

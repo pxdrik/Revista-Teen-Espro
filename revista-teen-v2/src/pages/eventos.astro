@@ -1,0 +1,138 @@
+---
+/**
+ * AGENDA - eventos reais da edição.
+ *
+ * Ordenados por data e separados entre "próximos" e "já aconteceram" a partir da
+ * data do build, para a página nunca anunciar como futuro algo que já passou.
+ * A categoria de cada evento é validada contra a taxonomia da revista.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import { eventos } from "@/data/eventos";
+import { getCategory, parseDate } from "@/lib/content";
+
+// Integridade: evento não pode apontar para editoria inexistente.
+for (const ev of eventos) {
+  if (!getCategory(ev.category)) {
+    throw new Error(
+      '[Revista Teen] Evento "' + ev.name + '" usa a editoria "' + ev.category + '", que não existe na edição.',
+    );
+  }
+}
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const sorted = [...eventos].sort(
+  (a, b) => parseDate(a.startDate).getTime() - parseDate(b.startDate).getTime(),
+);
+const upcoming = sorted.filter((e) => parseDate(e.endDate).getTime() >= today.getTime());
+const past = sorted.filter((e) => parseDate(e.endDate).getTime() < today.getTime());
+
+const groups = [
+  { id: "proximos", label: "Próximos", items: upcoming },
+  { id: "ja-aconteceram", label: "Já aconteceram", items: past },
+].filter((g) => g.items.length > 0);
+---
+
+<BaseLayout
+  title="Agenda 2026 | Revista Teen"
+  description="Os grandes festivais e eventos de cultura pop de 2026: Rock in Rio, CCXP, Tomorrowland e Lollapalooza Brasil, com datas e links oficiais."
+  image={eventos[0]?.image}
+>
+  <div class="container-rt pb-24 pt-8">
+    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Agenda" }]} />
+
+    <header class="mb-10 mt-4">
+      <h1 class="type-display-lg" style="color: var(--text-primary)">Agenda 2026</h1>
+      <p class="type-body-sm mt-2" style="color: var(--text-muted)">
+        {eventos.length} eventos confirmados · datas e informações oficiais
+      </p>
+    </header>
+
+    {
+      groups.map((group) => (
+        <section class="mb-14" aria-labelledby={group.id}>
+          <h2 id={group.id} class="type-overline mb-6" style="color: var(--text-muted)">
+            {group.label}
+          </h2>
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {group.items.map((ev) => {
+              const cat = getCategory(ev.category)!;
+              const isPast = group.id === "ja-aconteceram";
+              return (
+                <article
+                  class="card-editorial flex h-full flex-col overflow-hidden rounded-2xl border"
+                  style="background: var(--bg-surface); border-color: var(--border-subtle)"
+                >
+                  <div class="card-media relative rounded-none" style="aspect-ratio: 3 / 2">
+                    <img
+                      src={ev.image}
+                      alt={ev.imageAlt}
+                      class="card-image"
+                      width="800"
+                      height="533"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {isPast && (
+                      <span
+                        class="type-caption absolute left-3 top-3 rounded-full px-3 py-1 backdrop-blur"
+                        style="background: rgba(8,8,13,.8); color: var(--text-secondary)"
+                      >
+                        Já aconteceu
+                      </span>
+                    )}
+                  </div>
+
+                  <div class="flex flex-1 flex-col p-5">
+                    <span class="category-badge" style={`color:${cat.color}`}>
+                      {cat.name}
+                    </span>
+                    <h3 class="type-heading mb-3 mt-1.5" style="color: var(--text-primary)">
+                      {ev.name}
+                    </h3>
+
+                    <dl class="mb-4 space-y-2">
+                      <div class="type-caption flex items-start gap-2" style="color: var(--text-muted)">
+                        <dt class="sr-only">Data</dt>
+                        <dd>
+                          <time datetime={ev.startDate}>{ev.dateLabel}</time>
+                        </dd>
+                      </div>
+                      <div class="type-caption flex items-start gap-2" style="color: var(--text-muted)">
+                        <dt class="sr-only">Local</dt>
+                        <dd>
+                          {ev.venue}, {ev.city}, {ev.country}
+                        </dd>
+                      </div>
+                    </dl>
+
+                    <p class="type-body-sm clamp-3 mb-5" style="color: var(--text-secondary)">
+                      {ev.description}
+                    </p>
+
+                    <a
+                      href={ev.officialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="type-body-sm mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-medium text-white transition-opacity hover:opacity-90"
+                      style="background: var(--accent-blue)"
+                    >
+                      Site oficial
+                      <span class="sr-only">de {ev.name} (abre em nova aba)</span>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <path d="M15 3h6v6M10 14 21 3"></path>
+                      </svg>
+                    </a>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</BaseLayout>

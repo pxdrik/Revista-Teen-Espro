@@ -1,0 +1,26 @@
+---
+/**
+ * Badge de editoria. A cor vem sempre do content layer - nunca de um mapa local.
+ * Era a duplicação desse mapa em quatro arquivos que causava as cores
+ * inconsistentes da V1.
+ */
+import type { Category } from "@/lib/schema";
+
+export interface Props {
+  category: Category;
+  /** Quando true, o badge vira link para a página da editoria. */
+  asLink?: boolean;
+}
+
+const { category, asLink = false } = Astro.props;
+const Tag = asLink ? "a" : "span";
+---
+
+<Tag
+  class="category-badge"
+  style={`color:${category.color}`}
+  data-category={category.slug}
+  {...asLink ? { href: category.href } : {}}
+>
+  {category.name}
+</Tag>

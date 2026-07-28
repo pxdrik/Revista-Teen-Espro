@@ -1,0 +1,111 @@
+---
+/**
+ * Footer - última página da revista.
+ * As editorias listadas vêm da mesma fonte do header. Se uma editoria sair da
+ * edição, ela some daqui automaticamente: link quebrado é impossível.
+ */
+import { categories, edition } from "@/lib/content";
+
+const year = new Date().getFullYear();
+const main = categories.slice(0, 8);
+---
+
+<footer class="mt-24 border-t" style="border-color: var(--border-subtle)">
+  <div class="star-separator mt-0 pt-12" aria-hidden="true">
+    <span class="star">✦</span>
+  </div>
+
+  <div class="container-rt pb-12">
+    <div class="grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-16">
+      <div>
+        <div class="mb-4 flex items-center gap-2">
+          <span class="text-lg" style="color: var(--accent-blue)" aria-hidden="true">✦</span>
+          <span class="font-display text-lg font-bold tracking-tight" style="color: var(--text-primary)">
+            Revista Teen
+          </span>
+        </div>
+        <p class="type-body-sm max-w-[280px] leading-relaxed" style="color: var(--text-muted)">
+          Entretenimento, esporte e cultura para a sua geração. Feita por jovens, para jovens.
+        </p>
+        <p class="type-caption mt-4" style="color: var(--text-muted)">
+          {edition.name} · {edition.totalArticles} matérias · {edition.totalCategories} editorias
+        </p>
+      </div>
+
+      <nav aria-labelledby="footer-editorias">
+        <h2 id="footer-editorias" class="type-overline mb-4" style="color: var(--text-muted)">Editorias</h2>
+        <ul class="space-y-3">
+          {
+            main.map((cat) => (
+              <li>
+                <a
+                  href={cat.href}
+                  class="type-body-sm underline-grow transition-colors"
+                  style="color: var(--text-secondary)"
+                >
+                  {cat.name}
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a href="/artigos" class="type-body-sm underline-grow" style="color: var(--accent-blue)">
+              Ver todas as editorias
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <nav aria-labelledby="footer-social">
+        <h2 id="footer-social" class="type-overline mb-4" style="color: var(--text-muted)">Siga a Revista</h2>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="type-body-sm underline-grow"
+              style="color: var(--text-secondary)"
+            >
+              Instagram
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.tiktok.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="type-body-sm underline-grow"
+              style="color: var(--text-secondary)"
+            >
+              TikTok
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://x.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="type-body-sm underline-grow"
+              style="color: var(--text-secondary)"
+            >
+              Twitter / X
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div
+      class="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-6 sm:flex-row"
+      style="border-color: var(--border-subtle)"
+    >
+      <p class="type-caption" style="color: var(--text-muted)">
+        © {year} Revista Teen. Todos os direitos reservados.
+      </p>
+      <p class="type-caption" style="color: var(--text-muted)">
+        Feito com ✦ por jovens apaixonados por jornalismo
+      </p>
+    </div>
+  </div>
+</footer>

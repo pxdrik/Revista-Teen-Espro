@@ -1,0 +1,438 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════
+   REVISTA TEEN, DESIGN SYSTEM
+   Paleta, tipografia, motion e componentes herdados da V1.
+   A identidade visual é a mesma; só a arquitetura mudou.
+   ═══════════════════════════════════════════════════════════ */
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+}
+
+:root {
+  /* ─── Brand ─── */
+  --bg-primary: #08080d;
+  --bg-surface: #111118;
+  --bg-elevated: #1a1a26;
+  --bg-overlay: rgba(8, 8, 13, 0.85);
+  --accent-blue: #4b6bff;
+  --accent-purple: #8b5cf6;
+  --accent-gradient: linear-gradient(135deg, #4b6bff 0%, #8b5cf6 100%);
+  --text-primary: #f0f0f8;
+  --text-secondary: #9898b0;
+  --text-muted: #5a5a72;
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-active: rgba(75, 107, 255, 0.3);
+
+  /* As cores de editoria NÃO moram aqui. Vêm de edition-2026.ts e são aplicadas
+     inline, para nunca divergirem da taxonomia editorial. */
+
+  /* ─── Motion ─── */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+
+  /* ─── Spacing ─── */
+  --space-12: 48px;
+
+  color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Textura sutil de papel */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+}
+
+/* Foco visível e consistente - requisito de acessibilidade, nunca removido. */
+:focus-visible {
+  outline: 2px solid var(--accent-blue);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* Link de pular para o conteúdo, visível apenas ao navegar por teclado. */
+.skip-link {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -120%);
+  top: 0.5rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  background: var(--accent-blue);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: translate(-50%, 0);
+}
+
+button:not(:disabled),
+a[href],
+select:not(:disabled),
+input[type="checkbox"]:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Evita layout shift: toda imagem reserva o espaço pela proporção declarada.
+   Precisa estar em @layer base, regra fora de camada venceria os utilitários do
+   Tailwind (que vivem em @layer utilities), anulando h-full/object-cover no hero. */
+@layer base {
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TIPOGRAFIA
+   ═══════════════════════════════════════════════════════════ */
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.type-display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.type-display-lg {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.type-display-md {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.type-heading {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.type-subheading {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.type-body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.type-body-sm {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.type-caption {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.type-overline {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COMPONENTES
+   ═══════════════════════════════════════════════════════════ */
+
+.container-rt {
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .container-rt {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-rt {
+    padding-inline: 3rem;
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container-rt {
+    max-width: 1440px;
+  }
+}
+
+/* ─── Separador de estrela ─── */
+.star-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: var(--space-12) 0;
+}
+
+.star-separator::before,
+.star-separator::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.star-separator .star {
+  color: var(--text-muted);
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+/* ─── Badge de editoria ─── */
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.category-badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* ─── Barra de progresso de leitura ─── */
+.reading-progress {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: var(--accent-gradient);
+  z-index: 100;
+  transition: width 100ms linear;
+}
+
+/* ─── Glitch no logo ─── */
+@keyframes glitch-hover {
+  0% {
+    text-shadow: -1px 0 var(--accent-blue), 1px 0 var(--accent-purple);
+    transform: translateX(0);
+  }
+  20% {
+    text-shadow: -2px 0 var(--accent-blue), 2px 0 var(--accent-purple);
+    transform: translateX(-1px);
+  }
+  40% {
+    text-shadow: 1px 0 var(--accent-blue), -1px 0 var(--accent-purple);
+    transform: translateX(1px);
+  }
+  100% {
+    text-shadow: none;
+    transform: translateX(0);
+  }
+}
+
+.glitch-hover:hover {
+  animation: glitch-hover 0.3s var(--ease-out);
+}
+
+/* ─── Underline que cresce ─── */
+.underline-grow {
+  position: relative;
+}
+
+.underline-grow::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent-blue);
+  transition: width var(--duration-normal) var(--ease-out);
+}
+
+.underline-grow:hover::after,
+.underline-grow:focus-visible::after {
+  width: 100%;
+}
+
+/* ─── Card ─── */
+.card-editorial {
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.card-editorial:hover,
+.card-editorial:focus-within {
+  transform: translateY(-4px);
+}
+
+.card-editorial:active {
+  transform: scale(0.98);
+  transition-duration: 100ms;
+}
+
+.card-media {
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+}
+
+.card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.card-editorial:hover .card-image,
+.card-editorial:focus-within .card-image {
+  transform: scale(1.03);
+}
+
+/* ─── Revelação no scroll (CSS puro, sem JS) ─── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  animation: fadeInUp 0.5s var(--ease-out) both;
+  animation-timeline: view();
+  animation-range: entry 0% cover 22%;
+}
+
+/* Navegadores sem scroll-driven animations mostram o conteúdo normalmente. */
+@supports not (animation-timeline: view()) {
+  .reveal {
+    animation: none;
+  }
+}
+
+/* ─── Texto do artigo ─── */
+.prose-editorial {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  max-width: 680px;
+}
+
+.prose-editorial p {
+  margin-bottom: 1.5em;
+}
+
+.prose-editorial p:first-of-type {
+  font-size: 1.15rem;
+  color: var(--text-primary);
+}
+
+.prose-editorial a {
+  color: var(--accent-blue);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ─── Linha de recorte para textos ─── */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ─── Movimento reduzido ─── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .card-editorial:hover,
+  .card-editorial:focus-within {
+    transform: none;
+  }
+
+  .card-editorial:hover .card-image,
+  .card-editorial:focus-within .card-image {
+    transform: none;
+  }
+
+  .reveal {
+    animation: none;
+  }
+}

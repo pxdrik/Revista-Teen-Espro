@@ -1,0 +1,122 @@
+---
+/**
+ * Layout base - cabeça do documento e chrome do site.
+ *
+ * Todo o SEO é renderizado em tempo de build, dentro do HTML. Rastreadores e
+ * scrapers de rede social não executam JavaScript: se o metadado não estiver no
+ * markup, ele não existe. Era essa a limitação da V1.
+ */
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import "@/styles/global.css";
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Caminho da imagem de compartilhamento (relativo à raiz). */
+  image?: string;
+  imageAlt?: string;
+  type?: "website" | "article";
+  publishedAt?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+  /** Impede indexação (usado só na 404). */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description,
+  image = "/images/og-default.jpg",
+  imageAlt = "Revista Teen, Edição 2026",
+  type = "website",
+  publishedAt,
+  author,
+  section,
+  tags = [],
+  noindex = false,
+} = Astro.props;
+
+const SITE_NAME = "Revista Teen";
+const canonical = new URL(Astro.url.pathname, Astro.site).href.replace(/(.+)\/$/, "$1");
+const ogImage = new URL(image, Astro.site).href;
+
+// Dados estruturados: ajudam o Google a entender que isto é uma matéria assinada.
+const jsonLd =
+  type === "article"
+    ? {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        headline: title,
+        description,
+        image: [ogImage],
+        datePublished: publishedAt,
+        author: [{ "@type": "Person", name: author }],
+        publisher: { "@type": "Organization", name: SITE_NAME },
+        mainEntityOfPage: { "@type": "WebPage", "@id": canonical },
+        articleSection: section,
+        keywords: tags.join(", "),
+      }
+    : {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        name: SITE_NAME,
+        url: Astro.site?.href,
+        description,
+      };
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#08080D" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt} />
+    <meta property="og:locale" content="pt_BR" />
+    {publishedAt && <meta property="article:published_time" content={publishedAt} />}
+    {author && <meta property="article:author" content={author} />}
+    {section && <meta property="article:section" content={section} />}
+    {tags.map((tag) => <meta property="article:tag" content={tag} />)}
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt} />
+
+    <!-- Fontes: preconnect + display=swap evitam bloqueio de render -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <Header />
+    <main id="conteudo">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

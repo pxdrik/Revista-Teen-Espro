@@ -1,0 +1,64 @@
+---
+/**
+ * LISTAGEM COMPLETA - todas as matérias da edição.
+ *
+ * As 77 matérias são renderizadas no servidor: aparecem no HTML para buscadores e
+ * funcionam sem JavaScript. As pílulas de editoria são links reais para as páginas
+ * de categoria, então a navegação nunca depende de script.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import ArticleCard from "@/components/ArticleCard.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import { articles, categories, edition } from "@/lib/content";
+---
+
+<BaseLayout
+  title={"Todas as matérias | Revista Teen"}
+  description={"As " + edition.totalArticles + " matérias da " + edition.name + " da Revista Teen, organizadas em " + edition.totalCategories + " editorias."}
+  image={articles[0]?.image.src}
+>
+  <div class="container-rt pb-24 pt-8">
+    <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Artigos" }]} />
+
+    <header class="mb-8 mt-4">
+      <h1 class="type-display-lg" style="color: var(--text-primary)">Todas as Matérias</h1>
+      <p class="type-body-sm mt-2" style="color: var(--text-muted)">
+        {articles.length} matérias nesta edição · <a href="/busca" class="underline-grow" style="color: var(--accent-blue)">buscar</a>
+      </p>
+    </header>
+
+    <nav aria-label="Filtrar por editoria" class="mb-10">
+      <ul class="flex flex-wrap gap-2 sm:gap-3">
+        <li>
+          <span
+            class="type-caption inline-flex items-center rounded-full px-4 py-2 font-medium text-white"
+            style="background: var(--accent-blue)"
+            aria-current="page"
+          >
+            Todas ({articles.length})
+          </span>
+        </li>
+        {
+          categories.map((cat) => (
+            <li>
+              <a
+                href={cat.href}
+                class="type-caption inline-flex items-center gap-2 rounded-full px-4 py-2 transition-colors hover:text-[var(--text-primary)]"
+                style="background: var(--bg-elevated); color: var(--text-secondary)"
+              >
+                <span class="h-2 w-2 shrink-0 rounded-full" style={`background:${cat.color}`} aria-hidden="true" />
+                {cat.name} ({cat.count})
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+      {articles.map((article, i) => (
+        <ArticleCard article={article} priority={i < 3} headingLevel={2} />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,59 @@
+---
+/**
+ * 404 - sempre oferece uma saída (busca, editorias, home).
+ * Marcada como noindex para não poluir o índice do buscador.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { categories } from "@/lib/content";
+---
+
+<BaseLayout
+  title="Página não encontrada | Revista Teen"
+  description="A página que você procurou não existe nesta edição da Revista Teen."
+  noindex
+>
+  <div class="container-rt flex min-h-[60vh] flex-col items-center justify-center py-24 text-center">
+    <p class="type-display-xl" style="color: var(--text-muted)">404</p>
+    <h1 class="type-display-md mb-3 mt-2" style="color: var(--text-primary)">Página não encontrada</h1>
+    <p class="type-body-sm mb-8 max-w-md" style="color: var(--text-secondary)">
+      O link pode ter mudado ou a matéria não faz parte desta edição.
+    </p>
+
+    <div class="mb-12 flex flex-wrap justify-center gap-3">
+      <a
+        href="/"
+        class="type-body-sm rounded-full px-6 py-3 font-medium text-white transition-opacity hover:opacity-90"
+        style="background: var(--accent-blue)"
+      >
+        Voltar para a home
+      </a>
+      <a
+        href="/busca"
+        class="type-body-sm rounded-full border px-6 py-3 font-medium transition-colors"
+        style="border-color: var(--border-subtle); color: var(--text-secondary)"
+      >
+        Buscar uma matéria
+      </a>
+    </div>
+
+    <nav aria-labelledby="editorias-404" class="max-w-2xl">
+      <h2 id="editorias-404" class="type-overline mb-4" style="color: var(--text-muted)">Ou explore as editorias</h2>
+      <ul class="flex flex-wrap justify-center gap-2">
+        {
+          categories.map((cat) => (
+            <li>
+              <a
+                href={cat.href}
+                class="type-caption inline-flex items-center gap-2 rounded-full px-3 py-1.5 transition-colors hover:text-[var(--text-primary)]"
+                style="background: var(--bg-elevated); color: var(--text-secondary)"
+              >
+                <span class="h-2 w-2 shrink-0 rounded-full" style={`background:${cat.color}`} aria-hidden="true" />
+                {cat.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</BaseLayout>
