@@ -134,7 +134,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/tendencias-moda-sustentavel-2026.jpg",
-      alt: "Peças de roupa recicladas expostas em arara de brechó",
+      alt: "Duas pessoas lado a lado vestindo camisetas brancas com a frase No Planet B estampada em verde",
       credit: "Reprodução",
     },
     body: [
@@ -161,7 +161,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/duna-parte-tres-villeneuve.jpg",
-      alt: "Cena deserta do universo de Duna com figura solitária nas dunas",
+      alt: "Pôster promocional de Duna com os personagens principais sobrepostos a um céu alaranjado e dois planetas ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -187,7 +187,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/barbie-2-sequencia-nao-confirmada.jpg",
-      alt: "Composição promocional em tons de rosa do universo Barbie",
+      alt: "Card de rede social com Barbie e Ken sentados em um conversível rosa e a legenda Barbie 2 é confirmado",
       credit: "Reprodução",
     },
     body: [
@@ -260,7 +260,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/rock-in-rio-2026-lineup.jpg",
-      alt: "Logotipo do Rock in Rio iluminado sobre o palco do festival",
+      alt: "Logotipo do Rock in Rio sobre vista noturna da Cidade do Rock com o público reunido entre os palcos",
       credit: "Reprodução",
     },
     body: [
@@ -287,7 +287,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/grammy-2026-bad-bunny-e-kendrick-lamar.jpg",
-      alt: "Estatueta do Grammy sobre fundo escuro em destaque",
+      alt: "Montagem com cinco artistas em vestidos de gala posando no tapete vermelho do Grammy",
       credit: "Reprodução",
     },
     body: [
@@ -364,7 +364,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/show-intervalo-final-copa-2026.jpg",
-      alt: "Palco de show montado no gramado de um estádio lotado",
+      alt: "Cartaz oficial do show do intervalo da final da Copa de 2026, produzido pela Global Citizen, com uma artista em destaque",
       credit: "Reprodução",
     },
     body: [
@@ -390,7 +390,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/lollapalooza-brasil-2026-interlagos.jpg",
-      alt: "Público reunido diante do palco do Lollapalooza Brasil",
+      alt: "Logotipo do Lollapalooza Brasil em letras brancas sobre fundo vermelho",
       credit: "Reprodução",
     },
     body: [
@@ -1200,8 +1200,8 @@ export const articles: ArticleInput[] = [
     sources: [
       { outlet: "FIFA", url: "https://www.fifa.com/pt/tournaments/mens/worldcup/canadamexicousa2026/articles/adidas-chuteira-ouro-disputa-artilharia" },
     ],
-    title: "Mbappé Leva a Chuteira de Ouro e Se Torna o Maior Artilheiro da História das Copas",
-    subtitle: "O francês fechou o Mundial com 10 gols, superou Messi na disputa e chegou a 22 no total de Copas",
+    title: "Da Liderança de Messi à Chuteira de Ouro de Mbappé: a Disputa que Atravessou a Copa",
+    subtitle: "Messi liderou a artilharia na primeira rodada; Mbappé fechou com 10 gols e o recorde histórico",
     excerpt: "Kylian Mbappé conquistou sua segunda Chuteira de Ouro seguida com 10 gols e ultrapassou a marca histórica de artilharia acumulada em Mundiais.",
     category: "copa-2026",
     tags: ["Messi", "Argentina", "Artilharia", "Copa 2026"],
@@ -1210,7 +1210,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/mbappe-chuteira-de-ouro-copa-2026.jpg",
-      alt: "Jogador argentino comemorando gol com a camisa da seleção",
+      alt: "Lionel Messi comemora de punhos cerrados com a camisa 10 da Argentina",
       credit: "Reprodução",
     },
     body: [
@@ -1368,7 +1368,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/endrick-dilema-dos-minutos-copa-2026.jpg",
-      alt: "Tecnico orientando jogadores a beira do campo",
+      alt: "Montagem dividida com Carlo Ancelotti de terno diante da bandeira do Brasil e Endrick comemorando com a camisa 19 da seleção",
       credit: "Reprodução",
     },
     body: [
