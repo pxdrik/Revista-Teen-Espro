@@ -210,7 +210,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/como-escolher-o-que-assistir-no-streaming.jpg",
-      alt: "Tela de serviço de streaming exibindo capas de filmes",
+      alt: "Homem observa vigia circular de nave espacial, com camiseta escrita Horse Shoe Bend",
       credit: "Reprodução",
     },
     body: [
@@ -233,8 +233,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/series-e-o-risco-da-segunda-temporada.jpg",
-      alt: "Colagem de capas de séries em catálogo de streaming",
+      alt: "Montagem com pôster de série policial à esquerda e personagem de boneca robótica à direita",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Você começa uma série, gosta, termina a temporada em três noites, espera a continuação e descobre meses depois que ela foi cancelada. A experiência virou tão comum que já existe um comportamento defensivo entre espectadores: esperar a renovação ser anunciada antes de investir tempo. Esse hábito diz mais sobre a indústria do que sobre o público, e vale entender por que ele se formou.",
@@ -310,8 +311,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/o-album-ainda-importa.jpg",
-      alt: "Capas de álbuns musicais dispostas lado a lado",
+      alt: "Grade com oito capas de álbuns, entre elas Mumford and Sons, Megadeth e Buzzcocks",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Toda vez que a indústria da música muda de suporte, alguém anuncia a morte do álbum. Aconteceu com o download avulso, aconteceu de novo com a chegada das playlists e do streaming por faixa. E, no entanto, o formato continua de pé. Em fevereiro deste ano, quando Bad Bunny venceu Álbum do Ano no Grammy com Debí Tirar Más Fotos, tornando-se o primeiro disco inteiramente em espanhol a levar a categoria principal, o prêmio entregue não foi por uma música. Foi por um conjunto.",
@@ -337,7 +339,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/tomorrowland-2026-boom-belgica.jpg",
-      alt: "Palco principal do Tomorrowland iluminado durante apresentação noturna",
+      alt: "Multidão reunida diante de palco monumental iluminado em festival ao ar livre",
       credit: "Reprodução",
     },
     body: [
@@ -413,7 +415,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/kpop-invade-brasil-turnes.jpg",
-      alt: "Grupo de K-pop em apresentação coreografada sob luzes de palco",
+      alt: "Grupo de oito integrantes de banda pop asiática posa com roupas brancas e detalhes vermelhos",
       credit: "Reprodução",
     },
     body: [
@@ -436,8 +438,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/funk-brasileiro-afrobeat-global.jpg",
-      alt: "Artista brasileiro em performance de funk com público ao fundo",
+      alt: "Card promocional Afro Beat Hits Explosivos, do DJ Juninho, com caixas de som e fogos",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Dois momentos da Copa do Mundo de 2026 contam a mesma história sem precisar de explicação. O primeiro foi Goals, música oficial do torneio, lançada em 21 de maio, que juntou Anitta, a sul-coreana Lisa e o nigeriano Rema numa faixa que alterna português, espanhol, inglês e afrobeats. O segundo foi a final, em 19 de julho, quando Shakira dividiu o palco com Burna Boy em Dai Dai. Em ambos os casos, um artista africano ocupava o centro do maior evento esportivo do planeta.",
@@ -459,7 +462,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/tecnologias-que-sairam-do-laboratorio.jpg",
-      alt: "Placa de circuito eletrônico iluminada em close",
+      alt: "Mulher de óculos concentrada diante de monitores com código sobreposto em verde e amarelo",
       credit: "Reprodução",
     },
     body: [
@@ -482,7 +485,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/ia-decide-o-que-voce-ve-na-loja.jpg",
-      alt: "Pessoa fazendo compras online em notebook com recomendações na tela",
+      alt: "Mãos em um laptop com gráficos sobrepostos, o texto Analysing Dashboard e ícone de carrinho",
       credit: "Reprodução",
     },
     body: [
@@ -505,7 +508,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/ia-2026-cobranca-por-resultado.jpg",
-      alt: "Ilustração digital de cérebro conectado a uma interface de inteligência artificial",
+      alt: "Robô humanoide branco digita em notebook diante de holograma vermelho de cérebro digital",
       credit: "Reprodução",
     },
     body: [
@@ -528,7 +531,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/regulacao-ia-europa-etica.jpg",
-      alt: "Bandeira da União Europeia ao lado de símbolos de tecnologia digital",
+      alt: "Bandeira da União Europeia com estrelas amarelas e um ícone de chip com a sigla AI ao centro",
       credit: "Reprodução",
     },
     body: [
@@ -554,8 +557,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/games-lancamentos-segundo-semestre-2026.jpg",
-      alt: "Controle de videogame sobre mesa iluminada por luzes coloridas",
+      alt: "Grade com doze capas de jogos diferentes, incluindo Tomb Raider e uma cena de praia",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Existe uma data que organiza a agenda de milhões de pessoas até o fim do ano: 19 de novembro. É quando Grand Theft Auto 6 finalmente chega ao PlayStation 5 e ao Xbox Series X|S, depois de dois adiamentos que transformaram cada rumor em manchete. Mas seria injusto resumir o segundo semestre de 2026 a um jogo só. O calendário que vem pela frente é o mais carregado dos últimos anos, e boa parte dele mira exatamente quem tem entre 14 e 24 anos.",
@@ -580,7 +584,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/roblox-jogos-mais-populares.jpg",
-      alt: "Personagens em blocos do Roblox em cenário colorido do jogo",
+      alt: "Logotipo do Roblox acima de avatares coloridos em bloco, com multidão ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -603,7 +607,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/fortnite-skins-simbolo-de-status.jpg",
-      alt: "Personagens de Fortnite exibindo skins colaborativas",
+      alt: "Personagens de Fortnite com skins variadas, entre elas um pato de óculos escuros",
       credit: "Reprodução",
     },
     body: [
@@ -626,8 +630,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/minecraft-mods-comunidade.jpg",
-      alt: "Paisagem em blocos de Minecraft com construções elaboradas",
+      alt: "Montagem com construção em estilo japonês, dragão roxo e o texto 10 MODS",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Poucos jogos sobrevivem quinze anos sem virar peça de museu. Minecraft não só sobreviveu como continua entre os mais jogados do mundo, e boa parte da explicação não está no que a Mojang lançou, e sim no que a comunidade construiu por cima. A cena de mods do jogo é provavelmente a maior e mais antiga de qualquer título contemporâneo, e é ela que garante que ninguém abandone o jogo de forma definitiva: sempre existe uma versão diferente esperando.",
@@ -649,7 +654,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/among-us-jogo-conquistou-geracoes.jpg",
-      alt: "Personagens coloridos de Among Us dentro da nave espacial",
+      alt: "Logotipo do Among Us com personagens coloridos reunidos sobre fundo estrelado",
       credit: "Reprodução",
     },
     body: [
@@ -672,7 +677,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/apex-legends-cena-profissional.jpg",
-      alt: "Lendas de Apex Legends em pose de ação promocional",
+      alt: "Arte de personagem de coque e uniforme roxo ao lado do logotipo de Apex Legends",
       credit: "Reprodução",
     },
     body: [
@@ -695,7 +700,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/pubg-mobile-mais-jogado-brasil.jpg",
-      alt: "Partida de PUBG Mobile exibida na tela de um celular",
+      alt: "Personagem de capacete e gravata diante de uma explosão, com o logotipo de PUBG",
       credit: "Reprodução",
     },
     body: [
@@ -718,7 +723,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/call-of-duty-modern-warfare-3-retrospecto.jpg",
-      alt: "Soldado armado em cenário urbano de Call of Duty",
+      alt: "Soldado de capacete sobre fundo vermelho, com o logotipo de Call of Duty Modern Warfare III",
       credit: "Reprodução",
     },
     body: [
@@ -741,7 +746,7 @@ export const articles: ArticleInput[] = [
     readingTime: 7,
     image: {
       src: "/images/artigos/elden-ring-segredos-mais-bem-guardados.jpg",
-      alt: "Guerreiro diante de paisagem sombria do mundo de Elden Ring",
+      alt: "Logotipo de Elden Ring sobre figura encapuzada ajoelhada diante de um círculo dourado",
       credit: "Reprodução",
     },
     body: [
@@ -764,7 +769,7 @@ export const articles: ArticleInput[] = [
     readingTime: 7,
     image: {
       src: "/images/artigos/zelda-tears-of-the-kingdom-review.jpg",
-      alt: "Link observando a paisagem aberta de Tears of the Kingdom",
+      alt: "Arte pintada mostra Link em ilha flutuante observando um arquipélago de pedras no céu",
       credit: "Reprodução",
     },
     body: [
@@ -787,7 +792,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/super-mario-bros-wonder-plataforma-2d.jpg",
-      alt: "Mario em fase colorida de plataforma 2D",
+      alt: "Arte com Mario, Luigi, Peach e Daisy pulando em cenário colorido do jogo Wonder",
       credit: "Reprodução",
     },
     body: [
@@ -810,8 +815,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/pokemon-scarlet-violet-mundo-aberto.jpg",
-      alt: "Pokemons das versoes Scarlet e Violet em arte promocional",
+      alt: "Capas lado a lado de Pokémon Scarlet e Pokémon Violet com Koraidon e Miraidon",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Nenhum jogo recente de Pokémon gerou tanta discussão quanto Scarlet e Violet. Para uma parte da comunidade, foi o passo que a franquia devia ter dado uma década antes. Para outra, foi a prova de que a série está sendo empurrada para fora de sua zona de conforto sem tempo de desenvolvimento para isso. As duas leituras têm razão, e é justamente por isso que o caso continua rendendo conversa.",
@@ -833,7 +839,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/sonic-frontiers-retorno-ourico-azul.jpg",
-      alt: "Sonic correndo por cenário aberto em Sonic Frontiers",
+      alt: "Ouriço azul corre sobre estrutura metálica com o logotipo de Sonic Frontiers ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -856,7 +862,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/crash-bandicoot-melhores-jogos.jpg",
-      alt: "Crash Bandicoot em pose clássica de arte promocional",
+      alt: "Arte de Crash Bandicoot N. Sane Trilogy com o marsupial laranja entre selva e laboratório",
       credit: "Reprodução",
     },
     body: [
@@ -879,7 +885,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/spyro-the-dragon-retorno-classico.jpg",
-      alt: "Spyro, o dragão roxo, em cenário flamejante do jogo",
+      alt: "Dragão roxo lança fogo ao lado do logotipo de Spyro 2 Riptos Rage sobre fundo em chamas",
       credit: "Reprodução",
     },
     body: [
@@ -902,7 +908,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/valorant-economia-profissional.jpg",
-      alt: "Agentes de Valorant em arte promocional do jogo",
+      alt: "Jogador de uniforme laranja da NRG segura troféu dourado em meio às luzes da plateia",
       credit: "Reprodução",
     },
     body: [
@@ -928,7 +934,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/league-of-legends-mundial-2026.jpg",
-      alt: "Arena de League of Legends durante partida do campeonato mundial",
+      alt: "Arena lotada com telas de LED coloridas e o texto Qiddiya ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -951,7 +957,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/counter-strike-2-circuito-e-brasil.jpg",
-      alt: "Jogadores de Counter-Strike 2 em bancada de competição",
+      alt: "Silhuetas de dois combatentes armados em tom laranja, com o texto Counter Strike 2",
       credit: "Reprodução",
     },
     body: [
@@ -974,7 +980,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/dota-2-premiacao-ascensao-e-queda.jpg",
-      alt: "Palco do The International de Dota 2 com plateia ao fundo",
+      alt: "Três personagens fantásticos lado a lado sobre paisagem nevada, com o logotipo de Dota 2",
       credit: "Reprodução",
     },
     body: [
@@ -1024,7 +1030,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/brasil-1x1-marrocos-estreia.jpg",
-      alt: "Jogadores da seleção brasileira comemorando gol durante partida da Copa",
+      alt: "Bruno Guimarães e Vinícius Júnior comemoram gol correndo, com a camisa da seleção brasileira",
       credit: "Reprodução",
     },
     body: [
@@ -1051,8 +1057,9 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/goals-anitta-lisa-rema-copa.jpg",
-      alt: "Arte promocional do hino oficial da Copa do Mundo de 2026",
+      alt: "Card promocional com Anitta segurando uma bola de futebol e o logotipo da Copa do Mundo",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Poucas semanas antes de a bola rolar, a FIFA colocou no ar uma faixa que parecia experimento de laboratório: uma brasileira, uma sul-coreana e um nigeriano dividindo o mesmo refrão. Goals chegou às plataformas em 21 de maio, com Anitta, Lisa e Rema, e resolveu em três minutos um problema que a Copa de 2026 carregava desde o anúncio do formato. Como representar um torneio espalhado por três países e ampliado para 48 seleções sem escolher um som só?",
@@ -1077,7 +1084,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/26-convocados-selecao-brasileira.jpg",
-      alt: "Escudo da seleção brasileira em destaque sobre uniforme amarelo",
+      alt: "Três jogadores da seleção brasileira, números 20, 21 e 17, à frente da bandeira do Brasil",
       credit: "Reprodução",
     },
     body: [
@@ -1103,7 +1110,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/copa-2026-streaming-e-audiencia.jpg",
-      alt: "Televisão exibindo transmissão de partida de futebol em sala de estar",
+      alt: "Troféu da Copa do Mundo ao lado da bola oficial Trionda em exibição dentro de um estádio",
       credit: "Reprodução",
     },
     body: [
@@ -1130,7 +1137,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/alemanha-7x1-curacao-estreia.jpg",
-      alt: "Placar eletrônico de estádio marcando sete a um",
+      alt: "Jogador da Alemanha de número 7 chuta a bola, com adversários de uniforme azul ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -1157,7 +1164,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/arbitro-somali-barrado-imigracao-eua.jpg",
-      alt: "Árbitro de futebol apresentando cartão durante partida",
+      alt: "Árbitro de uniforme verde-água segura troféu com o mapa da África e crachá FIFA Referee",
       credit: "Reprodução",
     },
     body: [
@@ -1184,8 +1191,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/power-ranking-final-copa-2026.jpg",
-      alt: "Bola oficial de futebol sobre o gramado de um estádio",
+      alt: "Infográfico Power Ranking Primeira Rodada com escudos de seleções e o troféu da Copa ao centro",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Todo Mundial começa com um ranking de favoritos e termina com outro, bem diferente. O de 2026 não fugiu à regra. Cinco semanas depois da bola rolar, a Espanha ergueu a taça no MetLife Stadium após vencer a Argentina por 1 a 0 na prorrogação, com gol de Ferran Torres aos 106 minutos, e o mapa de forças do futebol mundial ficou visivelmente diferente do que era em maio. Este é o balanço de quem subiu, quem se manteve e quem saiu menor do torneio.",
@@ -1237,7 +1245,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/ira-base-em-tijuana-copa-2026.jpg",
-      alt: "Ônibus de delegação esportiva estacionado diante de hotel",
+      alt: "Bandeira do Irã em faixas horizontais verde, branca e vermelha, com o emblema ao centro",
       credit: "Reprodução",
     },
     body: [
@@ -1263,8 +1271,9 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/ira-2x2-nova-zelandia-estreia.jpg",
-      alt: "Dois jogadores disputando a bola em partida de futebol",
+      alt: "Bandeiras do Irã e da Nova Zelândia separadas por um X, com o logotipo da Copa acima",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "O placar dizia 2 a 2, resultado dos que costumam agradar pouco os dois lados. Irã e Nova Zelândia estrearam na Copa de 2026 em Los Angeles dividindo os pontos, num jogo que prometia ser um duelo direto por vaga e terminou empurrando a decisão para as rodadas seguintes. Para quem assistiu apenas aos noventa minutos, foi mais um empate de fase de grupos. O que aconteceu depois do apito final é que transformou a partida em notícia por outro motivo.",
@@ -1289,7 +1298,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/portugal-tropeca-na-estreia.jpg",
-      alt: "Jogadores de Portugal cabisbaixos apos partida",
+      alt: "Cristiano Ronaldo caminha cabisbaixo em campo com o uniforme vermelho de Portugal",
       credit: "Reprodução",
     },
     body: [
@@ -1316,7 +1325,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/cristiano-ronaldo-quebra-tabu-copa-2026.jpg",
-      alt: "Atacante portugues em campo durante partida internacional",
+      alt: "Cristiano Ronaldo com as mãos na cintura olha para o alto, de uniforme vermelho de Portugal",
       credit: "Reprodução",
     },
     body: [
@@ -1342,7 +1351,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/brasil-empata-estreia-quarta-vez.jpg",
-      alt: "Torcida brasileira acompanhando partida da seleção no estádio",
+      alt: "Jogador do Brasil de camisa amarela número 11 reage jogando a cabeça para trás em campo",
       credit: "Reprodução",
     },
     body: [
@@ -1370,6 +1379,7 @@ export const articles: ArticleInput[] = [
       src: "/images/artigos/endrick-dilema-dos-minutos-copa-2026.jpg",
       alt: "Montagem dividida com Carlo Ancelotti de terno diante da bandeira do Brasil e Endrick comemorando com a camisa 19 da seleção",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Toda Copa do Brasil produz um debate que atravessa a competição inteira e sobrevive a ela. Em 2026, esse debate teve nome: Endrick. Convocado por Carlo Ancelotti entre os 26 anunciados em 18 de maio, o atacante chegou ao Mundial como uma das grandes apostas jovens da seleção. A discussão nunca foi sobre ele estar no grupo, e sim sobre quando deveria entrar em campo, pergunta que ganhou volume a cada jogo travado.",
@@ -1395,7 +1405,7 @@ export const articles: ArticleInput[] = [
     readingTime: 5,
     image: {
       src: "/images/artigos/neymar-marca-na-eliminacao-copa-2026.jpg",
-      alt: "Atleta em sessão de fisioterapia e treino de recuperação",
+      alt: "Neymar corre em treino com uniforme de aquecimento verde-água da seleção brasileira",
       credit: "Reprodução",
     },
     body: [
@@ -1421,7 +1431,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/poatan-perde-para-gane-na-casa-branca.jpg",
-      alt: "Lutador de MMA dentro do octógono durante combate",
+      alt: "Lutador de MMA com o rosto sangrando recebe atendimento do cantoneiro dentro do octógono",
       credit: "Reprodução",
     },
     body: [
@@ -1447,7 +1457,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/joao-fonseca-e-o-desafio-da-grama.jpg",
-      alt: "Tenista brasileiro sacando em quadra de grama",
+      alt: "Tenista de boné lilás comemora de punho cerrado em quadra de saibro alaranjada",
       credit: "Reprodução",
     },
     body: [
@@ -1474,7 +1484,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/knicks-encerram-53-anos-de-espera.jpg",
-      alt: "Jogadores de basquete comemorando titulo com troféu em quadra",
+      alt: "Jogador dos Knicks de uniforme azul ergue o braço comemorando com a torcida ao fundo",
       credit: "Reprodução",
     },
     body: [
@@ -1497,8 +1507,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/cultura-pop-maiores-tendencias-2026.jpg",
-      alt: "Colagem colorida de símbolos da cultura pop contemporânea",
+      alt: "Mosaico de fotos de moda e estilo de vida com o texto Pinterest Predicts 2026 ao centro",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Existem anos em que a cultura pop tem um centro claro, um fenômeno que organiza todo o resto. 2026 não foi um deles. Entre fevereiro e julho aconteceram uma premiação que quebrou uma barreira de sessenta anos, uma Copa do Mundo em três países, um festival com K-pop no palco principal e um revival simultâneo de duas décadas diferentes. O resultado é um ano sem protagonista único e com uma quantidade incomum de assuntos disputando a mesma atenção.",
@@ -1520,8 +1531,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/anime-deixou-de-ser-nicho.jpg",
-      alt: "Personagens de anime em arte promocional colorida",
+      alt: "Quatro personagens de anime lado a lado, entre eles um garoto loiro de bandana",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Existe uma geração de brasileiros que precisou acordar de madrugada ou depender de fita gravada para assistir a anime. Para quem tem entre 14 e 24 anos hoje, essa dificuldade é incompreensível: a animação japonesa está em praticamente todo serviço de streaming, com episódios liberados poucas horas depois da exibição no Japão, dublagem em português e legendagem imediata. A mudança não foi apenas de disponibilidade. Foi de status.",
@@ -1543,8 +1555,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/booktok-reorganizou-a-leitura.jpg",
-      alt: "Pilha de livros sobre mesa de madeira em livraria",
+      alt: "Pilha de livros brasileiros lado a lado, com títulos de Chico Buarque e Milton Hatoum",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Uma das mudanças mais improváveis da última década aconteceu num lugar que ninguém previa: vídeos curtos passaram a vender livros. O fenômeno ganhou nome próprio, BookTok, e transformou completamente a lógica de como um título vira best-seller no Brasil. Livrarias passaram a montar mesas específicas com essa etiqueta, e editoras reorganizaram calendário de lançamento e estratégia de divulgação em função de uma comunidade que se organiza sozinha.",
@@ -1594,8 +1607,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/ccxp-2026.jpg",
-      alt: "Logotipo da CCXP 2026 em painel do evento",
+      alt: "Logotipo da CCXP26 em fundo preto com o texto de 3 a 6 de dez",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Falta quase meio ano, e mesmo assim a CCXP já ocupa espaço na conversa. A edição de 2026 acontece de 3 a 6 de dezembro, uma quinta a domingo, no São Paulo Expo, na Rodovia dos Imigrantes. Antes da abertura geral, em 2 de dezembro, uma terça-feira, acontece a Spoiler Night, pré-estreia restrita a imprensa, parceiros e alguns tipos específicos de ingresso. As vendas começaram em 10 de junho, e a antecedência com que tudo isso se organiza explica por que o evento vira assunto tão cedo.",
@@ -1617,8 +1631,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/nostalgia-anos-80-e-2010.jpg",
-      alt: "Objetos retrô dos anos 80 em composição com luz neon",
+      alt: "Colagem com cubo mágico, Mario, Pac-Man e os dizeres Back to the Future e 80s Wham",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "É estranho quando se para para pensar. Ao mesmo tempo em que a estética neon dos anos 80 domina capas de álbum, trilhas sintetizadas e figurinos de série, uma parte do público resgata a estética dos anos 2010: câmera com flash estourado, roupa de festival, filtro saturado e um tipo de deboche que parecia enterrado. Duas décadas voltando juntas, para públicos que em muitos casos não viveram nenhuma das duas.",
@@ -1666,8 +1681,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/fofoca-virou-industria.jpg",
-      alt: "Tapete vermelho iluminado por flashes de fotógrafos",
+      alt: "Retratos lado a lado de Anitta, Bruna Marquezine e Xuxa",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Toda semana alguma coisa acontece na vida de alguém famoso e, em poucas horas, aquilo está em todo lugar: perfis de fofoca, cortes de podcast, comentários de gente que nunca ouviu falar da pessoa. A sensação é de espontaneidade, como se a informação circulasse sozinha. Na prática, boa parte desse fluxo passa por uma cadeia profissional bem organizada, e conhecer essa engrenagem muda completamente a forma de ler o que aparece na linha do tempo.",
@@ -1692,7 +1708,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/virginia-fonseca-numeros-do-imperio.jpg",
-      alt: "Influenciadora gravando conteúdo com celular e iluminação de estúdio",
+      alt: "Mulher loira de top laranja e colar dourado posa com a mão tocando o cabelo",
       credit: "Reprodução",
     },
     body: [
@@ -1715,7 +1731,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/maisa-ludmilla-nobru-personalidades-digitais.jpg",
-      alt: "Composição de personalidades digitais brasileiras em destaque",
+      alt: "Três mulheres sorridentes sentadas no sofá do Programa da Maisa, uma de jaqueta amarela",
       credit: "Reprodução",
     },
     body: [
@@ -1742,7 +1758,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/goleiro-vozinha-fenomeno-digital.jpg",
-      alt: "Goleiro de futebol em ação dentro da área durante partida",
+      alt: "Goleiro de uniforme amarelo e preto ergue as luvas comemorando, com o escudo FCF no peito",
       credit: "Reprodução",
     },
     body: [
@@ -1765,8 +1781,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/influenciadores-alem-dos-seguidores.jpg",
-      alt: "Criador de conteúdo gravando vídeo com anel de luz",
+      alt: "Montagem com quatro retratos, entre eles um homem ao microfone e uma mulher de blusa do Brasil",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Durante anos, a conversa sobre influenciadores começava e terminava no mesmo lugar: quantos seguidores a pessoa tem. Era o número que aparecia na manchete, que definia o valor do contrato publicitário e que servia de placar informal entre criadores. Esse critério praticamente morreu, e quem trabalha no mercado brasileiro de publicidade digital sabe disso há algum tempo. O que substituiu foi bem menos vistoso e bem mais difícil de inflar.",
@@ -1788,8 +1805,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/youtube-virou-televisao-no-brasil.jpg",
-      alt: "Estúdio caseiro de gravação com câmera e microfone",
+      alt: "Cinco criadores de conteúdo lado a lado, um de cabelo trançado rosa e outro de moletom rosa",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Enquanto a discussão pública girava em torno de vídeos verticais de quinze segundos, o YouTube fazia um movimento silencioso e muito mais consequente: virou televisão. Não no sentido figurado. A parcela de consumo da plataforma que acontece em aparelhos de TV conectados à internet cresceu a ponto de mudar o formato do que é produzido, e criadores brasileiros passaram a pensar seus vídeos para serem assistidos na sala, com a família, e não no ônibus.",
@@ -1811,8 +1829,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/twitch-o-trabalho-por-tras-da-live.jpg",
-      alt: "Streamer transmitindo ao vivo em setup com luzes coloridas",
+      alt: "Logotipo roxo da Twitch acima de três streamers, um deles de cabelo azul e bandana colorida",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "A imagem que se tem de um streamer é a de alguém jogando videogame e conversando com o chat, o que é literalmente verdade e completamente incompleto. Por trás de uma transmissão ao vivo bem-sucedida existe uma operação que envolve edição, moderação, produção de cortes, negociação com patrocinadores e uma constância de horário que pouca gente sustenta. O Brasil tem uma das comunidades mais ativas da plataforma, e a rotina real de quem vive disso raramente aparece na tela. É um mercado que cresceu rápido e ainda opera sem boa parte das proteções trabalhistas que profissões de exposição semelhante já conquistaram, o que coloca praticamente todo o risco sobre o próprio criador.",
@@ -1834,8 +1853,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/instagram-e-tiktok-cada-vez-mais-parecidos.jpg",
-      alt: "Telas de celular exibindo aplicativos de redes sociais",
+      alt: "Tela dividida com o logotipo do TikTok à esquerda e o do Instagram à direita",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Abra o Instagram e o TikTok lado a lado e tente listar as diferenças estruturais. A lista é mais curta do que era há três anos, e continua encolhendo. Vídeo vertical em rolagem infinita, recomendação por interesse, ferramentas de edição integradas, mensagens diretas, transmissão ao vivo, loja dentro do aplicativo. As duas plataformas nasceram de conceitos completamente diferentes e caminham há anos em direção ao mesmo produto.",
@@ -1857,8 +1877,9 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/tiktok-onde-as-tendencias-comecam.jpg",
-      alt: "Jovem gravando vídeo curto para rede social com celular em trip",
+      alt: "Logotipo do TikTok centralizado sobre padrão repetido do ícone de nota musical",
       credit: "Reprodução",
+      fit: "contain",
     },
     body: [
       "Existe um percurso previsível para quase toda tendência cultural atual. Ela aparece no TikTok, é replicada por milhares de pessoas em poucos dias, migra para o Instagram e o YouTube em formato adaptado, chega aos veículos tradicionais como pauta sobre o que os jovens estão fazendo e, quando marcas começam a usá-la em publicidade, já morreu para quem estava no começo. Esse ciclo, que antes levava meses, hoje se completa em semanas.",
@@ -1880,7 +1901,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/podcast-no-brasil-virou-video.jpg",
-      alt: "Estúdio de podcast com microfones, fones e mesa de som",
+      alt: "Três pessoas de fone de ouvido conversam ao microfone em estúdio com mesa de som",
       credit: "Reprodução",
     },
     body: [
@@ -1903,7 +1924,7 @@ export const articles: ArticleInput[] = [
     readingTime: 6,
     image: {
       src: "/images/artigos/profissoes-do-futuro-a-pergunta-certa.jpg",
-      alt: "Estudantes reunidos estudando com notebooks e anotações",
+      alt: "Homem de terno caminha em direção a uma escada espiral feita de livros",
       credit: "Reprodução",
     },
     body: [
