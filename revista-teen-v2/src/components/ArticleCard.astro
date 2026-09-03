@@ -19,12 +19,12 @@ export interface Props {
   /** Carrega a imagem imediatamente (usar só no que está acima da dobra). */
   priority?: boolean;
   /** Nível do heading, para manter a hierarquia correta em cada página. */
-  headingLevel?: 2 | 3;
+  headingLevel?: 1 | 2 | 3;
 }
 
 const { article, variant = "default", priority = false, headingLevel = 3 } = Astro.props;
 
-const Heading = `h${headingLevel}` as "h2" | "h3";
+const Heading = `h${headingLevel}` as "h1" | "h2" | "h3";
 const isLead = variant === "lead";
 const isCompact = variant === "compact";
 
