@@ -44,7 +44,7 @@ export const eventos: EventItem[] = [
     image: "/images/artigos/rock-in-rio-2026-lineup.jpg",
     imageAlt: "Logotipo do Rock in Rio iluminado sobre o palco do festival",
     officialUrl: "https://rockinrio.com/rio/pt-br/",
-    category: "musica",
+    category: "entretenimento-e-famosos",
   },
   {
     id: 2,
@@ -60,7 +60,7 @@ export const eventos: EventItem[] = [
     image: "/images/artigos/ccxp-2026.jpg",
     imageAlt: "Logotipo da CCXP 2026 em painel do evento",
     officialUrl: "https://ccxp.com.br/",
-    category: "cultura-pop",
+    category: "entretenimento-e-famosos",
   },
   {
     id: 3,
@@ -76,7 +76,7 @@ export const eventos: EventItem[] = [
     image: "/images/artigos/tomorrowland-2026-boom-belgica.jpg",
     imageAlt: "Palco principal do Tomorrowland iluminado durante apresentação noturna",
     officialUrl: "https://www.tomorrowland.com/",
-    category: "musica",
+    category: "entretenimento-e-famosos",
   },
   {
     id: 4,
@@ -92,6 +92,6 @@ export const eventos: EventItem[] = [
     image: "/images/artigos/lollapalooza-brasil-2026-interlagos.jpg",
     imageAlt: "Público reunido diante do palco do Lollapalooza Brasil",
     officialUrl: "https://www.lollapaloozabr.com/",
-    category: "musica",
+    category: "entretenimento-e-famosos",
   },
 ];
