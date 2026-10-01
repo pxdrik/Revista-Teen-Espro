@@ -1,7 +1,8 @@
 # Rotina semanal: posts do Docs para o site
 
-Roteiro seguido toda quinta à noite pela rotina agendada (Claude na nuvem), depois
-da produção das equipes. Também serve para rodar à mão.
+Roteiro seguido toda quinta às 19h (São Paulo) pela rotina agendada (Claude na
+nuvem). Também serve para rodar à mão. O site só é refeito nesse momento: o push
+da rotina dispara o deploy na Vercel, uma vez por semana.
 
 A rotina **lê** o Google Docs de pauta, **agenda** os posts novos na base do site e
 **publica** o commit. Ela não escreve matéria do zero: o texto é o das equipes.
@@ -54,7 +55,8 @@ A rotina **lê** o Google Docs de pauta, **agenda** os posts novos na base do si
      "Pesquisadora de <Editoria>", seguindo como a base já trata essa pessoa; na
      dúvida, "Pesquisa de <Editoria>". Sem autoria: `{ name: "Redação Revista Teen",
      role: "Redação" }`, e avise no relatório.
-   - `publishedAt`: veja "Agenda" abaixo.
+   - `publishedAt`: a data de hoje em São Paulo (`TZ=America/Sao_Paulo date +%F`).
+     Todos os posts da semana entram juntos.
    - `readingTime`: palavras do corpo / 200, arredondado para cima, mínimo 1.
    - `image`: converta a imagem do post para JPG, no máximo 1200 px no lado maior,
      qualidade 82, em `public/images/artigos/<slug>.jpg` (Pillow; se não houver,
@@ -73,30 +75,15 @@ A rotina **lê** o Google Docs de pauta, **agenda** os posts novos na base do si
    - Sem travessão (— ou –) no texto. Sem emoji.
 8. `npm run build` e `node scripts/audit.mjs`. Se falhar, corrija a entrada que você
    criou. Nunca altere matéria antiga para fazer o build passar.
-9. Commit só de `src/data/edition-2026.ts` e das imagens novas, com mensagem
-   `Agenda N posts do Docs (ids X-Y)` e a lista dos posts com a data de cada um no
-   corpo. Push na `main`. Se o push for recusado, crie a branch
-   `rotina/posts-AAAA-MM-DD`, faça push nela e avise no relatório.
-10. Nada novo: não commite. O relatório diz só "nada novo no Docs".
-
-## Agenda
-
-Os posts entram com data futura e o site só mostra cada um no dia dele (o build
-filtra por `publishedAt`, no fuso de São Paulo). Um rebuild diário vai liberando a
-fila. Os dias de cada editoria espelham a escala do Instagram:
-
-| Editoria | Dias |
-| --- | --- |
-| Entretenimento e Famosos | segunda e quarta |
-| Moda e Beleza | terça e sexta |
-| Educação e Cultura | sábado e domingo |
-
-Para cada editoria, na ordem em que os posts aparecem no Docs, cada post novo
-recebe o **próximo dia da editoria depois de hoje e depois do último `publishedAt`
-que a editoria já tem na base**. Assim, se uma equipe mandar mais posts que dias,
-o excedente entra nas semanas seguintes, sem empurrar ninguém.
-
-Quinta não tem post: é o dia da produção.
+9. Acrescente uma linha no fim de `docs/rotina-log.md`:
+   `- AAAA-MM-DD: N posts novos (ids X-Y)` ou `- AAAA-MM-DD: nada novo no Docs`.
+   Toda execução gera esse registro, inclusive sem post novo: é ele que garante o
+   deploy semanal, que também atualiza as visualizações do Google Analytics.
+10. Commit só de `src/data/edition-2026.ts`, das imagens novas e de
+    `docs/rotina-log.md`, com mensagem `Rotina semanal: N posts do Docs (ids X-Y)`
+    (ou `Rotina semanal: nada novo no Docs`) e a lista dos posts no corpo. Push na
+    `main`. Se o push for recusado, crie a branch `rotina/AAAA-MM-DD`, faça push
+    nela e avise no relatório.
 
 ## Relatório final
 
