@@ -110,6 +110,21 @@ const jsonLd =
     />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <!-- Google Analytics 4. Só no deploy de produção da Vercel: dev, preview local e
+         previews de PR não contam visita. Sem SRI de propósito: o gtag.js muda a cada
+         versão do Google e um hash fixo quebraria a tag. -->
+    {process.env.VERCEL_ENV === "production" && (
+      <>
+        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-RZX972NG8R"></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag("js", new Date());
+          gtag("config", "G-RZX972NG8R");
+        </script>
+      </>
+    )}
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
