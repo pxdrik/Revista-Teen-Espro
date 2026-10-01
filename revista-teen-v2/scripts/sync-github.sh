@@ -6,8 +6,8 @@
 # diretorio temporario, copia o projeto para dentro da subpasta correta, commita
 # e envia. Nada fora de revista-teen-v2/ e tocado.
 #
-# A rotina semanal tambem commita direto no GitHub. Para o envio local nao apagar
-# o que ela publicou, o script guarda em .git/sync-remote-head o commit remoto do
+# Se alguem commitar direto no GitHub (outra maquina, edicao pelo site do GitHub),
+# o envio local apagaria essa mudanca. Por isso o script guarda em .git/sync-remote-head o commit remoto do
 # ultimo envio ou pull, e se recusa a enviar se a pasta mudou no GitHub depois
 # disso. Nesse caso: bash scripts/pull-github.sh, commit, e envie de novo.
 #

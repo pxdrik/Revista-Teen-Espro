@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Traz para esta pasta o que mudou em revista-teen-v2/ no GitHub (em geral, os posts
-# que a rotina semanal agendou). Copia por cima dos arquivos locais e mostra o que
+# Traz para esta pasta o que mudou em revista-teen-v2/ no GitHub por fora desta
+# maquina. Copia por cima dos arquivos locais e mostra o que
 # mudou, ja preparado (git add); o commit local fica com voce. Arquivo apagado no GitHub nao e apagado aqui.
 #
 # Uso:  bash scripts/pull-github.sh

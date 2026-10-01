@@ -3,7 +3,7 @@ Baixa o Google Docs de pauta da Revista Teen e grava um retrato legível em
 .doc-snapshot/: texto.txt com os parágrafos em ordem e uma marca [IMG images/x]
 no ponto exato de cada imagem, mais a pasta images/ com os arquivos.
 
-É a entrada da rotina semanal (docs/rotina-semanal.md). O documento precisa estar
+É a entrada do passo a passo em docs/como-postar-do-docs.md. O documento precisa estar
 com o link público de leitura; nenhuma credencial é usada.
 
 Uso:  python3 scripts/doc-snapshot.py
