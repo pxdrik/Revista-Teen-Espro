@@ -19,3 +19,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# visualizacoes do GA, geradas a cada build por scripts/fetch-views.mjs
+src/data/views.json

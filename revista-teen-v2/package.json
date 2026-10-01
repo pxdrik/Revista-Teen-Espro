@@ -6,7 +6,7 @@
   "description": "Revista Teen — revista digital para jovens de 14 a 24 anos. Edição 2026.",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "node scripts/fetch-views.mjs && astro build",
     "preview": "astro preview",
     "check": "astro check",
     "audit:content": "node scripts/audit.mjs",

@@ -194,12 +194,28 @@ export function getCategory(slug: string): Category | undefined {
 // 6. Artigos enriquecidos
 // ─────────────────────────────────────────────────────────────
 
+/**
+ * Visualizações do GA, gravadas por scripts/fetch-views.mjs antes do build.
+ * O glob devolve vazio se o arquivo não existir (ex.: `astro dev` sem rodar o script).
+ */
+const viewsFile = Object.values(
+  import.meta.glob<{ total?: Record<string, number>; last30?: Record<string, number> }>(
+    "../data/views.json",
+    { eager: true, import: "default" },
+  ),
+)[0];
+const hasViews = Boolean(viewsFile?.total);
+
 export const articles: Article[] = validated
   .map((a) => ({
     ...a,
     categoryRef: categoryBySlug.get(a.category)!,
     score: editorialScore(a),
     href: "/artigos/" + a.slug,
+    ...(hasViews && {
+      views: viewsFile!.total![a.slug] ?? 0,
+      views30: viewsFile!.last30?.[a.slug] ?? 0,
+    }),
   }))
   .sort((a, b) => parseDate(b.publishedAt).getTime() - parseDate(a.publishedAt).getTime());
 
@@ -263,11 +279,23 @@ export const featuredArticles: Article[] = (() => {
   return out;
 })();
 
-/** "Em Alta": maior peso editorial, já descontando o que apareceu acima. */
+/**
+ * "Em Alta": as mais lidas dos últimos 30 dias no GA, já descontando o que apareceu
+ * acima. Sem dados do GA, ou sem nenhuma leitura ainda, cai no peso editorial.
+ */
 export const trendingArticles: Article[] = (() => {
   const used = new Set([heroArticle.slug, ...featuredArticles.map((a) => a.slug)]);
-  return byScore.filter((a) => !used.has(a.slug)).slice(0, 4);
+  const byViews = [...byScore].sort((a, b) => (b.views30 ?? 0) - (a.views30 ?? 0));
+  const ranked = byViews[0]?.views30 ? byViews : byScore;
+  return ranked.filter((a) => !used.has(a.slug)).slice(0, 4);
 })();
+
+const viewsFormat = new Intl.NumberFormat("pt-BR");
+
+/** "1 visualização", "1.234 visualizações". */
+export function formatViews(n: number): string {
+  return viewsFormat.format(n) + (n === 1 ? " visualização" : " visualizações");
+}
 
 /** "Últimas": mais recentes que ainda não apareceram na página. */
 export const latestArticles: Article[] = (() => {

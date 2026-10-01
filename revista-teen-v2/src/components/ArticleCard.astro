@@ -10,7 +10,7 @@
  */
 import type { Article } from "@/lib/schema";
 import CategoryBadge from "./CategoryBadge.astro";
-import { formatDate } from "@/lib/content";
+import { formatDate, formatViews } from "@/lib/content";
 
 export interface Props {
   article: Article;
@@ -75,6 +75,14 @@ const titleClass = isLead ? "type-display-md" : "type-heading";
         <time datetime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
         <span aria-hidden="true">•</span>
         <span>{article.readingTime} min de leitura</span>
+        {
+          article.views !== undefined && (
+            <>
+              <span aria-hidden="true">•</span>
+              <span>{formatViews(article.views)}</span>
+            </>
+          )
+        }
       </div>
     </div>
   </a>

@@ -10,7 +10,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import ArticleCard from "@/components/ArticleCard.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import CategoryBadge from "@/components/CategoryBadge.astro";
-import { articles, getRelated, formatDate } from "@/lib/content";
+import { articles, getRelated, formatDate, formatViews } from "@/lib/content";
 import type { Article } from "@/lib/schema";
 
 export async function getStaticPaths() {
@@ -102,6 +102,14 @@ const shareText = article.title;
               <time datetime={article.publishedAt}>{formatDate(article.publishedAt, "long")}</time>
               <span aria-hidden="true"> · </span>
               {article.readingTime} min de leitura
+              {
+                article.views !== undefined && (
+                  <>
+                    <span aria-hidden="true"> · </span>
+                    {formatViews(article.views)}
+                  </>
+                )
+              }
             </p>
           </div>
         </div>

@@ -90,8 +90,12 @@ export type ArticleInput = z.input<typeof articleSchema>;
 export interface Article extends z.infer<typeof articleSchema> {
   /** Editoria resolvida (slug + apresentação). */
   categoryRef: Category;
-  /** Peso editorial calculado - define hero, destaques e ordem de "Em Alta". */
+  /** Peso editorial calculado - define hero e destaques (e "Em Alta" sem dados do GA). */
   score: number;
+  /** Visualizações totais no GA. Ausente quando o build não teve acesso ao GA. */
+  views?: number;
+  /** Visualizações nos últimos 30 dias - ordena "Em Alta". */
+  views30?: number;
   /** URL canônica relativa. */
   href: string;
 }
