@@ -30,7 +30,7 @@ for (const [slug, style] of Object.entries(categoryStyles)) {
   }
 }
 
-const validated = rawArticles.map((raw) => {
+const allArticles = rawArticles.map((raw) => {
   const parsed = articleSchema.safeParse(raw);
   if (!parsed.success) {
     const where = typeof raw?.slug === "string" ? raw.slug : "sem slug";
@@ -50,7 +50,7 @@ const seenSlugs = new Set<string>();
 const seenIds = new Set<number>();
 const seenImages = new Set<string>();
 
-for (const a of validated) {
+for (const a of allArticles) {
   if (seenSlugs.has(a.slug)) fail('slug duplicado: "' + a.slug + '"');
   seenSlugs.add(a.slug);
 
@@ -67,7 +67,7 @@ for (const a of validated) {
 }
 
 // Estilo declarado sem nenhum artigo = categoria órfã (bug da V1).
-const usedCategories = new Set(validated.map((a) => a.category));
+const usedCategories = new Set(allArticles.map((a) => a.category));
 for (const slug of Object.keys(categoryStyles)) {
   if (!usedCategories.has(slug)) {
     fail('categoria órfã: "' + slug + '" está declarada mas nenhum artigo a utiliza');
@@ -75,12 +75,21 @@ for (const slug of Object.keys(categoryStyles)) {
 }
 
 // Override editorial de relacionados precisa apontar para artigos que existem.
-for (const a of validated) {
+for (const a of allArticles) {
   for (const rel of a.relatedSlugs ?? []) {
     if (!seenSlugs.has(rel)) fail('artigo "' + a.slug + '" referencia relacionado inexistente: "' + rel + '"');
     if (rel === a.slug) fail('artigo "' + a.slug + '" referencia a si mesmo como relacionado');
   }
 }
+
+/**
+ * Publicação agendada. A base inteira é validada acima, inclusive o que ainda não
+ * saiu, para um erro na fila da semana aparecer no dia em que ela entra, e não no
+ * dia em que a matéria iria ao ar. O site só enxerga o que já chegou à data de
+ * publicação, no fuso de São Paulo; o rebuild diário vai liberando a fila.
+ */
+const today = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+const validated = allArticles.filter((a) => a.publishedAt <= today);
 
 // ─────────────────────────────────────────────────────────────
 // 3. Datas
@@ -182,6 +191,8 @@ export const categories: Category[] = Object.keys(categoryStyles)
       href: "/categoria/" + slug,
     };
   })
+  // Editoria que só tem matéria agendada ainda não aparece no site.
+  .filter((c) => c.count > 0)
   .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "pt-BR"));
 
 const categoryBySlug = new Map(categories.map((c) => [c.slug, c]));

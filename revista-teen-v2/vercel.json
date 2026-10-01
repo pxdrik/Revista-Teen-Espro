@@ -28,10 +28,31 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/categoria/interatividade-e-conectividade",
+      "destination": "/categoria/entretenimento-e-famosos",
+      "permanent": true
+    },
+    {
+      "source": "/categoria/comportamento-e-sentimento",
+      "destination": "/categoria/educacao-e-cultura",
+      "permanent": true
     }
   ]
 }
