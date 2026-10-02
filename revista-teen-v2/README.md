@@ -8,13 +8,21 @@ a identidade visual da V1 (paleta, tipografia, cards, animações, hero).
 ```bash
 npm install
 npm run dev        # http://localhost:4321
-npm run build      # gera dist/ (99 páginas estáticas)
+npm run build      # GA + build; HTML estático em dist/client, saída da Vercel em .vercel/output
 npm run preview    # serve o build
 npm run check      # typecheck (Astro + TypeScript)
 npm run audit:content   # auditoria do HTML construído (rodar após build)
 ```
 
 ---
+
+## Publicar no site
+
+- **Posts novos da semana** (do app da redação e do Google Docs): siga
+  `docs/como-postar-do-docs.md`.
+- **Enviar:** `bash scripts/sync-github.sh "mensagem"`. Valida, copia o projeto para a
+  pasta `revista-teen-v2/` de `pxdrik/Revista-Teen-Espro` e faz o push, que dispara o
+  deploy na Vercel (revista-teen-espro.vercel.app). Este git local não tem remote.
 
 ## Publicar uma nova edição
 
@@ -58,22 +66,32 @@ src/
   data/
     edition-2026.ts   ← ÚNICA FONTE DE VERDADE (trocar por edição)
     eventos.ts        ← agenda (só eventos reais, com link oficial)
+    views.json        ← visualizações do GA, gerado a cada build (fora do git)
   lib/
     schema.ts         ← contrato Zod da base
     content.ts        ← valida, deriva taxonomia, calcula curadoria
-  components/         ← Header, Footer, ArticleCard, CategoryBadge, Breadcrumb
+  components/         ← Header, Footer, ArticleCard, CategoryBadge, Breadcrumb, CookieConsent
   layouts/
-    BaseLayout.astro  ← <head>, SEO, JSON-LD
+    BaseLayout.astro  ← <head>, SEO, JSON-LD, aviso de cookies
   pages/
     index.astro           /
     artigos/index.astro   /artigos
-    artigos/[slug].astro  /artigos/<slug>       (77 páginas)
-    categoria/[slug].astro /categoria/<slug>    (17 páginas)
+    artigos/[slug].astro  /artigos/<slug>       (uma por matéria: 99 em 02/10/2026)
+    categoria/[slug].astro /categoria/<slug>    (3 editorias)
     busca.astro           /busca
     eventos.astro         /eventos
+    robots.txt.ts         /robots.txt (aponta para o sitemap do próprio domínio)
+    api/operacao.ts       /api/operacao: banco do app da redação (única rota de servidor)
     404.astro
+public/
+  redacao-345590b4/   ← app da redação (escondido, com senha; ver abaixo)
 scripts/
   audit.mjs           ← auditoria do HTML final
+  fetch-views.mjs     ← traz as visualizações do Google Analytics antes do build
+  fila-do-app.mjs     ← baixa a fila do site do app da redação e marca o que foi publicado
+  doc-snapshot.py     ← baixa o Google Docs de pauta
+  sync-github.sh      ← publica (push para o GitHub)
+  pull-github.sh      ← traz mudanças feitas direto no GitHub
 ```
 
 ### Fonte única de taxonomia
@@ -91,7 +109,7 @@ vale para o site inteiro.
 
 ### Busca sem divergência
 
-Em `busca.astro`, os 77 cards são renderizados no servidor. O filtro esconde os que
+Em `busca.astro`, todos os cards são renderizados no build. O filtro esconde os que
 não batem, e o contador é **o resultado do mesmo laço** que esconde/mostra. Não
 existe uma segunda contagem que possa divergir do que está na tela. Sem JavaScript,
 a página mostra a edição inteira com o total correto.
@@ -112,6 +130,24 @@ da base. O default continua automático; `automaticCover` continua exportado par
 comparar a escolha do algoritmo com a escolha editorial.
 
 ---
+
+## App da redação
+
+Em `/redacao-345590b4`, fora do sitemap, com `noindex` e sem link visível: a única
+entrada é o texto do copyright no rodapé. Pede a senha da equipe (`SENHA_EQUIPE`, na
+Vercel). A equipe cola o artigo e sai com as 2 imagens do Instagram, a legenda e o
+texto do site. Histórico, fila do Instagram e fila do site ficam no Upstash Redis
+ligado ao projeto na Vercel (`KV_REST_API_*`), acessado só por `api/operacao.ts`.
+Por causa dessa rota o projeto usa o adaptador `@astrojs/vercel`; todas as outras
+páginas continuam pré-renderizadas.
+
+## Google Analytics e cookies
+
+Tag G-RZX972NG8R, só no deploy de produção. O público tem menores de idade, então a
+tag só carrega depois que a pessoa clica em Aceitar no aviso de cookies
+(`CookieConsent.astro`); sem escolha ou com Recusar, nenhum cookie do Google. O link
+Cookies do rodapé reabre o aviso. Quem recusa não entra nas visualizações nem no
+"Em Alta".
 
 ## Performance
 
@@ -134,22 +170,19 @@ Lighthouse 100 em Acessibilidade, Boas Práticas e SEO (home, artigo e busca, mo
 - `aria-label` em todos os botões e links de ícone
 - `aria-expanded` / `aria-controls` no menu, fechamento por `Esc`
 - `role="status"` + `aria-live` no contador da busca
-- `alt` descritivo em todas as 557 imagens do site
+- `alt` descritivo em todas as imagens do site (mínimo validado no build)
 - `lang="pt-BR"` e `<time datetime>` em todas as datas
 
 ---
 
-## Pendências antes de publicar
+## Pendências
 
-Dois campos são provisórios **por decisão de escopo** e precisam de passada da redação:
+1. **Corpo das matérias de id 1 a 77.** São as matérias com que a V2 nasceu: todas
+   seguem a mesma estrutura de quatro movimentos, com 255-365 palavras, e são textos
+   temporários. As de id 78 em diante são das equipes (Docs e app).
 
-1. **Corpo das matérias.** Todos os 77 textos seguem a mesma estrutura de quatro
-   movimentos (introdução, contextualização, desenvolvimento, conclusão), com
-   255-365 palavras. São textos temporários, substitua `body` de cada artigo.
+2. **Créditos de imagem.** Todas as imagens estão creditadas como `"Reprodução"`. O
+   detentor real dos direitos precisa ser informado em `image.credit`.
 
-2. **Créditos de imagem.** Todas as imagens vieram da pauta visual em PDF e estão
-   creditadas como `"Reprodução"`. O detentor real dos direitos precisa ser
-   informado em `image.credit` antes da publicação.
-
-Também troque `site` em `astro.config.mjs` pelo domínio real, canonical, `og:url`
-e o sitemap derivam dele.
+O domínio (`site` em `astro.config.mjs`) vem da Vercel; com domínio próprio, defina
+`SITE_URL`. Canonical, `og:url`, sitemap e robots.txt derivam dele.

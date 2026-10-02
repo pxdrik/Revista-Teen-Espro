@@ -3,7 +3,7 @@
 Revista digital escolar (Espro) em Astro, publicada na Vercel em
 revista-teen-espro.vercel.app. Detalhes de arquitetura no README.
 
-- **Postar os posts novos do Docs:** siga `docs/como-postar-do-docs.md`.
+- **Postar os posts novos** (do app da redação e do Docs): siga `docs/como-postar-do-docs.md`.
 - **Publicar:** `bash scripts/sync-github.sh "mensagem"`. O script valida, copia o
   projeto para a pasta `revista-teen-v2/` do repositório `pxdrik/Revista-Teen-Espro` e
   faz o push. Este git local não tem remote. Se o script avisar que o GitHub mudou,

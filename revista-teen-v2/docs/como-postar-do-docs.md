@@ -1,12 +1,44 @@
-# Como postar no site os posts do Docs
+# Como postar no site os posts novos
 
-Passo a passo para levar os posts novos do Google Docs de pauta para o site. Serve
-para fazer à mão ou para pedir ao Claude ("pega os posts novos do Docs da Revista
-Teen"), que segue este arquivo.
+Passo a passo para levar os posts novos para o site. Serve para fazer à mão ou para
+pedir ao Claude ("pega os posts novos da Revista Teen"), que segue este arquivo.
 
 O texto é o das equipes: aqui só se organiza, nunca se escreve matéria do zero.
 
-## Onde fica cada coisa
+**De onde vêm os posts:** desde 02/10/2026, do app da redação (`/redacao-345590b4`),
+pela fila da aba Site. O Google Docs de pauta continua valendo para o que ainda for
+escrito lá: confira os dois.
+
+## Posts do app da redação
+
+1. `node scripts/fila-do-app.mjs` baixa para `.fila-do-app/` cada post que está
+   pendente na aba Site do app: `<id>.json` com os textos e `<id>.jpg` com a foto. A
+   pasta não vai para o git. A senha vem de `SENHA_EQUIPE_FILE`, no `.env`.
+2. Cada JSON já vem separado, então não há formato a decifrar:
+   - `site.titulo` e `site.paragrafos` (3): o texto do SITE;
+   - `instagram.texto`: o texto do INSTAGRAM;
+   - `fonte`, `autor` e `editoria` (o nome da editoria, já entre as 3 do site).
+3. **Já está no site?** Mesma regra do passo 4 do Docs, com os primeiros 50
+   caracteres do primeiro parágrafo de `site.paragrafos`.
+4. Monte a entrada seguindo o passo 6 do Docs, com estes atalhos:
+   - `title`: `site.titulo`, em Title Case. A aba Site do app mostra a prévia de
+     título, subtítulo e resumo; siga o que ela mostra quando fizer sentido.
+   - `subtitle`: a primeira frase do 2º parágrafo, sem o ponto final.
+   - `excerpt`: as duas primeiras frases de `instagram.texto` (ou só a primeira, se
+     juntas passarem de 200 caracteres).
+   - `category`: o slug da `editoria`. `author.name`: o `autor`.
+   - `body`: os 3 parágrafos de `site.paragrafos` e, como 4º, a linha da fonte.
+   - `image`: a partir de `<id>.jpg`, com as mesmas regras (abrir e olhar antes do
+     `alt`).
+5. Siga os passos 7 a 10 do Docs (regras de texto, build, conferência, envio).
+6. Depois do envio, marque no app o que foi ao ar:
+   `node scripts/fila-do-app.mjs marcar <id> <id> ...`. Assim o post sai da fila da
+   aba Site para todo mundo. Post pulado (incompleto, repetido) fica pendente, e você
+   avisa quem pediu.
+
+## Posts do Google Docs
+
+### Onde fica cada coisa
 
 - Projeto: `01_Projetos/RevistaTeen/Atual`. Os caminhos abaixo são relativos a ele.
 - Docs de pauta: "Documento de Auxílio Pesquisa/Redação"
@@ -16,7 +48,7 @@ O texto é o das equipes: aqui só se organiza, nunca se escreve matéria do zer
   conteúdo que muda, junto com as imagens.
 - Imagens: `public/images/artigos/<slug>.jpg`.
 
-## Passo a passo
+### Passo a passo
 
 1. Baixe o retrato do Docs: `python scripts/doc-snapshot.py`. Ele grava
    `.doc-snapshot/texto.txt` (um parágrafo por linha, com `[IMG images/x]` no ponto de

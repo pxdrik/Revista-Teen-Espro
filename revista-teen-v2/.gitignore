@@ -28,3 +28,6 @@ src/data/views.json
 
 # saida do adaptador da Vercel
 .vercel/
+
+# fila do app da redação, baixada por scripts/fila-do-app.mjs
+.fila-do-app/
