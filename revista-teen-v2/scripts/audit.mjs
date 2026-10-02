@@ -11,7 +11,8 @@ import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const DIST = join(ROOT, "dist");
+// Com o adaptador da Vercel, o HTML estático sai em dist/client.
+const DIST = join(ROOT, "dist", "client");
 const PUBLIC = join(ROOT, "public");
 
 if (!existsSync(DIST)) {
@@ -30,7 +31,8 @@ function walk(dir, out = []) {
 }
 
 const files = walk(DIST);
-const htmlFiles = files.filter((f) => f.endsWith(".html"));
+// O app da redação (public/redacao-*) é escondido de propósito: sem SEO para auditar.
+const htmlFiles = files.filter((f) => f.endsWith(".html") && !/[\\/]redacao-[^\\/]+[\\/]/.test(f));
 
 const problems = [];
 const fail = (page, msg) => problems.push({ page, msg });

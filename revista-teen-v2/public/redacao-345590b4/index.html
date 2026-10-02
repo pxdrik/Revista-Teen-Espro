@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Revista Teen Operação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400&family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: mesa de redação com três abas (novo post, histórico, fila do site). No editor, artigo à esquerda
+   e as duas imagens com a revisão à direita; empilha no celular. Visual escuro de propósito: é a mesma
+   noite roxa dos posts, então a prévia não muda de contexto. */
+:root {
+  --bg: #120d24;
+  --surface: #1b1533;
+  --raised: #241c42;
+  --line: #34295c;
+  --fg: #f4f1ff;
+  --muted: #a99fcc;
+  --accent: #7c3aed;
+  --pink: #ff5c8a;
+  --ok: #34d399;
+  --bad: #ff7a90;
+  --font-ui: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --r: 12px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { background: var(--bg); color: var(--fg); font: 400 15px/1.55 var(--font-ui); margin: 0; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 16px; padding-block: 20px 48px; }
+
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 14px; }
+.brand img { width: 96px; height: auto; display: block; }
+.brand b { font-weight: 600; font-size: 18px; letter-spacing: .01em; }
+.brand small { display: block; color: var(--muted); font-size: 12.5px; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+nav.tabs button { border-radius: 999px; padding: 8px 16px; background: transparent; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+nav.tabs button[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+nav.tabs .n { font-size: 12px; font-variant-numeric: tabular-nums; background: var(--raised); color: var(--fg); border-radius: 999px; padding: 0 8px; min-width: 22px; text-align: center; }
+nav.tabs button[aria-selected="true"] .n { background: rgba(255,255,255,.22); }
+
+.banner { margin: 16px 0 0; padding: 10px 14px; border-radius: var(--r); background: var(--raised); color: var(--muted); font-size: 13.5px; }
+.banner strong { color: var(--fg); font-weight: 600; }
+
+.editor { display: grid; gap: 28px; margin-top: 24px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 980px) { .editor { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; } }
+
+h2.sec { font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin: 0 0 14px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px; display: grid; gap: 16px; }
+
+label, .lbl { display: grid; gap: 6px; font-size: 13px; font-weight: 500; }
+.hint { color: var(--muted); font-weight: 400; }
+input[type=text], input[type=search], input[type=password], textarea, select {
+  width: 100%; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 12px;
+}
+textarea { resize: vertical; min-height: 96px; }
+#artigo { min-height: 200px; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, .drop:focus-within {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.row2 { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+
+.drop { position: relative; display: flex; align-items: center; gap: 14px; padding: 12px; border: 1px dashed var(--line); border-radius: 10px; background: var(--bg); cursor: pointer; }
+.drop.over { border-color: var(--accent); }
+.drop input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.drop .thumb { width: 64px; height: 64px; border-radius: 8px; background: var(--raised) center/cover no-repeat; flex: none; display: grid; place-items: center; color: var(--muted); font-size: 22px; }
+.drop span { font-size: 13px; color: var(--muted); }
+.drop span b { color: var(--fg); font-weight: 500; }
+
+button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: var(--raised); color: var(--fg); padding: 10px 16px; font-weight: 500; }
+button:hover:not(:disabled) { border-color: var(--muted); }
+button:disabled { opacity: .45; cursor: not-allowed; }
+button.primary { background: var(--accent); border-color: var(--accent); font-weight: 600; }
+button.primary:hover:not(:disabled) { filter: brightness(1.1); }
+button.small { padding: 6px 12px; font-size: 13px; }
+button.danger { color: var(--bad); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.status { font-size: 13px; color: var(--muted); min-height: 1.4em; margin: 0; }
+.status.err { color: var(--bad); }
+.editing { font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.editing b { color: var(--fg); font-weight: 600; }
+
+.preview { display: grid; gap: 12px; }
+.switch { display: flex; gap: 6px; justify-content: center; }
+.switch button { border-radius: 999px; padding: 6px 14px; font-size: 13px; background: transparent; color: var(--muted); }
+.switch button[aria-pressed="true"] { background: var(--raised); color: var(--fg); border-color: var(--muted); }
+.canvasbox { max-width: 560px; width: 100%; margin: 0 auto; }
+.canvasbox canvas { width: 100%; height: auto; aspect-ratio: 1; display: block; border-radius: 6px; box-shadow: 0 18px 50px rgba(0,0,0,.45); touch-action: none; }
+canvas.can-drag { cursor: grab; }
+canvas.dragging { cursor: grabbing; }
+.tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: center; font-size: 13px; color: var(--muted); }
+.tools input[type=range] { width: 140px; accent-color: var(--accent); }
+
+.field-head { display: flex; gap: 8px; align-items: baseline; }
+.field-head .count { margin-left: auto; }
+.count { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.count.bad { color: var(--bad); }
+fieldset { border: 0; padding: 0; margin: 0; display: grid; gap: 12px; }
+legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; display: flex; gap: 8px; align-items: center; }
+.tag { font-size: 11px; font-weight: 600; letter-spacing: .1em; padding: 2px 8px; border-radius: 999px; background: var(--accent); color: #fff; text-transform: uppercase; white-space: nowrap; }
+.tag.site { background: var(--pink); color: #2a0c18; }
+.tag.soft { background: var(--raised); color: var(--muted); }
+.tag.ok { background: rgba(52,211,153,.16); color: var(--ok); }
+
+.violations { font-size: 13px; color: var(--bad); display: grid; gap: 4px; }
+.violations:empty { display: none; }
+
+/* Abas de lista */
+.listhead { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 24px 0 16px; }
+.listhead h2 { margin: 0; }
+.filters { display: flex; gap: 6px; flex-wrap: wrap; }
+.filters button { border-radius: 999px; padding: 6px 14px; font-size: 13px; background: transparent; color: var(--muted); }
+.filters button[aria-pressed="true"] { background: var(--raised); color: var(--fg); border-color: var(--muted); }
+.empty { padding: 32px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r); }
+.empty b { color: var(--fg); font-weight: 600; display: block; margin-bottom: 4px; }
+
+.grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; display: grid; grid-template-rows: auto 1fr auto; }
+.card img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--raised); }
+.card .body { padding: 12px 14px 4px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.card h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; text-wrap: balance; }
+.meta { font-size: 12.5px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+.card .foot { padding: 10px 14px 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Aba Instagram: o par de imagens é o que importa, então ele vem grande e lado a lado */
+.iglist { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.igcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 14px; display: grid; gap: 12px; }
+.igpar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.igpar img, .igpar canvas { width: 100%; height: auto; aspect-ratio: 1; display: block; border-radius: 6px; background: var(--raised); }
+.igcard .leg { margin: 0; font-size: 13.5px; color: var(--muted); white-space: pre-wrap; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; overflow: hidden; }
+.igcard h3 { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.35; text-wrap: balance; }
+
+/* Aba Docs: uma folha clara, com as seções do Docs da pauta, como o Google Docs da equipe */
+.paper { --ink: #1f1838; --ink-soft: #5d567a; --rule: #e4e0f0;
+  background: #fbfaff; color: var(--ink); border-radius: 6px; padding: 40px clamp(18px, 6vw, 72px); max-width: 860px; margin: 0 auto;
+  box-shadow: 0 18px 50px rgba(0,0,0,.45); }
+.paper h2.secdoc { font-size: 15px; letter-spacing: .14em; text-transform: uppercase; margin: 36px 0 4px; padding-bottom: 8px; border-bottom: 2px solid var(--ink); }
+.paper h2.secdoc:first-child { margin-top: 0; }
+.docpost { padding: 22px 0; border-bottom: 1px solid var(--rule); display: grid; gap: 12px; }
+.docpost img { width: min(100%, 420px); border-radius: 4px; display: block; }
+.docpost .bloco { font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; max-width: 72ch; }
+.docpost .bloco b { font-weight: 700; }
+.docpost .meta { color: var(--ink-soft); }
+.docpost button { background: #fff; color: var(--ink); border-color: var(--rule); }
+.docpost button:hover:not(:disabled) { border-color: var(--ink-soft); }
+.docpost .tag.ok { background: #d9f7ea; color: #0f6b47; }
+.docpost .tag.soft { background: #eeeaf8; color: var(--ink-soft); }
+
+/* ═══ Aba Site: cópia do visual do site real (01_Projetos/RevistaTeen/Atual, global.css) ═══
+   As variáveis têm os mesmos nomes de lá, só que presas dentro de .rt-site. */
+.rt-site { --bg-primary: #08080d; --bg-surface: #111118; --bg-elevated: #1a1a26; --accent-blue: #4b6bff; --accent-purple: #8b5cf6;
+  --text-primary: #f0f0f8; --text-secondary: #9898b0; --text-muted: #5a5a72; --border-subtle: rgba(255,255,255,.06);
+  --font-sans: "Inter", system-ui, sans-serif; --font-display: "Space Grotesk", sans-serif;
+  background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-sans); border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line); -webkit-font-smoothing: antialiased; }
+.rt-header { height: 64px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-inline: clamp(20px, 3vw, 48px);
+  border-bottom: 1px solid var(--border-subtle); background: color-mix(in srgb, var(--bg-primary) 90%, transparent); }
+.rt-header img { height: 36px; width: auto; display: block; }
+.rt-nav { display: flex; gap: 28px; font-size: .875rem; font-weight: 500; color: var(--text-secondary); }
+@media (max-width: 720px) { .rt-nav { display: none; } }
+.rt-wrap { padding: 32px clamp(20px, 3vw, 48px) 48px; }
+.rt-display-md { font-family: var(--font-display); font-size: clamp(1.25rem, 3vw, 2rem); font-weight: 700; line-height: 1.15; letter-spacing: -.015em; margin: 0 0 24px; }
+.rt-grid { display: grid; gap: 32px 24px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); }
+.rt-card { all: unset; display: block; cursor: pointer; border-radius: 12px; transition: transform .3s cubic-bezier(.23,1,.32,1); }
+.rt-card:hover, .rt-card:focus-visible { transform: translateY(-4px); }
+.rt-card:focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 3px; }
+.rt-media { aspect-ratio: 3 / 2; overflow: hidden; border-radius: 12px; background: var(--bg-elevated); }
+.rt-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.23,1,.32,1); }
+.rt-card:hover .rt-media img { transform: scale(1.03); }
+.rt-badge { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: .6875rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.rt-badge::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+.rt-card h3 { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; line-height: 1.3; letter-spacing: -.01em; margin: 8px 0 0; color: var(--text-primary);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; transition: color .15s; }
+.rt-card:hover h3 { color: var(--accent-blue); }
+.rt-resumo { font-size: .875rem; line-height: 1.6; color: var(--text-secondary); margin: 8px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rt-caption { font-size: .75rem; font-weight: 500; line-height: 1.4; letter-spacing: .02em; color: var(--text-muted); }
+.rt-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px 8px; }
+.rt-hero { position: relative; margin: 0; height: clamp(300px, 42vw, 500px); overflow: hidden; background: var(--bg-elevated); }
+.rt-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.rt-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to top, #08080D 10%, rgba(8,8,13,.45) 60%, transparent 100%); }
+.rt-hero figcaption { position: absolute; left: clamp(20px, 3vw, 48px); bottom: 8px; z-index: 1; }
+.rt-artigo { position: relative; z-index: 1; max-width: 720px; margin: -96px auto 0; padding: 0 20px 48px; }
+.rt-trilha { display: flex; flex-wrap: wrap; gap: 8px; }
+.rt-artigo h1 { font-family: var(--font-display); font-size: clamp(2rem, 4.6vw, 3.6rem); font-weight: 700; line-height: 1; letter-spacing: -.03em; margin: 16px 0; text-wrap: balance; }
+.rt-sub { font-size: 1.125rem; line-height: 1.7; color: var(--text-secondary); margin: 0 0 32px; }
+.rt-assina { display: flex; align-items: center; gap: 16px; border-block: 1px solid var(--border-subtle); padding: 24px 0; margin-bottom: 40px; }
+.rt-avatar { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--bg-elevated); color: var(--accent-blue); font-family: var(--font-display); font-weight: 700; flex: none; }
+.rt-assina p { margin: 0; }
+.rt-prose { font-size: 1.0625rem; line-height: 1.8; max-width: 680px; }
+.rt-prose p { margin: 0 0 1.5em; }
+.rt-prose p:first-of-type { font-size: 1.15rem; }
+.rt-overline { font-family: var(--font-display); font-size: .6875rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); margin: 48px 0 12px; }
+.rt-tags { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0; padding: 0; }
+.rt-tags li { border-radius: 999px; padding: 6px 12px; background: var(--bg-elevated); color: var(--text-secondary); }
+.rt-estrela { display: flex; align-items: center; gap: 16px; padding: 48px 0 0; color: var(--text-muted); font-size: 12px; }
+.rt-estrela::before, .rt-estrela::after { content: ""; flex: 1; height: 1px; background: var(--border-subtle); }
+.sitebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+.sitebar:empty { display: none; }
+.sitebar .aviso { font-size: 13px; color: var(--muted); }
+
+.entrar { max-width: 360px; margin: 12vh auto 0; padding: 28px 24px; display: grid; gap: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); }
+.entrar img { height: auto; margin: 0 auto 4px; }
+.toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--fg); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 13.5px; font-weight: 500; max-width: calc(100% - 32px); text-align: center; }
+</style>
+</head>
+<body>
+
+<form class="entrar" id="entrar" hidden>
+  <img src="/images/brand/logo-header.png" alt="Revista Teen" width="160">
+  <label>Senha da equipe
+    <input type="password" id="senha" autocomplete="current-password" required>
+  </label>
+  <button type="submit" class="primary">Entrar</button>
+  <p class="status" id="statusEntrar" role="status"></p>
+</form>
+
+<div class="wrap" id="app" hidden>
+  <header>
+    <div class="brand">
+      <img src="/images/brand/logo-header.png" alt="Revista Teen" id="logoHeader">
+      <div><b>Operação</b><small>Do artigo ao post, numa tela só</small></div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Seções">
+      <button type="button" role="tab" id="tab-novo" aria-controls="aba-novo" aria-selected="true">Novo post</button>
+      <button type="button" role="tab" id="tab-hist" aria-controls="aba-hist" aria-selected="false">Histórico <span class="n" id="nHist">0</span></button>
+      <button type="button" role="tab" id="tab-ig" aria-controls="aba-ig" aria-selected="false">Instagram <span class="n" id="nIg">0</span></button>
+      <button type="button" role="tab" id="tab-site" aria-controls="aba-site" aria-selected="false">Site <span class="n" id="nSitePrev">0</span></button>
+      <button type="button" role="tab" id="tab-docs" aria-controls="aba-docs" aria-selected="false">Docs <span class="n" id="nSite">0</span></button>
+      <button type="button" id="btnSair">Sair</button>
+    </nav>
+  </header>
+
+  <!-- ===================== NOVO POST ===================== -->
+  <div id="aba-novo" role="tabpanel" aria-labelledby="tab-novo">
+    <p class="banner" id="banner"><strong>Exemplo fictício carregado.</strong> A notícia, a fonte e os textos abaixo foram inventados só para mostrar o fluxo. Troque pelo seu artigo e clique em Montar post.</p>
+    <div class="editor">
+      <section aria-labelledby="h-artigo">
+        <h2 class="sec" id="h-artigo">1. Artigo</h2>
+        <form class="panel" id="form" novalidate>
+          <div class="editing" id="editando" hidden></div>
+          <div class="lbl">Foto da notícia
+            <div class="drop" id="drop">
+              <div class="thumb" id="thumb" aria-hidden="true">+</div>
+              <span><b>Escolha ou arraste a foto</b><br>JPG, PNG ou WebP. Vai para a capa e também vai para o histórico.</span>
+              <input type="file" id="foto" accept="image/jpeg,image/png,image/webp" aria-label="Foto da notícia">
+            </div>
+          </div>
+          <label>Título original
+            <input type="text" id="tituloOriginal" required>
+          </label>
+          <label>Texto do artigo <span class="hint">Cole a notícia inteira, como está na fonte.</span>
+            <textarea id="artigo" required></textarea>
+          </label>
+          <div class="row2">
+            <label>Fonte <span class="hint">Nome do veículo</span>
+              <input type="text" id="fonte" required>
+            </label>
+            <label>Selo do post
+              <select id="selo"></select>
+            </label>
+          </div>
+          <label>Seu nome <span class="hint">Entra como Autor Espro. Fica lembrado neste navegador.</span>
+            <input type="text" id="autor" autocomplete="name" required>
+          </label>
+          <div class="actions">
+            <button type="submit" class="primary" id="btnMontar">Montar post</button>
+          </div>
+          <p class="status" id="status" role="status"></p>
+          <p class="hint" style="margin:0;font-size:12.5px">Montar post usa o cérebro da Operação: é instantâneo e não gasta nada. Ele escolhe as frases mais importantes do artigo, sem reescrever. Revise antes de salvar.</p>
+        </form>
+      </section>
+
+      <section aria-labelledby="h-rev">
+        <h2 class="sec" id="h-rev">2. Revisão e 3. Exportar</h2>
+        <div class="panel">
+          <div class="preview">
+            <div class="switch" role="group" aria-label="Imagem em destaque">
+              <button type="button" id="verCapa" aria-pressed="true">1. Capa</button>
+              <button type="button" id="verTexto" aria-pressed="false">2. Texto do Instagram</button>
+            </div>
+            <div class="canvasbox">
+              <canvas id="capa" width="1080" height="1080" aria-label="Imagem 1 do post: capa"></canvas>
+              <canvas id="texto" width="1080" height="1080" aria-label="Imagem 2 do post: texto do Instagram" hidden></canvas>
+            </div>
+            <div class="tools" id="tools" hidden>
+              <span>Arraste a foto para enquadrar</span>
+              <label style="display:flex;gap:8px;align-items:center;font-weight:400">Zoom <input type="range" id="zoom" min="1" max="3" step="0.01" value="1"></label>
+              <button type="button" id="btnCentro" class="small">Centralizar</button>
+            </div>
+            <div class="actions" style="justify-content:center" id="baixarEditor">
+              <button type="button" id="btnPng" class="small primary">Baixar as 2 imagens</button>
+              <button type="button" id="btnPngCapa" class="small">Baixar imagem 1</button>
+              <button type="button" id="btnPngTexto" class="small">Baixar imagem 2</button>
+            </div>
+          </div>
+
+          <div class="violations" id="violations"></div>
+
+          <fieldset>
+            <legend><span class="tag">Instagram</span></legend>
+            <label><span class="field-head">Título <span class="hint">vai nas duas imagens</span><span class="count" id="cntTitulo"></span></span>
+              <input type="text" id="igTitulo">
+            </label>
+            <label>Texto <span class="hint">Vira a imagem 2 do post.</span>
+              <textarea id="igTexto"></textarea>
+            </label>
+            <label>Legenda <span class="hint">Vai escrita no post. A fonte entra sozinha no fim.</span>
+              <textarea id="igLegenda"></textarea>
+            </label>
+            <label>Hashtags <span class="hint">Vão no fim da legenda. A #revistateen entra sempre.</span>
+              <input type="text" id="igHashtags" autocomplete="off" spellcheck="false">
+            </label>
+            <div class="actions"><button type="button" class="small" id="btnLegenda">Copiar legenda</button></div>
+          </fieldset>
+
+          <fieldset>
+            <legend><span class="tag site">Site</span></legend>
+            <label>Título
+              <input type="text" id="siteTitulo">
+            </label>
+            <label>Parágrafo 1 <textarea id="p1"></textarea></label>
+            <label>Parágrafo 2 <textarea id="p2"></textarea></label>
+            <label>Parágrafo 3 <textarea id="p3"></textarea></label>
+          </fieldset>
+
+          <div class="actions">
+            <button type="button" class="primary" id="btnSalvar">Salvar no histórico</button>
+          </div>
+          <p class="status" id="statusSalvar" role="status"></p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ===================== HISTÓRICO ===================== -->
+  <div id="aba-hist" role="tabpanel" aria-labelledby="tab-hist" hidden>
+    <div class="listhead">
+      <h2 class="sec">Histórico de posts</h2>
+      <input type="search" id="busca" placeholder="Buscar por título, autor ou selo" aria-label="Buscar no histórico" style="max-width:320px">
+    </div>
+    <div class="grid" id="listaHist"></div>
+    <div class="empty" id="vazioHist"></div>
+  </div>
+
+  <!-- ===================== INSTAGRAM ===================== -->
+  <div id="aba-ig" role="tabpanel" aria-labelledby="tab-ig" hidden>
+    <div class="listhead">
+      <h2 class="sec">Posts do Instagram</h2>
+      <div class="filters" role="group" aria-label="Filtrar posts do Instagram">
+        <button type="button" id="fIgPend" aria-pressed="true">Para postar</button>
+        <button type="button" id="fIgPub" aria-pressed="false">Publicados</button>
+      </div>
+    </div>
+    <div class="iglist" id="listaIg"></div>
+    <div class="empty" id="vazioIg"></div>
+  </div>
+
+  <!-- ===================== SITE ===================== -->
+  <div id="aba-site" role="tabpanel" aria-labelledby="tab-site" hidden>
+    <div class="listhead">
+      <h2 class="sec">Prévia do site</h2>
+      <div class="filters" role="group" aria-label="Filtrar a prévia do site">
+        <button type="button" id="fSitePend" aria-pressed="true">Pendentes</button>
+        <button type="button" id="fSitePub" aria-pressed="false">Publicados no site</button>
+      </div>
+    </div>
+    <div class="sitebar" id="siteBarra"></div>
+    <div class="rt-site" id="rtSite"></div>
+    <div class="empty" id="vazioSitePrev"></div>
+  </div>
+
+  <!-- ===================== DOCS ===================== -->
+  <div id="aba-docs" role="tabpanel" aria-labelledby="tab-docs" hidden>
+    <div class="listhead">
+      <h2 class="sec">Docs da pauta do site</h2>
+      <div class="actions">
+        <div class="filters" role="group" aria-label="Filtrar o Docs">
+          <button type="button" id="fPend" aria-pressed="true">Pendentes</button>
+          <button type="button" id="fPub" aria-pressed="false">Publicados no site</button>
+        </div>
+        <button type="button" class="small" id="btnCopiarTudo">Copiar tudo para o Google Docs</button>
+      </div>
+    </div>
+    <div class="paper" id="docs"></div>
+    <div class="empty" id="vazioSite"></div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="/redacao-345590b4/cerebro.js"></script>
+<script>
+// ---------- Selos: tema, tagline e editoria do site (tabela 7.2 da arquitetura) ----------
+// Cor de cada selo = cor da editoria no site (categoryStyles em src/data/edition-2026.ts).
+// Cartão e círculos do fundo saem da mistura dessa cor com o fundo, nas mesmas proporções
+// do template do Canva (roxo #7c3aed: cartão 28%, círculo de cima 17%, de baixo 14%).
+const misturar = (hex, k) => "#" + [1, 3, 5].map((i) => {
+  const c = parseInt(hex.slice(i, i + 2), 16), f = parseInt("1b1533".slice(i - 1, i + 1), 16);
+  return Math.round(f + (c - f) * k).toString(16).padStart(2, "0");
+}).join("");
+const tema = (accent) => ({ accent, card: misturar(accent, 0.28), tr: misturar(accent, 0.17), bl: misturar(accent, 0.14) });
+const SELOS = [
+  { nome: "Entretenimento e Famosos", t: tema("#F97316"), tag: "Tudo sobre quem você acompanha",   ed: "Entretenimento e Famosos" },
+  { nome: "Moda e Beleza",            t: tema("#EC4899"), tag: "Tendências, estilo e autocuidado", ed: "Moda e Beleza" },
+  { nome: "Educação e Cultura",       t: tema("#10B981"), tag: "Conhecimento que abre caminhos",   ed: "Educação e Cultura" },
+];
+// Post salvo com selo antigo (Filmes e Séries, Games...) cai em Entretenimento.
+const seloDe = (nome) => SELOS.find((s) => s.nome === nome) || SELOS[0];
+
+// ---------- Exemplo fictício (primeira tela já mostra o fluxo inteiro) ----------
+const EXEMPLO = {
+  tituloOriginal: "Série brasileira Recreio é renovada para a segunda temporada",
+  fonte: "Portal Exemplo",
+  selo: "Entretenimento e Famosos",
+  artigo: "A plataforma de streaming Tela Viva confirmou nesta segunda-feira a renovação da série Recreio para uma segunda temporada. A produção, gravada em Recife, acompanha um grupo de estudantes do ensino médio durante o último ano na escola. Segundo a plataforma, a primeira temporada ficou entre as dez séries mais vistas do serviço no Brasil nas três semanas seguintes à estreia. As gravações da nova temporada começam em março, com o elenco principal de volta. A data de estreia ainda não foi divulgada.",
+};
+
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const store = {
+  get(k) { try { return localStorage.getItem(k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch {} },
+};
+const fmtData = (d) => new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", day: "2-digit", month: "2-digit", year: "numeric" }).format(d ? new Date(d) : new Date());
+const slug = (t) => (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50);
+const img = (src) => new Promise((ok) => { const i = new Image(); i.onload = () => ok(i); i.onerror = () => ok(null); i.src = src; });
+const ehJpegDataUrl = (u) => typeof u === "string" && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(u);
+function dataUrlParaBlob(u) {
+  const [cab, b64] = u.split(","); const bin = atob(b64); const a = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i);
+  return new Blob([a], { type: cab.slice(5, cab.indexOf(";")) });
+}
+
+// Estado do post aberto no editor
+const estado = { hashtagsAuto: "", foto: null, fotoBlob: null, fotoDataUrl: null, fotoMudou: false, foco: { x: 0.5, y: 0.5 }, zoom: 1, id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, vista: "capa" };
+
+// ---------- O que o código não conserta sozinho ----------
+// Travessão, emoji e hashtag não viram aviso: o Cerebro.limpar tira de todo texto antes de desenhar e salvar.
+function verificar(s, fonte, autor) {
+  const f = [];
+  const capa = quebrar(ctxCapa, s.instagram.titulo, [40, 36], 640, 0.62).linhas;
+  if (!s.instagram.titulo) f.push("Falta o título do Instagram.");
+  else if (capa.length > 2) f.push("O título do Instagram passa de 2 linhas na capa. Encurte.");
+  if (!s.instagram.texto) f.push("Falta o texto do Instagram.");
+  else if (!textoCabe) f.push("O texto do Instagram não cabe na imagem 2. Encurte.");
+  if (!s.site.titulo) f.push("Falta o título do site.");
+  s.site.paragrafos.forEach((p, i) => { if (p.length < 40) f.push("O parágrafo " + (i + 1) + " do site está curto demais (mínimo de 40 caracteres)."); });
+  if (!fonte.trim()) f.push("Preencha a fonte.");
+  if (!autor.trim()) f.push("Preencha seu nome, que entra como Autor Espro.");
+  return f;
+}
+
+// ---------- Arte 1080x1080, medidas tiradas de docs/template ----------
+const W = 1080;
+const cvCapa = $("capa"), ctxCapa = cvCapa.getContext("2d");
+const cvTexto = $("texto"), ctxTexto = cvTexto.getContext("2d");
+const CARD = { x: 70, y: 286, w: 940, h: 448, r: 16 };
+const LOGOS = {};
+let textoCabe = true;
+
+function rrect(c, x, y, w, h, r) { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); }
+function largEsp(c, texto, ls) { const ch = [...texto]; return ch.reduce((a, x) => a + c.measureText(x).width, 0) + ls * (ch.length - 1); }
+function espacado(c, texto, cx, y, ls) {
+  let x = cx - largEsp(c, texto, ls) / 2;
+  c.textAlign = "left";
+  for (const ch of texto) { c.fillText(ch, x, y); x += c.measureText(ch).width + ls; }
+}
+// Igual ao template: 1 linha se for curta; senão 2 linhas equilibradas; tamanho menor como último recurso.
+function quebrar(c, t, tamanhos, max, umaLinha) {
+  const p = (t || "").trim().split(/\s+/).filter(Boolean);
+  for (const size of tamanhos) {
+    c.font = `700 ${size}px Poppins`;
+    const w = (x) => c.measureText(x).width;
+    if (w(p.join(" ")) <= max * umaLinha) return { linhas: [p.join(" ")], size };
+    let melhor = null;
+    for (let i = 1; i < p.length; i++) {
+      const a = p.slice(0, i).join(" "), b = p.slice(i).join(" "), m = Math.max(w(a), w(b));
+      if (m <= max && (!melhor || m < melhor.m)) melhor = { m, linhas: [a, b] };
+    }
+    if (melhor) return { linhas: melhor.linhas, size };
+  }
+  return { linhas: linhasDe(c, p.join(" "), max), size: tamanhos[tamanhos.length - 1] };
+}
+function linhasDe(c, texto, max) {
+  const linhas = []; let atual = "";
+  for (const x of texto.split(/\s+/).filter(Boolean)) {
+    const teste = atual ? atual + " " + x : x;
+    if (c.measureText(teste).width > max && atual) { linhas.push(atual); atual = x; } else atual = teste;
+  }
+  if (atual) linhas.push(atual);
+  return linhas;
+}
+function fundo(c, t) {
+  c.textBaseline = "alphabetic";
+  c.fillStyle = "#1b1533"; c.fillRect(0, 0, W, W);
+  c.fillStyle = t.tr; c.beginPath(); c.arc(990, 80, 300, 0, Math.PI * 2); c.fill();
+  c.fillStyle = t.bl; c.beginPath(); c.arc(-11, 1025, 269, 0, Math.PI * 2); c.fill();
+}
+function pilulaSelo(c, selo, t, y) {
+  c.font = "700 22px Poppins";
+  const nome = selo.nome.toUpperCase(), pw = largEsp(c, nome, 1.5) + 52;
+  c.fillStyle = t.accent; rrect(c, 540 - pw / 2, y, pw, 58, 29); c.fill();
+  c.fillStyle = "#1b1533"; espacado(c, nome, 540, y + 37, 1.5);
+}
+
+// As duas imagens são desenhadas a partir de dados, não da tela: o editor passa o que está nos
+// campos, e as abas Instagram e Docs passam um post salvo.
+// d = { selo, titulo, texto, fonte, criadoEm, foto (Image|null), foco: {x, y}, zoom }
+function dadosEditor() {
+  return {
+    selo: $("selo").value, titulo: Cerebro.limpar($("igTitulo").value), texto: Cerebro.limpar($("igTexto").value),
+    fonte: Cerebro.limpar($("fonte").value), criadoEm: estado.criadoEm, foto: estado.foto, foco: estado.foco, zoom: estado.zoom,
+  };
+}
+function dadosDoPost(p, foto) {
+  return {
+    selo: texto(p.selo), titulo: texto(p.instagram?.titulo), texto: texto(p.instagram?.texto), fonte: texto(p.fonte),
+    criadoEm: p.criadoEm, foto, foco: p.foco && typeof p.foco.x === "number" ? p.foco : { x: 0.5, y: 0.5 }, zoom: Number(p.zoom) || 1,
+  };
+}
+
+// Imagem 1: capa (post único, PNGs 1 a 10)
+function desenharCapa(c, d) {
+  const selo = seloDe(d.selo), t = selo.t;
+  fundo(c, t);
+  if (LOGOS.rt) c.drawImage(LOGOS.rt, 50, 40, 200, 102);
+  if (LOGOS.espro) c.drawImage(LOGOS.espro, 896, 43, 134, 34);
+  pilulaSelo(c, selo, t, 206);
+  c.save(); rrect(c, CARD.x, CARD.y, CARD.w, CARD.h, CARD.r); c.clip();
+  c.fillStyle = t.card; c.fillRect(CARD.x, CARD.y, CARD.w, CARD.h);
+  if (d.foto) {
+    const f = d.foto, esc = Math.max(CARD.w / f.width, CARD.h / f.height) * d.zoom;
+    const dw = f.width * esc, dh = f.height * esc;
+    c.drawImage(f, CARD.x - (dw - CARD.w) * d.foco.x, CARD.y - (dh - CARD.h) * d.foco.y, dw, dh);
+  } else {
+    c.strokeStyle = "#fff"; c.lineWidth = 4; c.lineJoin = "round";
+    rrect(c, 468, 411, 144, 144, 16); c.stroke();
+    c.beginPath(); c.arc(504, 447, 12, 0, Math.PI * 2); c.stroke();
+    c.beginPath(); c.moveTo(486, 528); c.lineTo(522, 460); c.lineTo(558, 528); c.closePath(); c.stroke();
+    c.beginPath(); c.moveTo(530, 528); c.lineTo(558, 480); c.lineTo(585, 528); c.stroke();
+    c.fillStyle = "#fff"; c.font = "700 16px Poppins"; espacado(c, "ADICIONE A IMAGEM AQUI", 540, 637, 1.5);
+  }
+  c.restore();
+  c.strokeStyle = t.accent; c.lineWidth = 2; rrect(c, CARD.x, CARD.y, CARD.w, CARD.h, CARD.r); c.stroke();
+  const { linhas, size } = quebrar(c, d.titulo || "Título chamativo da matéria aqui", [40, 36], 640, 0.62);
+  c.font = `700 ${size}px Poppins`; c.fillStyle = "#fff"; c.textAlign = "center";
+  const lh = size * 1.2, base = 831 - ((Math.min(linhas.length, 2) - 1) * lh) / 2;
+  linhas.slice(0, 3).forEach((l, i) => c.fillText(l, 540, base + i * lh));
+  c.font = "italic 400 19px Poppins"; c.fillStyle = "#c8bfea"; c.fillText(selo.tag, 540, 904);
+  c.fillStyle = t.accent; rrect(c, 503, 929, 74, 3, 1.5); c.fill();
+  c.font = "700 24px Poppins"; c.fillStyle = "#fff"; c.fillText("@revistateen_", 540, 975);
+}
+
+// Imagem 2: texto do Instagram (molde das lâminas do carrossel, PNGs 11 a 15)
+// Devolve se o texto coube na imagem.
+function desenharTexto(c, d) {
+  const selo = seloDe(d.selo), t = selo.t;
+  fundo(c, t);
+  if (LOGOS.rt) c.drawImage(LOGOS.rt, 44.7, 37.9, 177.2, 90);
+  c.fillStyle = "#fff"; rrect(c, 935, 46, 90, 43, 21.5); c.fill();
+  c.fillStyle = "#1b1533"; c.font = "700 17px Poppins"; c.textAlign = "center"; c.fillText("2/2", 980, 74);
+  pilulaSelo(c, selo, t, 150);
+
+  const tit = quebrar(c, d.titulo || "Título chamativo da matéria aqui", [44, 40], 860, 1);
+  c.font = `700 ${tit.size}px Poppins`; c.fillStyle = "#fff"; c.textAlign = "center";
+  const lhT = tit.size * 1.2;
+  tit.linhas.slice(0, 3).forEach((l, i) => c.fillText(l, 540, 292 + i * lhT));
+  let y = 292 + (Math.min(tit.linhas.length, 3) - 1) * lhT;
+  c.font = "400 19px Poppins"; c.fillStyle = "#c8bfea"; c.fillText("Data: " + fmtData(d.criadoEm), 540, y + 44);
+  c.fillStyle = t.accent; rrect(c, 503, y + 70, 74, 3, 1.5); c.fill();
+
+  // Corpo: maior tamanho que cabe entre o divisor e a linha da fonte
+  const topo = y + 118, fim = 900;
+  const paragrafos = (d.texto || "").split(/\n+/).map((p) => p.trim()).filter(Boolean);
+  let escolha = null;
+  for (let size = 34; size >= 22; size -= 2) {
+    c.font = `400 ${size}px Poppins`;
+    const blocos = paragrafos.map((p) => linhasDe(c, p, 860));
+    const lh = size * 1.5, gap = size * 0.7;
+    const altura = blocos.reduce((a, b) => a + b.length * lh, 0) + gap * Math.max(0, blocos.length - 1);
+    escolha = { size, blocos, lh, gap, altura };
+    if (altura <= fim - topo) break;
+  }
+  const cabe = !escolha || escolha.altura <= fim - topo;
+  if (escolha) {
+    c.font = `400 ${escolha.size}px Poppins`; c.fillStyle = "#ece8fb";
+    let yy = topo + Math.max(0, (fim - topo - escolha.altura) / 2) + escolha.size;
+    for (const b of escolha.blocos) { for (const l of b) { c.fillText(l, 540, yy); yy += escolha.lh; } yy += escolha.gap; }
+  }
+  const fonte = "Fonte original: " + (d.fonte || "...");
+  let fs = 20; c.font = `italic 400 ${fs}px Poppins`;
+  while (c.measureText(fonte).width > 900 && fs > 14) { fs--; c.font = `italic 400 ${fs}px Poppins`; }
+  c.fillStyle = "#c8bfea"; c.fillText(fonte, 540, 950);
+  c.fillStyle = "#78708f"; c.beginPath(); c.arc(527, 1020, 4, 0, Math.PI * 2); c.fill();
+  c.fillStyle = t.accent; c.beginPath(); c.arc(553, 1020, 6, 0, Math.PI * 2); c.fill();
+  return cabe;
+}
+const redesenharCapa = () => desenharCapa(ctxCapa, dadosEditor());
+
+// Desenha as duas imagens de um post em canvas novos, no tamanho final (1080) ou numa miniatura.
+function imagensDoPost(d, lado = W) {
+  return [desenharCapa, desenharTexto].map((fn) => {
+    const cv = document.createElement("canvas"); cv.width = cv.height = lado;
+    const c = cv.getContext("2d"); c.setTransform(lado / W, 0, 0, lado / W, 0, 0); fn(c, d);
+    return cv;
+  });
+}
+
+// ---------- Editor ----------
+function saidaAtual() {
+  return {
+    instagram: { titulo: Cerebro.limpar($("igTitulo").value), texto: Cerebro.limpar($("igTexto").value), legenda: Cerebro.limpar($("igLegenda").value), hashtags: Cerebro.normalizarHashtags($("igHashtags").value) },
+    site: { titulo: Cerebro.limpar($("siteTitulo").value), paragrafos: ["p1", "p2", "p3"].map((id) => Cerebro.limpar($(id).value)) },
+  };
+}
+function textoDocs(p) {
+  const d = fmtData(p.criadoEm);
+  return [
+    `INSTAGRAM ${p.instagram.titulo} Data: ${d}`, p.instagram.texto, `Fonte original: ${p.fonte}`,
+    `SITE ${p.site.titulo} Data: ${d}`, ...p.site.paragrafos, `Fonte original: ${p.fonte}`,
+    `Autor Espro: ${p.autor}`,
+  ].join("\n");
+}
+let falhasAtuais = [];
+function atualizar() {
+  if (estado.hashtagsAuto !== null && $("igHashtags").value === estado.hashtagsAuto) {
+    estado.hashtagsAuto = Cerebro.hashtags(Cerebro.limpar($("igTitulo").value), Cerebro.limpar($("igTexto").value), $("selo").value);
+    $("igHashtags").value = estado.hashtagsAuto;
+  }
+  const d = dadosEditor();
+  textoCabe = desenharTexto(ctxTexto, d); desenharCapa(ctxCapa, d);
+  const s = saidaAtual();
+  falhasAtuais = verificar(s, $("fonte").value, $("autor").value);
+  $("violations").replaceChildren(...falhasAtuais.map((f) => el("div", "", f)));
+  const ok = falhasAtuais.length === 0;
+  $("btnPng").disabled = $("btnPngCapa").disabled = $("btnPngTexto").disabled = !ok;
+  $("btnSalvar").disabled = !ok || !conectado || salvando;
+  const n = s.instagram.titulo.length;
+  $("cntTitulo").textContent = n + " / 48"; $("cntTitulo").classList.toggle("bad", n > 48);
+  $("btnSalvar").textContent = estado.id ? "Salvar alterações" : "Salvar no histórico";
+  mostrarEditando();
+}
+function mostrarEditando() {
+  const box = $("editando");
+  box.hidden = !estado.id;
+  if (!estado.id) return;
+  const b = el("b", "", "Editando post salvo em " + fmtData(estado.criadoEm));
+  const novo = el("button", "small", "Começar outro post"); novo.type = "button"; novo.onclick = novoPost;
+  box.replaceChildren(b, novo);
+}
+function preencher(s) {
+  $("igTitulo").value = Cerebro.limpar(s.instagram?.titulo); $("igTexto").value = Cerebro.limpar(s.instagram?.texto);
+  // Post antigo vem sem legenda: monta a padrão a partir do título e do texto.
+  $("igLegenda").value = Cerebro.limpar(s.instagram?.legenda) || Cerebro.legenda(s.instagram?.titulo || "", s.instagram?.texto || "");
+  // Hashtags salvas valem como estão; sem elas, o app sugere e continua sugerindo até alguém editar o campo.
+  const salvas = texto(s.instagram?.hashtags);
+  estado.hashtagsAuto = salvas ? null : "";
+  $("igHashtags").value = salvas ? Cerebro.normalizarHashtags(salvas) : "";
+  $("siteTitulo").value = Cerebro.limpar(s.site?.titulo);
+  const ps = Array.isArray(s.site?.paragrafos) ? s.site.paragrafos : [];
+  ["p1", "p2", "p3"].forEach((id, i) => ($(id).value = Cerebro.limpar(ps[i])));
+  atualizar();
+}
+function mostrar(vista) {
+  estado.vista = vista;
+  cvCapa.hidden = vista !== "capa"; cvTexto.hidden = vista !== "texto";
+  $("verCapa").setAttribute("aria-pressed", vista === "capa"); $("verTexto").setAttribute("aria-pressed", vista === "texto");
+  $("tools").hidden = vista !== "capa" || !estado.foto;
+}
+$("verCapa").onclick = () => mostrar("capa");
+$("verTexto").onclick = () => mostrar("texto");
+function limparFoto() {
+  Object.assign(estado, { foto: null, fotoBlob: null, fotoDataUrl: null, foco: { x: 0.5, y: 0.5 }, zoom: 1 });
+  $("zoom").value = 1; $("thumb").style.backgroundImage = ""; $("thumb").textContent = "+"; $("foto").value = "";
+  cvCapa.classList.remove("can-drag"); mostrar(estado.vista);
+}
+function novoPost() {
+  Object.assign(estado, { id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, fotoMudou: false });
+  limparFoto();
+  for (const id of ["tituloOriginal", "artigo", "fonte", "igTitulo", "igTexto", "igLegenda", "igHashtags", "siteTitulo", "p1", "p2", "p3"]) $(id).value = "";
+  estado.hashtagsAuto = "";
+  $("banner").hidden = true; status(""); $("statusSalvar").textContent = "";
+  atualizar(); $("tituloOriginal").focus();
+}
+
+// ---------- Cérebro local (cerebro.js): instantâneo, sem IA, sem custo ----------
+function montar() {
+  const titulo = $("tituloOriginal").value.trim(), artigo = $("artigo").value.trim();
+  if (!titulo || !artigo) { status("Preencha o título original e o texto do artigo.", true); return; }
+  const r = Cerebro.gerar({ titulo, artigo });
+  $("banner").hidden = true;
+  preencher(r);
+  const msg = el("span", "", (r.avisos.length ? r.avisos.join(" ") + " " : "") + "Pronto. Revise o texto: as frases são as do artigo, escolhidas pelo cérebro.");
+  const box = [msg];
+  if (r.seloSugerido && r.seloSugerido !== $("selo").value) {
+    const usar = el("button", "small", "Usar selo " + r.seloSugerido); usar.type = "button";
+    usar.onclick = () => { $("selo").value = r.seloSugerido; atualizar(); usar.remove(); };
+    box.push(" ", usar);
+  }
+  $("status").classList.remove("err"); $("status").replaceChildren(...box);
+}
+function status(t, err) { $("status").textContent = t; $("status").classList.toggle("err", !!err); }
+
+// ---------- Foto: upload, arrastar para enquadrar, zoom ----------
+// Versão reduzida (JPEG, até 1080 px) é a que vai para o histórico: cabe num documento do banco.
+function reduzir(i) {
+  let lado = 1080, q = 0.82, url;
+  do {
+    const k = Math.min(1, lado / Math.max(i.width, i.height));
+    const c = document.createElement("canvas"); c.width = Math.round(i.width * k); c.height = Math.round(i.height * k);
+    c.getContext("2d").drawImage(i, 0, 0, c.width, c.height);
+    url = c.toDataURL("image/jpeg", q);
+    if (q > 0.55) q -= 0.08; else lado -= 160;
+  } while (url.length > 230000 && lado > 400);
+  return url;
+}
+async function usarFoto(src, blob, dataUrl) {
+  const i = await img(src);
+  if (!i) { status("Não consegui abrir essa foto.", true); return false; }
+  Object.assign(estado, { foto: i, fotoBlob: blob, fotoDataUrl: dataUrl || reduzir(i) });
+  $("thumb").style.backgroundImage = `url("${src}")`; $("thumb").textContent = "";
+  cvCapa.classList.add("can-drag"); mostrar("capa"); atualizar();
+  return true;
+}
+async function carregarFoto(file) {
+  if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type)) { status("Use uma foto em JPG, PNG ou WebP.", true); return; }
+  estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1;
+  if (await usarFoto(URL.createObjectURL(file), file)) { estado.fotoMudou = true; status(""); }
+}
+$("foto").addEventListener("change", (e) => carregarFoto(e.target.files[0]));
+const drop = $("drop");
+drop.addEventListener("dragover", (e) => { e.preventDefault(); drop.classList.add("over"); });
+drop.addEventListener("dragleave", () => drop.classList.remove("over"));
+drop.addEventListener("drop", (e) => { e.preventDefault(); drop.classList.remove("over"); carregarFoto(e.dataTransfer.files[0]); });
+
+let arrasto = null;
+cvCapa.addEventListener("pointerdown", (e) => {
+  if (!estado.foto) return;
+  arrasto = { x: e.clientX, y: e.clientY, foco: { ...estado.foco } };
+  cvCapa.setPointerCapture(e.pointerId); cvCapa.classList.add("dragging");
+});
+cvCapa.addEventListener("pointermove", (e) => {
+  if (!arrasto) return;
+  const k = W / cvCapa.getBoundingClientRect().width, f = estado.foto;
+  const esc = Math.max(CARD.w / f.width, CARD.h / f.height) * estado.zoom;
+  const sobraX = f.width * esc - CARD.w, sobraY = f.height * esc - CARD.h;
+  const cl = (v) => Math.min(1, Math.max(0, v));
+  estado.foco = {
+    x: sobraX > 0 ? cl(arrasto.foco.x - ((e.clientX - arrasto.x) * k) / sobraX) : 0.5,
+    y: sobraY > 0 ? cl(arrasto.foco.y - ((e.clientY - arrasto.y) * k) / sobraY) : 0.5,
+  };
+  redesenharCapa();
+});
+const soltar = () => { arrasto = null; cvCapa.classList.remove("dragging"); };
+cvCapa.addEventListener("pointerup", soltar); cvCapa.addEventListener("pointercancel", soltar);
+$("zoom").addEventListener("input", (e) => { estado.zoom = Number(e.target.value); redesenharCapa(); });
+$("btnCentro").addEventListener("click", () => { estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1; redesenharCapa(); });
+
+// ---------- Baixar e copiar ----------
+function toast(t) { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (e.hidden = true), 2800); }
+const blobDe = (cv, tipo, q) => new Promise((ok) => cv.toBlob(ok, tipo, q));
+const nomeBase = (d) => "revista-teen-" + slug(d.selo) + "-" + fmtData(d.criadoEm).split("/").reverse().join("-") + "-" + slug(d.titulo);
+
+// No celular, o compartilhar do sistema tem "Salvar imagem", que leva as fotos para a galeria,
+// de onde o Instagram pega. No computador (ou se o compartilhar falhar), download comum.
+async function salvarArquivos(arquivos) {
+  const files = arquivos.map(([nome, blob]) => new File([blob], nome, { type: blob.type }));
+  if (matchMedia("(pointer: coarse)").matches && navigator.canShare?.({ files })) {
+    try { await navigator.share({ files }); return true; }
+    catch (e) { if (e?.name === "AbortError") return false; }
+  }
+  for (const f of files) {
+    const a = document.createElement("a"); a.href = URL.createObjectURL(f); a.download = f.name;
+    document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  }
+  return true;
+}
+async function baixarDuas(d, capa, texto2) {
+  const base = nomeBase(d);
+  const [b1, b2] = await Promise.all([blobDe(capa, "image/png"), blobDe(texto2, "image/png")]);
+  if (await salvarArquivos([[base + "-1-capa.png", b1], [base + "-2-texto.png", b2]])) toast("As 2 imagens foram salvas. No Instagram, poste as duas juntas, capa primeiro.");
+}
+// Uma imagem só: 1 = capa, 2 = texto.
+async function baixarUma(d, cv, n) {
+  const ok = await salvarArquivos([[nomeBase(d) + (n === 1 ? "-1-capa.png" : "-2-texto.png"), await blobDe(cv, "image/png")]]);
+  if (ok) toast(n === 1 ? "Imagem 1 (capa) salva." : "Imagem 2 (texto) salva.");
+}
+$("btnPng").addEventListener("click", () => baixarDuas(dadosEditor(), cvCapa, cvTexto));
+$("btnPngCapa").addEventListener("click", () => { mostrar("capa"); baixarUma(dadosEditor(), cvCapa, 1); });
+$("btnPngTexto").addEventListener("click", () => { mostrar("texto"); baixarUma(dadosEditor(), cvTexto, 2); });
+
+// ---------- Legenda do Instagram ----------
+// Legenda + fonte + hashtags. Fonte e #revistateen são garantidas pelo código, nunca dependem de alguém lembrar.
+const legendaFinal = (legenda, fonte, tags) => [Cerebro.limpar(legenda), fonte ? "Fonte original: " + Cerebro.limpar(fonte) : "", Cerebro.normalizarHashtags(tags)].filter(Boolean).join("\n\n");
+async function copiarLegenda(legenda, fonte, tags) {
+  if (!Cerebro.limpar(legenda)) { toast("A legenda está vazia."); return; }
+  try { await navigator.clipboard.writeText(legendaFinal(legenda, fonte, tags)); toast("Legenda copiada, com a fonte e as hashtags no fim."); }
+  catch { toast("Não consegui copiar aqui. Selecione a legenda e use Ctrl+C."); }
+}
+$("btnLegenda").addEventListener("click", () => copiarLegenda($("igLegenda").value, $("fonte").value, $("igHashtags").value));
+
+// ---------- Copiar para o Docs: foto da notícia + texto, colável no Google Docs ----------
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+function htmlDocs(p, foto) {
+  const linhas = textoDocs(p).split("\n").map((l) => esc(l).replace(/^(INSTAGRAM|SITE)\b/, "<b>$1</b>"));
+  return (ehJpegDataUrl(foto) ? `<p><img src="${foto}" width="480" alt=""></p>` : "") + `<p>${linhas.join("<br>")}</p>`;
+}
+// `montagem` é uma promessa de {html, plano}: o navegador só aceita escrever na área de
+// transferência dentro do clique, e as fotos ainda estão sendo lidas do banco.
+function copiarRico(montagem, ok) {
+  const tipo = (k, mime) => montagem.then((m) => new Blob([m[k]], { type: mime }));
+  let item = null;
+  try { item = new ClipboardItem({ "text/html": tipo("html", "text/html"), "text/plain": tipo("plano", "text/plain") }); } catch {}
+  const soTexto = () => montagem.then((m) => navigator.clipboard.writeText(m.plano))
+    .then(() => toast("Copiei só o texto: aqui não deu para levar a foto junto. Use Baixar foto."))
+    .catch(() => toast("Não consegui copiar aqui. Use Baixar foto e copie o texto do card."));
+  if (!item || !navigator.clipboard?.write) return soTexto();
+  return navigator.clipboard.write([item]).then(() => toast(ok)).catch(soTexto);
+}
+// Fotos ficam numa chave à parte (são grandes) e só são lidas quando alguém precisa delas.
+const API = "/api/operacao";
+const urlImagem = (p, tipo) => `${API}?img=${tipo}&id=${p.id}&v=${encodeURIComponent(p.atualizadoEm || "")}`;
+const lerDataUrl = (b) => new Promise((ok) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = () => ok(null); r.readAsDataURL(b); });
+const fotoCache = new Map();
+function fotoDe(p) {
+  if (!p.temFoto) return Promise.resolve(null);
+  const k = p.id + p.atualizadoEm;
+  if (!fotoCache.has(k)) fotoCache.set(k, fetch(urlImagem(p, "foto")).then((r) => (r.ok ? r.blob() : null)).then((b) => (b ? lerDataUrl(b) : null))
+    .then((u) => { if (!ehJpegDataUrl(u)) fotoCache.delete(k); return ehJpegDataUrl(u) ? u : null; }).catch(() => { fotoCache.delete(k); return null; }));
+  return fotoCache.get(k);
+}
+const postLimpo = (p) => ({ ...p, autor: texto(p.autor), fonte: texto(p.fonte), instagram: { titulo: texto(p.instagram?.titulo), texto: texto(p.instagram?.texto), legenda: texto(p.instagram?.legenda) || Cerebro.legenda(texto(p.instagram?.titulo), texto(p.instagram?.texto)),
+  hashtags: texto(p.instagram?.hashtags) || Cerebro.hashtags(texto(p.instagram?.titulo), texto(p.instagram?.texto), seloDe(texto(p.selo)).nome) }, site: { titulo: texto(p.site?.titulo), paragrafos: (Array.isArray(p.site?.paragrafos) ? p.site.paragrafos : []).map(texto) } });
+function copiarParaDocs(lista) {
+  const montagem = (async () => {
+    const partes = [], planos = [];
+    let secao = null;
+    for (const p of lista) {
+      const q = postLimpo(p), ed = texto(p.editoria) || "Editoria a definir";
+      if (lista.length > 1 && ed !== secao) { secao = ed; partes.push(`<h2>${esc(ed.toUpperCase())}</h2>`); planos.push("# " + ed.toUpperCase()); }
+      let foto = null;
+      try { foto = await fotoDe(p); } catch {}
+      partes.push(htmlDocs(q, foto)); planos.push(textoDocs(q));
+    }
+    return { html: partes.join(""), plano: planos.join("\n\n") };
+  })();
+  return copiarRico(montagem, lista.length > 1 ? lista.length + " posts copiados com foto. Cole no Google Docs." : "Copiado com a foto. Cole no Google Docs.");
+}
+
+// ---------- Histórico e filas: banco da equipe, pela rota /api/operacao do site ----------
+let conectado = false, posts = [], salvando = false, filtroSite = "pendente", filtroIg = "pendente";
+async function api(metodo, corpo, query = "") {
+  const r = await fetch(API + query, { method: metodo, headers: corpo ? { "Content-Type": "application/json" } : {}, body: corpo ? JSON.stringify(corpo) : undefined });
+  if (r.status === 401) { pedirSenha(); throw { code: "senha" }; }
+  if (!r.ok) throw { code: r.status === 400 ? "dados" : "http" };
+  return r.json();
+}
+const msgDb = (e) => e?.code === "senha" ? "Sua sessão acabou. Entre de novo com a senha da equipe."
+  : e?.code === "dados" ? "O banco recusou o post: algum campo passou do tamanho. Encurte o texto e tente de novo."
+  : "Não consegui falar com o banco agora. Tente de novo em instantes.";
+function trocarPost(salvo) {
+  const k = posts.findIndex((x) => x.id === salvo.id);
+  if (k >= 0) posts[k] = salvo; else posts.unshift(salvo);
+  renderListas();
+}
+async function carregar() {
+  try { posts = (await api("GET")).posts; conectado = true; renderListas(); atualizar(); }
+  catch (e) { if (e?.code !== "senha") toast(msgDb(e)); }
+}
+
+$("btnSalvar").addEventListener("click", async () => {
+  if (!conectado || salvando) return;
+  salvando = true; atualizar(); $("statusSalvar").textContent = "Salvando...";
+  const agora = new Date().toISOString();
+  const selo = seloDe($("selo").value);
+  const mini = document.createElement("canvas"); mini.width = mini.height = 320;
+  mini.getContext("2d").drawImage(cvCapa, 0, 0, 320, 320);
+  const post = {
+    criadoEm: estado.criadoEm || agora,
+    autor: $("autor").value.trim(), selo: selo.nome, editoria: selo.ed, fonte: $("fonte").value.trim(),
+    tituloOriginal: $("tituloOriginal").value.trim(), artigo: $("artigo").value.trim().slice(0, 20000),
+    ...saidaAtual(), foco: estado.foco, zoom: estado.zoom, temFoto: !!estado.fotoDataUrl,
+    siteStatus: estado.siteStatus, publicadoEm: estado.publicadoEm, igStatus: estado.igStatus, igPublicadoEm: estado.igPublicadoEm,
+  };
+  const corpo = { id: estado.id || undefined, post, thumb: mini.toDataURL("image/jpeg", 0.8) };
+  if (estado.fotoMudou || !estado.id) corpo.foto = estado.fotoDataUrl || null;
+  try {
+    const salvo = await api("PUT", corpo);
+    Object.assign(estado, { id: salvo.id, criadoEm: salvo.criadoEm, fotoMudou: false });
+    trocarPost(salvo);
+    $("statusSalvar").textContent = "Salvo. Está no Histórico, no Instagram e no Docs.";
+  } catch (e) {
+    $("statusSalvar").textContent = msgDb(e);
+  } finally { salvando = false; atualizar(); }
+});
+
+async function abrir(id) {
+  let p;
+  try { p = await api("GET", null, "?id=" + id); } catch (e) { toast(msgDb(e)); return; }
+  $("tituloOriginal").value = p.tituloOriginal || ""; $("artigo").value = p.artigo || "";
+  $("fonte").value = p.fonte || ""; $("selo").value = seloDe(p.selo).nome; $("autor").value = p.autor || $("autor").value;
+  Object.assign(estado, { id, criadoEm: p.criadoEm, siteStatus: p.siteStatus || "pendente", publicadoEm: p.publicadoEm || null,
+    igStatus: p.igStatus || "pendente", igPublicadoEm: p.igPublicadoEm || null, fotoMudou: false });
+  limparFoto();
+  estado.foco = p.foco && typeof p.foco.x === "number" ? { x: p.foco.x, y: p.foco.y } : { x: 0.5, y: 0.5 };
+  estado.zoom = Number(p.zoom) || 1; $("zoom").value = estado.zoom;
+  $("banner").hidden = true; status(""); $("statusSalvar").textContent = "";
+  preencher(p); aba("novo"); window.scrollTo({ top: 0 });
+  if (p.temFoto) {
+    const u = await fotoDe(p);
+    if (u && estado.id === id) await usarFoto(u, dataUrlParaBlob(u), u);
+    else if (!u) status("Não consegui carregar a foto deste post.", true);
+  }
+}
+async function excluir(id) {
+  try { await api("DELETE", { id }); posts = posts.filter((p) => p.id !== id); renderListas(); toast("Post excluído.");
+    if (estado.id === id) novoPost();
+  } catch (e) { toast(msgDb(e)); }
+}
+async function marcarSite(id, publicado) {
+  try {
+    trocarPost(await api("PATCH", { id, site: publicado ? "publicado" : "pendente" }));
+    if (estado.id === id) estado.siteStatus = publicado ? "publicado" : "pendente";
+    toast(publicado ? "Marcado como publicado no site." : "Voltou para Pendentes.");
+  } catch (e) { toast(msgDb(e)); }
+}
+async function marcarIg(id, publicado) {
+  try {
+    trocarPost(await api("PATCH", { id, ig: publicado ? "publicado" : "pendente" }));
+    if (estado.id === id) estado.igStatus = publicado ? "publicado" : "pendente";
+    toast(publicado ? "Marcado como publicado no Instagram." : "Voltou para Para postar.");
+  } catch (e) { toast(msgDb(e)); }
+}
+async function baixarFoto(p) {
+  const u = await fotoDe(p);
+  if (!u) { toast("Não consegui pegar a foto deste post."); return; }
+  if (await salvarArquivos([[slug(p.site?.titulo || p.instagram?.titulo) + ".jpg", dataUrlParaBlob(u)]])) toast("Foto salva.");
+}
+function confirmar(btn, texto, acao) {
+  if (btn.dataset.armado) { acao(); return; }
+  const original = btn.textContent; btn.dataset.armado = "1"; btn.textContent = texto;
+  setTimeout(() => { delete btn.dataset.armado; btn.textContent = original; }, 4000);
+}
+const botao = (txt, cls, fn) => { const b = el("button", "small " + (cls || ""), txt); b.type = "button"; b.onclick = fn; return b; };
+const miniatura = (p) => { const i = el("img"); i.alt = "Capa do post: " + (p.instagram?.titulo || ""); i.loading = "lazy"; i.src = urlImagem(p, "thumb"); return i; };
+const texto = (v) => (typeof v === "string" ? v : "");
+
+function renderHist() {
+  const q = $("busca").value.trim().toLowerCase();
+  const lista = posts.filter((p) => !q || [p.instagram?.titulo, p.site?.titulo, p.autor, p.selo].some((x) => texto(x).toLowerCase().includes(q)));
+  $("listaHist").replaceChildren(...lista.map((p) => {
+    const card = el("article", "card");
+    const body = el("div", "body");
+    const meta = el("div", "meta");
+    meta.append(el("span", "tag", texto(p.selo)), el("span", "", fmtData(p.criadoEm)), el("span", "", texto(p.autor)));
+    body.append(meta, el("h3", "", texto(p.instagram?.titulo)));
+    const st = el("div", "meta");
+    st.append(p.igStatus === "publicado" ? el("span", "tag ok", "No Instagram") : el("span", "tag soft", "Instagram pendente"),
+      p.siteStatus === "publicado" ? el("span", "tag ok", "No site") : el("span", "tag soft", "Site pendente"));
+    body.append(st);
+    const foot = el("div", "foot");
+    const ex = botao("Excluir", "danger", () => confirmar(ex, "Confirmar exclusão", () => excluir(p.id)));
+    foot.append(botao("Abrir", "", () => abrir(p.id)), ex);
+    card.append(miniatura(p), body, foot);
+    return card;
+  }));
+  const vazio = $("vazioHist");
+  vazio.hidden = lista.length > 0;
+  vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : q ? "Nada encontrado." : "Nenhum post salvo ainda."),
+    !conectado ? "Confira a internet e recarregue a página." : q ? "Tente outro termo." : "Trate um artigo na aba Novo post e clique em Salvar no histórico.");
+}
+// ---------- Aba Instagram ----------
+// A capa usa a miniatura salva; a imagem 2 não depende da foto, então é desenhada na hora.
+function renderIg() {
+  const lista = posts.filter((p) => (p.igStatus === "publicado" ? "publicado" : "pendente") === filtroIg);
+  $("listaIg").replaceChildren(...lista.map((p) => {
+    const card = el("article", "igcard");
+    const par = el("div", "igpar");
+    const [, mini2] = imagensDoPost(dadosDoPost(p, null), 360);
+    mini2.setAttribute("aria-label", "Imagem 2 do post: " + texto(p.instagram?.titulo));
+    par.append(miniatura(p), mini2);
+    const meta = el("div", "meta");
+    meta.append(el("span", "tag", texto(p.selo)), el("span", "", fmtData(p.criadoEm)), el("span", "", texto(p.autor)));
+    if (p.igStatus === "publicado" && p.igPublicadoEm) meta.append(el("span", "tag ok", "Publicado em " + fmtData(p.igPublicadoEm)));
+    const acoes = el("div", "actions");
+    // Monta as imagens do post salvo (a capa precisa da foto, que mora em fotos/<id>).
+    const prontas = async () => {
+      const u = await fotoDe(p);
+      const d = dadosDoPost(p, u ? await img(u) : null);
+      return [d, ...imagensDoPost(d)];
+    };
+    const acao = (rotulo, cls, fn) => {
+      const b = botao(rotulo, cls, async () => {
+        b.disabled = true;
+        try { const [d, capa, txt] = await prontas(); await fn(d, capa, txt); }
+        catch (e) { toast(msgDb(e)); }
+        finally { b.disabled = false; }
+      });
+      return b;
+    };
+    acoes.append(
+      acao("Baixar as 2 imagens", "primary", (d, capa, txt) => baixarDuas(d, capa, txt)),
+      acao("Baixar imagem 1", "", (d, capa) => baixarUma(d, capa, 1)),
+      acao("Baixar imagem 2", "", (d, capa, txt) => baixarUma(d, txt, 2)),
+      p.igStatus === "publicado" ? botao("Voltar para Para postar", "", () => marcarIg(p.id, false)) : botao("Marcar como publicado", "", () => marcarIg(p.id, true)),
+      botao("Abrir no editor", "", () => abrir(p.id)),
+    );
+    const { legenda: leg, hashtags: tags } = postLimpo(p).instagram;
+    const legEl = el("p", "leg", legendaFinal(leg, texto(p.fonte), tags));
+    acoes.append(botao("Copiar legenda", "", () => copiarLegenda(leg, texto(p.fonte), tags)));
+    card.append(par, meta, el("h3", "", texto(p.instagram?.titulo)), legEl, acoes);
+    return card;
+  }));
+  const vazio = $("vazioIg");
+  vazio.hidden = lista.length > 0;
+  vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : filtroIg === "pendente" ? "Nada esperando para ir ao Instagram." : "Nenhum post marcado como publicado no Instagram."),
+    !conectado ? "Confira a internet e recarregue a página." : filtroIg === "pendente" ? "Todo post salvo aparece aqui até alguém marcar como publicado." : "Depois de postar, marque o post como publicado na lista Para postar.");
+}
+
+// ---------- Aba Docs: a pauta do site, no formato do Docs da equipe ----------
+const SECOES = ["Entretenimento e Famosos", "Moda e Beleza", "Educação e Cultura", "Editoria a definir"];
+function docsVisiveis() {
+  const lista = posts.filter((p) => (p.siteStatus === "publicado" ? "publicado" : "pendente") === filtroSite);
+  const ordem = (p) => { const k = SECOES.indexOf(texto(p.editoria) || "Editoria a definir"); return k < 0 ? SECOES.length : k; };
+  return lista.sort((a, b) => ordem(a) - ordem(b) || String(a.criadoEm).localeCompare(String(b.criadoEm)));
+}
+function renderDocs() {
+  const lista = docsVisiveis();
+  const folha = $("docs");
+  folha.hidden = lista.length === 0;
+  $("btnCopiarTudo").disabled = lista.length === 0;
+  const filhos = [];
+  let secao = null;
+  for (const p of lista) {
+    const ed = texto(p.editoria) || "Editoria a definir";
+    if (ed !== secao) { secao = ed; filhos.push(el("h2", "secdoc", ed)); }
+    const q = postLimpo(p);
+    const post = el("article", "docpost");
+    const foto = el("img"); foto.alt = "Foto da notícia: " + q.site.titulo; foto.hidden = true;
+    if (p.temFoto) fotoDe(p).then((u) => { if (u) { foto.src = u; foto.hidden = false; } }).catch(() => {});
+    const bloco = el("div", "bloco");
+    textoDocs(q).split("\n").forEach((l, k) => {
+      if (k) bloco.append("\n");
+      const m = l.match(/^(INSTAGRAM|SITE)\b(.*)$/);
+      if (m) bloco.append(el("b", "", m[1]), m[2]); else bloco.append(l);
+    });
+    const meta = el("div", "meta");
+    meta.append(el("span", "", "Selo " + texto(p.selo)),
+      p.siteStatus === "publicado" ? el("span", "tag ok", "Publicado no site em " + fmtData(p.publicadoEm)) : el("span", "tag soft", "Ainda não está no site"));
+    const acoes = el("div", "actions");
+    acoes.append(
+      botao("Copiar para o Docs", "", () => copiarParaDocs([p])),
+      ...(p.temFoto ? [botao("Baixar foto", "", () => baixarFoto(p))] : []),
+      p.siteStatus === "publicado" ? botao("Voltar para pendente", "", () => marcarSite(p.id, false)) : botao("Marcar como publicado no site", "", () => marcarSite(p.id, true)),
+      botao("Abrir no editor", "", () => abrir(p.id)),
+    );
+    post.append(foto, bloco, meta, acoes);
+    filhos.push(post);
+  }
+  folha.replaceChildren(...filhos);
+  const vazio = $("vazioSite");
+  vazio.hidden = lista.length > 0;
+  vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : filtroSite === "pendente" ? "Nada esperando para ir ao site." : "Nenhum post marcado como publicado no site."),
+    !conectado ? "Confira a internet e recarregue a página." : filtroSite === "pendente" ? "Todo post salvo entra aqui, na seção da editoria dele, até alguém marcar como publicado no site." : "Quando um texto for para o site, marque o post como publicado na lista Pendentes.");
+}
+function renderListas() {
+  $("nHist").textContent = posts.length;
+  $("nIg").textContent = posts.filter((p) => p.igStatus !== "publicado").length;
+  $("nSite").textContent = $("nSitePrev").textContent = posts.filter((p) => p.siteStatus !== "publicado").length;
+  renderHist(); renderIg(); renderSitePrev(); renderDocs();
+}
+$("busca").addEventListener("input", renderHist);
+function filtro(botoes, valor, aplicar) {
+  for (const [id, v] of botoes) $(id).onclick = () => { aplicar(v); for (const [i2, v2] of botoes) $(i2).setAttribute("aria-pressed", v2 === v); renderListas(); };
+}
+filtro([["fPend", "pendente"], ["fPub", "publicado"]], "pendente", (v) => (filtroSite = v));
+filtro([["fIgPend", "pendente"], ["fIgPub", "publicado"]], "pendente", (v) => (filtroIg = v));
+$("btnCopiarTudo").addEventListener("click", () => copiarParaDocs(docsVisiveis()));
+
+// ---------- Aba Site: o post como ele vai ficar no site real ----------
+// As regras de cada campo são as de Atual/docs/como-postar-do-docs.md, e as cores das
+// editorias são as de categoryStyles em Atual/src/data/edition-2026.ts.
+const COR_EDITORIA = { "Entretenimento e Famosos": "#F97316", "Moda e Beleza": "#EC4899", "Educação e Cultura": "#10B981" };
+const MINUSCULAS = new Set("a o as os e de da do das dos em na no nas nos por pela pelo pelas pelos para com um uma que ao aos à às ou se sem sob".split(" "));
+// Title Case em português, como os títulos da base ("Brigar Também Faz Parte: ...").
+const tituloSite = (t) => t.split(/\s+/).map((w, i, ws) => {
+  if (/\p{Lu}/u.test(w.slice(1)) || /^\d/.test(w)) return w; // sigla, nome com maiúscula no meio, número
+  const depoisDePontuacao = i > 0 && /[:!?]$/.test(ws[i - 1]);
+  if (i > 0 && !depoisDePontuacao && MINUSCULAS.has(w.toLowerCase())) return w.toLowerCase();
+  return w.replace(/^(["“(]?)(\p{L})/u, (m, a, l) => a + l.toUpperCase());
+}).join(" ");
+const frasesDe = (t) => (t.match(/[^.!?]+[.!?]+["”]?/g) || [t]).map((f) => f.trim()).filter(Boolean);
+// "A reportagem tem como fonte original a CNN Brasil." / "... o g1."
+const FEMININAS = /^(cnn|bbc|veja|exame|billboard|variety|rolling stone|scielo|forbes|nasa|onu|unesco|fifa|uefa|folha|revista|agência|agencia|rádio|radio|tv|gazeta|tribuna|band)\b/i;
+const fonteOriginal = (f) => `A reportagem tem como fonte original ${FEMININAS.test(f) ? "a" : "o"} ${f}.`;
+const dataSite = (iso, longa) => new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", day: "numeric", month: longa ? "long" : "short", year: "numeric" }).format(new Date(iso || Date.now()));
+
+function artigoDoPost(p) {
+  const q = postLimpo(p);
+  const ed = texto(p.editoria) || null;
+  const ig = frasesDe(q.instagram.texto);
+  let resumo = ig[0] || "";
+  if (ig[1] && (resumo + " " + ig[1]).length <= 200) resumo += " " + ig[1];
+  const paragrafos = q.site.paragrafos.filter(Boolean);
+  const sub = (frasesDe(paragrafos[1] || paragrafos[0] || "")[0] || "").replace(/[.!?]+$/, "");
+  const corpo = [...paragrafos, fonteOriginal(q.fonte)];
+  const palavras = corpo.join(" ").split(/\s+/).filter(Boolean).length;
+  return {
+    titulo: tituloSite(q.site.titulo), subtitulo: sub, resumo, editoria: ed || "Editoria a definir", cor: COR_EDITORIA[ed] || "#9898b0",
+    autor: q.autor || "Redação Revista Teen", cargo: ed ? "Pesquisa de " + ed : "Redação",
+    data: p.criadoEm, leitura: Math.max(1, Math.ceil(palavras / 200)), assuntos: [texto(p.selo)].filter(Boolean), corpo,
+  };
+}
+
+let siteAberto = null, filtroSitePrev = "pendente";
+function cabecalhoSite() {
+  const h = el("div", "rt-header");
+  const logo = el("img"); logo.src = $("logoHeader").src; logo.alt = "Revista Teen";
+  const nav = el("nav", "rt-nav"); nav.setAttribute("aria-label", "Menu do site (prévia)");
+  for (const t of ["Home", "Artigos", "Agenda", "Editorias ▾"]) nav.append(el("span", "", t));
+  h.append(logo, nav);
+  return h;
+}
+const fotoEm = (imgEl, p) => { imgEl.hidden = true; if (p.temFoto) fotoDe(p).then((u) => { if (u) { imgEl.src = u; imgEl.hidden = false; } }).catch(() => {}); };
+function seloSite(a) { const b = el("span", "rt-badge", a.editoria); b.style.color = a.cor; return b; }
+function linhaMeta(partes) {
+  const m = el("div", "rt-meta rt-caption");
+  partes.forEach((t, i) => { if (i) m.append(el("span", "", "•")); m.append(el("span", "", t)); });
+  return m;
+}
+
+function renderSitePrev() {
+  const lista = posts.filter((p) => (p.siteStatus === "publicado" ? "publicado" : "pendente") === filtroSitePrev);
+  const aberto = siteAberto && posts.find((p) => p.id === siteAberto);
+  const quadro = $("rtSite"), barra = $("siteBarra");
+  quadro.hidden = !aberto && lista.length === 0;
+  if (aberto) {
+    const a = artigoDoPost(aberto);
+    barra.replaceChildren(
+      botao("‹ Voltar para a lista", "", () => { siteAberto = null; renderSitePrev(); }),
+      aberto.siteStatus === "publicado" ? botao("Voltar para pendente", "", () => marcarSite(aberto.id, false)) : botao("Marcar como publicado no site", "primary", () => marcarSite(aberto.id, true)),
+      ...(aberto.temFoto ? [botao("Baixar foto", "", () => baixarFoto(aberto))] : []),
+      botao("Abrir no editor", "", () => abrir(aberto.id)),
+      el("span", "aviso", "Prévia: é assim que a matéria fica no site depois de publicada."),
+    );
+    const hero = el("figure", "rt-hero");
+    const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto);
+    const leg = el("figcaption", "rt-caption", "Foto: Reprodução");
+    hero.append(foto, leg);
+    const art = el("article", "rt-artigo");
+    const trilha = el("nav", "rt-trilha rt-caption"); trilha.setAttribute("aria-label", "Trilha do site (prévia)");
+    ["Home", "Artigos", a.editoria, a.titulo].forEach((t, i) => { if (i) trilha.append(el("span", "", "›")); trilha.append(el("span", "", t)); });
+    const badge = el("div"); badge.style.marginTop = "24px"; badge.append(seloSite(a));
+    const assina = el("div", "rt-assina");
+    const info = el("div");
+    const nome = el("p", "", a.autor); nome.style.cssText = "font-size:.875rem;font-weight:500;color:var(--text-primary)";
+    info.append(nome, el("p", "rt-caption", a.cargo), el("p", "rt-caption", dataSite(a.data, true) + " · " + a.leitura + " min de leitura"));
+    assina.append(el("span", "rt-avatar", a.autor.charAt(0)), info);
+    const prose = el("div", "rt-prose");
+    for (const par of a.corpo) prose.append(el("p", "", par));
+    const tags = el("ul", "rt-tags rt-caption");
+    for (const t of a.assuntos) tags.append(el("li", "", t));
+    art.append(trilha, badge, el("h1", "", a.titulo), el("p", "rt-sub", a.subtitulo), assina, prose, el("h2", "rt-overline", "Assuntos"), tags, el("div", "rt-estrela", "✦"));
+    quadro.replaceChildren(cabecalhoSite(), hero, art);
+  } else {
+    barra.replaceChildren();
+    const wrap = el("div", "rt-wrap");
+    wrap.append(el("h2", "rt-display-md", filtroSitePrev === "pendente" ? "Vem aí no site" : "Já publicados"));
+    const grade = el("div", "rt-grid");
+    for (const p of lista) {
+      const a = artigoDoPost(p);
+      const card = el("button", "rt-card"); card.type = "button";
+      card.setAttribute("aria-label", "Abrir prévia: " + a.titulo);
+      card.onclick = () => { siteAberto = p.id; renderSitePrev(); $("aba-site").scrollIntoView({ block: "start" }); };
+      const media = el("div", "rt-media"); const foto = el("img"); foto.alt = ""; fotoEm(foto, p); media.append(foto);
+      const corpo = el("div"); corpo.style.marginTop = "16px";
+      corpo.append(seloSite(a), el("h3", "", a.titulo), el("p", "rt-resumo", a.resumo), linhaMeta([a.autor, dataSite(a.data), a.leitura + " min de leitura"]));
+      card.append(media, corpo);
+      grade.append(card);
+    }
+    wrap.append(grade);
+    quadro.replaceChildren(cabecalhoSite(), wrap);
+  }
+  const vazio = $("vazioSitePrev");
+  vazio.hidden = !quadro.hidden;
+  vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : filtroSitePrev === "pendente" ? "Nada esperando para ir ao site." : "Nenhum post marcado como publicado no site."),
+    !conectado ? "Confira a internet e recarregue a página." : "Todo post salvo aparece aqui como card do site; clique para ver a matéria inteira.");
+}
+filtro([["fSitePend", "pendente"], ["fSitePub", "publicado"]], "pendente", (v) => { filtroSitePrev = v; siteAberto = null; });
+
+// ---------- Abas ----------
+const ABAS = { novo: ["tab-novo", "aba-novo"], hist: ["tab-hist", "aba-hist"], ig: ["tab-ig", "aba-ig"], site: ["tab-site", "aba-site"], docs: ["tab-docs", "aba-docs"] };
+function aba(nome) {
+  for (const [k, [tab, painel]] of Object.entries(ABAS)) { $(tab).setAttribute("aria-selected", k === nome); $(painel).hidden = k !== nome; }
+  store.set("rt-aba", nome);
+}
+for (const k of Object.keys(ABAS)) $(ABAS[k][0]).onclick = () => aba(k);
+
+// ---------- Início ----------
+$("selo").append(...SELOS.map((s) => new Option(s.nome, s.nome)));
+$("tituloOriginal").value = EXEMPLO.tituloOriginal; $("artigo").value = EXEMPLO.artigo;
+$("fonte").value = EXEMPLO.fonte; $("selo").value = EXEMPLO.selo;
+$("autor").value = store.get("rt-autor") || "";
+$("autor").addEventListener("input", (e) => store.set("rt-autor", e.target.value));
+for (const id of ["igTitulo", "igTexto", "siteTitulo", "p1", "p2", "p3", "fonte", "autor", "selo"]) $(id).addEventListener("input", atualizar);
+$("form").addEventListener("submit", (e) => { e.preventDefault(); montar(); });
+// Ao sair de um campo, o texto da tela também fica limpo, igual ao das imagens.
+$("igHashtags").addEventListener("change", (e) => { e.target.value = Cerebro.normalizarHashtags(e.target.value); if (e.target.value !== estado.hashtagsAuto) estado.hashtagsAuto = null; atualizar(); });
+for (const id of ["igTitulo", "igTexto", "igLegenda", "siteTitulo", "p1", "p2", "p3"]) $(id).addEventListener("change", (e) => { e.target.value = Cerebro.limpar(e.target.value); atualizar(); });
+const abaSalva = store.get("rt-aba");
+aba(ABAS[abaSalva] ? abaSalva : "novo");
+renderListas();
+
+(async () => {
+  [LOGOS.rt, LOGOS.espro] = await Promise.all([img("/images/brand/logo.png"), img("/redacao-345590b4/espro.svg")]);
+  try { await Promise.all(["700 40px Poppins", "400 30px Poppins", "italic 400 19px Poppins", "700 16px Poppins"].map((f) => document.fonts.load(f))); } catch {}
+  preencher(Cerebro.gerar({ titulo: EXEMPLO.tituloOriginal, artigo: EXEMPLO.artigo }));
+})();
+function pedirSenha() { conectado = false; $("app").hidden = true; $("entrar").hidden = false; $("senha").focus(); }
+async function iniciar() {
+  try { posts = (await api("GET")).posts; } catch (e) { if (e?.code !== "senha") { $("entrar").hidden = false; $("statusEntrar").textContent = msgDb(e); } return; }
+  conectado = true; $("entrar").hidden = true; $("app").hidden = false; renderListas(); atualizar();
+}
+$("entrar").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  $("statusEntrar").textContent = "Entrando...";
+  const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ acao: "entrar", senha: $("senha").value }) }).catch(() => null);
+  if (!r?.ok) { $("statusEntrar").textContent = r?.status === 401 ? "Senha errada." : "Não consegui conectar. Tente de novo."; return; }
+  $("senha").value = ""; $("statusEntrar").textContent = ""; iniciar();
+});
+$("btnSair").addEventListener("click", async () => {
+  await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ acao: "sair" }) }).catch(() => {});
+  posts = []; renderListas(); pedirSenha();
+});
+// ponytail: sem tempo real; relê ao voltar para a aba e a cada minuto com ela aberta.
+const visivel = () => document.visibilityState === "visible" && conectado;
+document.addEventListener("visibilitychange", () => { if (visivel()) carregar(); });
+setInterval(() => { if (visivel()) carregar(); }, 60000);
+iniciar();
+</script>
+</body>
+</html>

@@ -26,6 +26,15 @@
       ]
     },
     {
+      "source": "/(redacao-345590b4|api)(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive"
+        }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         {

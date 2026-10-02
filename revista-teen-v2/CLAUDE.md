@@ -14,3 +14,8 @@ revista-teen-espro.vercel.app. Detalhes de arquitetura no README.
   cada build e traz as visualizações. A chave da conta de serviço fica fora do
   projeto, em `08_Seguranca`; o `.env` aponta para ela e nunca vai para o git.
 - Texto visível no site: sem travessão e sem emoji.
+- **App da redação (escondido):** `/redacao-345590b4`, fora do sitemap e com noindex.
+  Arquivos em `public/redacao-345590b4/`; banco pela rota `src/pages/api/operacao.ts`
+  (Upstash Redis do projeto na Vercel, variáveis `KV_REST_API_*`). Entra com a senha
+  `SENHA_EQUIPE` (variável da Vercel; cópia em `08_Seguranca`). Nunca linkar no site.
+  O adaptador da Vercel existe só por causa dessa rota; o resto continua estático.

@@ -2,6 +2,7 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
+import vercel from "@astrojs/vercel";
 
 /**
  * Static output: every article is pre-rendered to HTML at build time, so titles,
@@ -15,6 +16,9 @@ import tailwindcss from "@tailwindcss/vite";
  * filtros e menu são enhancement progressivo em ~40 linhas de TypeScript puro, o
  * que evita duplicar o componente de card e mantém o JS enviado perto de zero.
  * Para adicionar uma ilha depois: `npx astro add react`.
+ *
+ * O adaptador da Vercel existe só para a rota src/pages/api/operacao.ts (o app da
+ * redação, que grava no Redis). Todas as outras páginas continuam pré-renderizadas.
  */
 /**
  * Origem publica do site. Canonical, og:url e sitemap derivam daqui, entao ela
@@ -40,6 +44,7 @@ function resolveSite() {
 export default defineConfig({
   site: resolveSite(),
   output: "static",
+  adapter: vercel(),
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

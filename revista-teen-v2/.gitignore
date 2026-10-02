@@ -25,3 +25,6 @@ src/data/views.json
 
 # retrato do Google Docs, gerado por scripts/doc-snapshot.py
 .doc-snapshot/
+
+# saida do adaptador da Vercel
+.vercel/
