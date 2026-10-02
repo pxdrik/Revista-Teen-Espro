@@ -11,6 +11,16 @@ escrito lá: confira os dois.
 
 ## Posts do app da redação
 
+**Caminho normal: o botão.** Na aba Site do app, "Publicar no site" (num post aberto) ou
+"Publicar no site os N prontos" (na lista). O app confere a matéria com as mesmas regras
+do build, grava a foto em `public/images/artigos/` e a matéria em
+`src/data/posts-do-app.json` direto no GitHub, e o push dispara o deploy. Não passa por
+este computador. Por isso, antes do próximo `sync-github.sh`, rode
+`bash scripts/pull-github.sh` e commite o que ele trouxer (o sync recusa se esquecer).
+
+O caminho abaixo é para quando o Pedro pedir que o Claude publique (por exemplo, para
+revisar o texto antes):
+
 1. `node scripts/fila-do-app.mjs` baixa para `.fila-do-app/` cada post que está
    pendente na aba Site do app: `<id>.json` com os textos e `<id>.jpg` com a foto. A
    pasta não vai para o git. A senha vem de `SENHA_EQUIPE_FILE`, no `.env`.

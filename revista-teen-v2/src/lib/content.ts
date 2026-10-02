@@ -9,8 +9,13 @@
  * erro e derruba o build, que é exatamente o comportamento desejado: é melhor
  * quebrar a publicação do que publicar uma revista inconsistente.
  */
-import { articles as rawArticles, categoryStyles } from "@/data/edition-2026";
-import { articleSchema, categoryStyleSchema, type Article, type Category } from "./schema";
+import { articles as edicao, categoryStyles } from "@/data/edition-2026";
+// Matérias publicadas pelo botão do app da redação (src/pages/api/operacao.ts). Passam
+// pela mesma validação das outras; só moram num arquivo à parte para o app não editar TS.
+import doApp from "@/data/posts-do-app.json";
+import { articleSchema, categoryStyleSchema, type Article, type ArticleInput, type Category } from "./schema";
+
+const rawArticles: ArticleInput[] = [...edicao, ...(doApp as ArticleInput[])];
 
 // ─────────────────────────────────────────────────────────────
 // 1. Validação
@@ -19,7 +24,7 @@ import { articleSchema, categoryStyleSchema, type Article, type Category } from 
 function fail(message: string): never {
   throw new Error(
     "[Revista Teen] Edição inválida: " + message + "\n" +
-      "Corrija src/data/edition-2026.ts. O build não continua com a base inconsistente.",
+      "Corrija src/data/edition-2026.ts ou src/data/posts-do-app.json. O build não continua com a base inconsistente.",
   );
 }
 

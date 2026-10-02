@@ -66,6 +66,7 @@ src/
   data/
     edition-2026.ts   ← ÚNICA FONTE DE VERDADE (trocar por edição)
     eventos.ts        ← agenda (só eventos reais, com link oficial)
+    posts-do-app.json ← matérias publicadas pelo botão do app (o app grava; mesmo schema)
     views.json        ← visualizações do GA, gerado a cada build (fora do git)
   lib/
     schema.ts         ← contrato Zod da base
@@ -140,6 +141,11 @@ texto do site. Histórico, fila do Instagram e fila do site ficam no Upstash Red
 ligado ao projeto na Vercel (`KV_REST_API_*`), acessado só por `api/operacao.ts`.
 Por causa dessa rota o projeto usa o adaptador `@astrojs/vercel`; todas as outras
 páginas continuam pré-renderizadas.
+
+O botão "Publicar no site" da aba Site confere a matéria com o mesmo `articleSchema`
+do build e grava a foto e `src/data/posts-do-app.json` direto no GitHub, num commit só
+(`GITHUB_TOKEN_SITE`, chave com permissão só de conteúdo neste repositório). O push
+dispara o deploy. Depois, `bash scripts/pull-github.sh` antes do próximo envio local.
 
 ## Google Analytics e cookies
 

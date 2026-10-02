@@ -7,10 +7,17 @@
  *
  * Chaves: rt:posts (sorted set por criadoEm), rt:post:<id> (JSON), rt:thumb:<id> e
  * rt:foto:<id> (JPEG em base64, servidos como imagem para não pesar a lista).
+ *
+ * "Publicar no site" (POST acao=publicar) grava a matéria em src/data/posts-do-app.json e
+ * a foto em public/images/artigos/ direto no GitHub (GITHUB_TOKEN_SITE), num commit só.
+ * O push dispara o deploy da Vercel. Antes, a matéria passa pelo mesmo articleSchema do
+ * build: o que quebraria o build é recusado aqui, e o site no ar nunca trava.
  */
 import type { APIRoute } from "astro";
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
+import { articleSchema, type ArticleInput } from "@/lib/schema";
+import { categoryStyles } from "@/data/edition-2026";
 
 export const prerender = false;
 
@@ -51,7 +58,7 @@ const postSchema = z.object({
   autor: txt(120), selo: txt(80), editoria: txt(80), fonte: txt(200),
   tituloOriginal: txt(500), artigo: txt(20000),
   instagram: z.object({ titulo: txt(200), texto: txt(2000), legenda: txt(3000), hashtags: txt(600) }),
-  site: z.object({ titulo: txt(300), paragrafos: z.array(txt(3000)).max(3) }),
+  site: z.object({ titulo: txt(300), paragrafos: z.array(txt(3000)).max(3), alt: txt(300).optional(), tags: z.array(txt(40)).max(6).optional() }),
   foco: z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) }),
   zoom: z.number().min(1).max(3),
   temFoto: z.boolean(),
@@ -102,6 +109,10 @@ export const GET: APIRoute = async ({ url, cookies }) => {
 
 export const POST: APIRoute = async ({ request, cookies }) => {
   const corpo = await request.json().catch(() => null);
+  if (corpo?.acao === "publicar") {
+    if (!autorizado(cookies.get(COOKIE)?.value)) return json({ erro: "senha" }, 401);
+    return publicar(corpo);
+  }
   if (corpo?.acao === "sair") {
     cookies.delete(COOKIE, { path: "/api/operacao" });
     return json({ ok: true });
@@ -128,8 +139,8 @@ export const PUT: APIRoute = async ({ request, cookies }) => {
     // Status só muda pelo PATCH: quem salva o texto não desfaz o "publicado" que outra pessoa marcou.
     const [atual] = await redis<string | null>(["GET", "rt:post:" + id]);
     if (atual) {
-      const { siteStatus, publicadoEm, igStatus, igPublicadoEm, criadoEm } = JSON.parse(atual);
-      Object.assign(doc, { siteStatus, publicadoEm, igStatus, igPublicadoEm, criadoEm });
+      const { siteStatus, publicadoEm, siteSlug, igStatus, igPublicadoEm, criadoEm } = JSON.parse(atual);
+      Object.assign(doc, { siteStatus, publicadoEm, siteSlug, igStatus, igPublicadoEm, criadoEm });
     }
   }
   const cmds: (string | number)[][] = [
@@ -171,3 +182,119 @@ export const DELETE: APIRoute = async ({ request, cookies }) => {
   await redis(["DEL", "rt:post:" + id, "rt:thumb:" + id, "rt:foto:" + id], ["ZREM", "rt:posts", id]);
   return json({ ok: true });
 };
+
+// ---------- Publicar no site ----------
+const REPO = "https://api.github.com/repos/pxdrik/Revista-Teen-Espro";
+const PASTA = "revista-teen-v2/";
+const ARQ_APP = PASTA + "src/data/posts-do-app.json";
+// Produção grava no main. Um preview pode apontar para um ramo de teste (GITHUB_BRANCH_SITE).
+const RAMO = process.env.GITHUB_BRANCH_SITE || "main";
+
+async function gh<T>(caminho: string, init: RequestInit = {}): Promise<T> {
+  const r = await fetch(REPO + caminho, {
+    ...init,
+    headers: {
+      Authorization: "Bearer " + process.env.GITHUB_TOKEN_SITE,
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28",
+      "User-Agent": "revista-teen-operacao",
+      ...(init.body ? { "Content-Type": "application/json" } : {}),
+    },
+  });
+  if (!r.ok) throw Object.assign(new Error("github " + r.status + " " + caminho), { status: r.status });
+  return r.json() as Promise<T>;
+}
+const lerArquivo = async (caminho: string, ref: string) =>
+  Buffer.from((await gh<{ content: string }>(`/contents/${caminho}?ref=${ref}`)).content, "base64").toString("utf8");
+const blob = (content: string, encoding: "base64" | "utf-8") =>
+  gh<{ sha: string }>("/git/blobs", { method: "POST", body: JSON.stringify({ content, encoding }) });
+
+/** O que a tela manda: a matéria como a prévia mostrou. Id, slug, data, foto e crédito saem daqui. */
+const pedidoSchema = z.object({
+  itens: z.array(z.object({
+    id: ID,
+    artigo: articleSchema
+      .pick({ title: true, subtitle: true, excerpt: true, category: true, tags: true, author: true, readingTime: true, body: true })
+      .extend({ alt: z.string().min(10) }),
+  })).min(1).max(20),
+});
+const detalhe = (e: z.ZodError) => e.issues.slice(0, 5).map((i) => i.path.join(".") + ": " + i.message);
+
+const slugDe = (t: string) => {
+  const s = t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return s.length <= 60 ? s : s.slice(0, 60).replace(/-[^-]*$/, "");
+};
+const hojeSP = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+
+async function publicar(corpo: unknown) {
+  if (!process.env.GITHUB_TOKEN_SITE) return json({ erro: "O site ainda não tem a chave do GitHub (GITHUB_TOKEN_SITE)." }, 503);
+  const r = pedidoSchema.safeParse(corpo);
+  if (!r.success) return json({ erro: "dados", detalhe: detalhe(r.error) }, 400);
+  const { itens } = r.data;
+
+  const docs = await redis<string | null>(...itens.map((i) => ["GET", "rt:post:" + i.id]));
+  const fotos = await redis<string | null>(...itens.map((i) => ["GET", "rt:foto:" + i.id]));
+  for (const [k, d] of docs.entries()) {
+    if (!d) return json({ erro: "Um dos posts não existe mais." }, 404);
+    if (JSON.parse(d).siteStatus === "publicado") return json({ erro: "Um dos posts já está publicado no site." }, 409);
+    if (!fotos[k]) return json({ erro: "Todo post precisa de foto para ir ao site." }, 400);
+  }
+
+  // Duas pessoas publicando juntas: se o main andou entre ler e gravar, tenta de novo uma vez.
+  for (let tentativa = 0; ; tentativa++) {
+    try {
+      const base = (await gh<{ object: { sha: string } }>("/git/ref/heads/" + RAMO)).object.sha;
+      const [edicao, appTxt] = await Promise.all([lerArquivo(PASTA + "src/data/edition-2026.ts", base), lerArquivo(ARQ_APP, base)]);
+      const doApp: ArticleInput[] = JSON.parse(appTxt);
+      const ids = [...edicao.matchAll(/^\s+id: (\d+),/gm)].map((m) => Number(m[1])).concat(doApp.map((a) => a.id));
+      const slugs = new Set([...edicao.matchAll(/^\s+slug: "([^"]+)"/gm)].map((m) => m[1]).concat(doApp.map((a) => a.slug)));
+      const imagens = new Set([...edicao.matchAll(/src: "(\/images\/artigos\/[^"]+)"/g)].map((m) => m[1]).concat(doApp.map((a) => a.image.src)));
+      let proximo = Math.max(0, ...ids) + 1;
+
+      const novos: ArticleInput[] = [];
+      const arvore: { path: string; sha: string }[] = [];
+      for (const [k, { artigo }] of itens.entries()) {
+        const raiz = slugDe(artigo.title) || "materia";
+        let slug = raiz;
+        for (let n = 2; slugs.has(slug) || imagens.has(`/images/artigos/${slug}.jpg`); n++) slug = `${raiz}-${n}`;
+        slugs.add(slug);
+        const { alt, ...resto } = artigo;
+        const novo: ArticleInput = {
+          id: proximo++, slug, ...resto, publishedAt: hojeSP(),
+          image: { src: `/images/artigos/${slug}.jpg`, alt, credit: "Reprodução" },
+        };
+        const ok = articleSchema.safeParse(novo);
+        if (!ok.success) return json({ erro: "dados", detalhe: detalhe(ok.error) }, 400);
+        if (!(novo.category in categoryStyles)) return json({ erro: "Editoria que não existe no site: " + novo.category }, 400);
+        novos.push(novo);
+        arvore.push({ path: PASTA + "public/images/artigos/" + slug + ".jpg", sha: (await blob(fotos[k]!, "base64")).sha });
+      }
+      arvore.push({ path: ARQ_APP, sha: (await blob(JSON.stringify([...doApp, ...novos], null, 2) + "\n", "utf-8")).sha });
+
+      const { tree } = await gh<{ tree: { sha: string } }>("/git/commits/" + base);
+      const novaArvore = await gh<{ sha: string }>("/git/trees", { method: "POST", body: JSON.stringify({
+        base_tree: tree.sha, tree: arvore.map((a) => ({ path: a.path, mode: "100644", type: "blob", sha: a.sha })),
+      }) });
+      const commit = await gh<{ sha: string }>("/git/commits", { method: "POST", body: JSON.stringify({
+        message: ("Publica do app da redação: " + novos.map((a) => a.title).join("; ")).slice(0, 300),
+        tree: novaArvore.sha, parents: [base],
+      }) });
+      // Sem force: se outro commit entrou no ramo, o GitHub recusa (422) e a volta do laço refaz em cima dele.
+      await gh("/git/refs/heads/" + RAMO, { method: "PATCH", body: JSON.stringify({ sha: commit.sha, force: false }) });
+
+      // ponytail: se o Redis cair só aqui, a matéria já está no site mas o post fica pendente;
+      // publicar de novo duplicaria. Raro o bastante para conferir na mão se acontecer.
+      const agora = new Date().toISOString();
+      const marcados = docs.map((d, k) => ({ ...JSON.parse(d!), siteStatus: "publicado", publicadoEm: agora, siteSlug: novos[k]!.slug }));
+      await redis(...marcados.map((doc, k) => ["SET", "rt:post:" + itens[k]!.id, JSON.stringify(doc)]));
+      return json({ publicados: marcados.map(({ artigo, ...resto }, k) => ({ id: itens[k]!.id, ...resto })) });
+    } catch (e) {
+      const status = (e as { status?: number }).status;
+      if (status === 422 && tentativa === 0) continue;
+      console.error("publicar", e);
+      return json({ erro: status === 401 || status === 403 || status === 404
+        ? "A chave do GitHub foi recusada. Confira GITHUB_TOKEN_SITE."
+        : "Não consegui publicar agora. Nada foi para o site." }, 502);
+    }
+  }
+}

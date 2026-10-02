@@ -384,7 +384,8 @@
     }
     return out.join(" ");
   }
-  function hashtags(titulo, texto, selo) {
+  // Nomes próprios do título (pessoas, obras, marcas): viram hashtag no Instagram e tag no site.
+  function nomesDe(titulo, texto) {
     const t = limpar(titulo), corpo = " " + limpar(texto);
     const meioDeFrase = (w) => new RegExp("[^.!?]\\s" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "u").test(corpo);
     const nomes = [];
@@ -393,10 +394,14 @@
     while ((m = re.exec(t)) && nomes.length < 3) {
       const nome = m[1], noComeco = m.index === 0;
       const ehNome = nome.includes(" ") || meioDeFrase(nome.split(" ")[0]) || !noComeco;
-      if (ehNome && !STOP.has(norm(nome)) && !TAG_GENERICA.has(norm(nome)) && nome.length > 2) nomes.push(paraTag(nome));
+      if (ehNome && !STOP.has(norm(nome)) && !TAG_GENERICA.has(norm(nome)) && nome.length > 2) nomes.push(nome);
     }
-    return normalizarHashtags([TAG_EDITORIA[selo] || "", ...nomes].join(" "));
+    return nomes;
   }
+  function hashtags(titulo, texto, selo) {
+    return normalizarHashtags([TAG_EDITORIA[selo] || "", ...nomesDe(titulo, texto).map(paraTag)].join(" "));
+  }
+  const tags = (titulo, texto) => [...new Set(nomesDe(titulo, texto))];
 
   // Frase que diz quase o mesmo que uma já escolhida (metade das palavras em comum) fica de fora.
   // Só palavras comuns contam: nomes próprios se repetem em qualquer notícia.
@@ -454,5 +459,5 @@
     };
   }
 
-  root.Cerebro = { gerar, limpar, dividirFrases, tituloCurto, sugerirSelo, emTres, jovem, manchete, legenda, hashtags, normalizarHashtags };
+  root.Cerebro = { gerar, limpar, dividirFrases, tituloCurto, sugerirSelo, emTres, jovem, manchete, legenda, hashtags, normalizarHashtags, tags };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -328,6 +328,12 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
             <label>Parágrafo 1 <textarea id="p1"></textarea></label>
             <label>Parágrafo 2 <textarea id="p2"></textarea></label>
             <label>Parágrafo 3 <textarea id="p3"></textarea></label>
+            <label>Descrição da foto <span class="hint">O que aparece na foto, para quem usa leitor de tela. Obrigatória para publicar no site.</span>
+              <input type="text" id="siteAlt" maxlength="300">
+            </label>
+            <label>Tags do site <span class="hint">De 2 a 4, separadas por vírgula.</span>
+              <input type="text" id="siteTags" autocomplete="off">
+            </label>
           </fieldset>
 
           <div class="actions">
@@ -616,9 +622,11 @@ function imagensDoPost(d, lado = W) {
 function saidaAtual() {
   return {
     instagram: { titulo: Cerebro.limpar($("igTitulo").value), texto: Cerebro.limpar($("igTexto").value), legenda: Cerebro.limpar($("igLegenda").value), hashtags: Cerebro.normalizarHashtags($("igHashtags").value) },
-    site: { titulo: Cerebro.limpar($("siteTitulo").value), paragrafos: ["p1", "p2", "p3"].map((id) => Cerebro.limpar($(id).value)) },
+    site: { titulo: Cerebro.limpar($("siteTitulo").value), paragrafos: ["p1", "p2", "p3"].map((id) => Cerebro.limpar($(id).value)),
+      alt: Cerebro.limpar($("siteAlt").value), tags: tagsDe($("siteTags").value) },
   };
 }
+const tagsDe = (v) => [...new Set(String(v || "").split(",").map((t) => Cerebro.limpar(t).slice(0, 40)).filter(Boolean))].slice(0, 4);
 function textoDocs(p) {
   const d = fmtData(p.criadoEm);
   return [
@@ -665,6 +673,10 @@ function preencher(s) {
   $("siteTitulo").value = Cerebro.limpar(s.site?.titulo);
   const ps = Array.isArray(s.site?.paragrafos) ? s.site.paragrafos : [];
   ["p1", "p2", "p3"].forEach((id, i) => ($(id).value = Cerebro.limpar(ps[i])));
+  $("siteAlt").value = Cerebro.limpar(s.site?.alt);
+  // Sem tags salvas (post novo ou antigo), sugere os nomes do título.
+  const tagsSalvas = Array.isArray(s.site?.tags) ? s.site.tags.filter((t) => typeof t === "string") : [];
+  $("siteTags").value = (tagsSalvas.length ? tagsSalvas : Cerebro.tags(s.instagram?.titulo || "", s.instagram?.texto || "")).join(", ");
   atualizar();
 }
 function mostrar(vista) {
@@ -683,7 +695,7 @@ function limparFoto() {
 function novoPost() {
   Object.assign(estado, { id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, fotoMudou: false });
   limparFoto();
-  for (const id of ["tituloOriginal", "artigo", "fonte", "igTitulo", "igTexto", "igLegenda", "igHashtags", "siteTitulo", "p1", "p2", "p3"]) $(id).value = "";
+  for (const id of ["tituloOriginal", "artigo", "fonte", "igTitulo", "igTexto", "igLegenda", "igHashtags", "siteTitulo", "p1", "p2", "p3", "siteAlt", "siteTags"]) $(id).value = "";
   estado.hashtagsAuto = "";
   $("banner").hidden = true; status(""); $("statusSalvar").textContent = "";
   atualizar(); $("tituloOriginal").focus();
@@ -763,7 +775,7 @@ $("zoom").addEventListener("input", (e) => { estado.zoom = Number(e.target.value
 $("btnCentro").addEventListener("click", () => { estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1; redesenharCapa(); });
 
 // ---------- Baixar e copiar ----------
-function toast(t) { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (e.hidden = true), 2800); }
+function toast(t, ms = 2800) { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (e.hidden = true), ms); }
 const blobDe = (cv, tipo, q) => new Promise((ok) => cv.toBlob(ok, tipo, q));
 const nomeBase = (d) => "revista-teen-" + slug(d.selo) + "-" + fmtData(d.criadoEm).split("/").reverse().join("-") + "-" + slug(d.titulo);
 
@@ -837,7 +849,8 @@ function fotoDe(p) {
   return fotoCache.get(k);
 }
 const postLimpo = (p) => ({ ...p, autor: texto(p.autor), fonte: texto(p.fonte), instagram: { titulo: texto(p.instagram?.titulo), texto: texto(p.instagram?.texto), legenda: texto(p.instagram?.legenda) || Cerebro.legenda(texto(p.instagram?.titulo), texto(p.instagram?.texto)),
-  hashtags: texto(p.instagram?.hashtags) || Cerebro.hashtags(texto(p.instagram?.titulo), texto(p.instagram?.texto), seloDe(texto(p.selo)).nome) }, site: { titulo: texto(p.site?.titulo), paragrafos: (Array.isArray(p.site?.paragrafos) ? p.site.paragrafos : []).map(texto) } });
+  hashtags: texto(p.instagram?.hashtags) || Cerebro.hashtags(texto(p.instagram?.titulo), texto(p.instagram?.texto), seloDe(texto(p.selo)).nome) }, site: { titulo: texto(p.site?.titulo), paragrafos: (Array.isArray(p.site?.paragrafos) ? p.site.paragrafos : []).map(texto),
+    alt: texto(p.site?.alt), tags: (Array.isArray(p.site?.tags) ? p.site.tags : []).map(texto).filter(Boolean) } });
 function copiarParaDocs(lista) {
   const montagem = (async () => {
     const partes = [], planos = [];
@@ -1087,6 +1100,7 @@ $("btnCopiarTudo").addEventListener("click", () => copiarParaDocs(docsVisiveis()
 // ---------- Aba Site: o post como ele vai ficar no site real ----------
 // As regras de cada campo são as de Atual/docs/como-postar-do-docs.md, e as cores das
 // editorias são as de categoryStyles em Atual/src/data/edition-2026.ts.
+const SLUG_EDITORIA = { "Entretenimento e Famosos": "entretenimento-e-famosos", "Moda e Beleza": "moda-e-beleza", "Educação e Cultura": "educacao-e-cultura" };
 const COR_EDITORIA = { "Entretenimento e Famosos": "#F97316", "Moda e Beleza": "#EC4899", "Educação e Cultura": "#10B981" };
 const MINUSCULAS = new Set("a o as os e de da do das dos em na no nas nos por pela pelo pelas pelos para com um uma que ao aos à às ou se sem sob".split(" "));
 // Title Case em português, como os títulos da base ("Brigar Também Faz Parte: ...").
@@ -1115,8 +1129,48 @@ function artigoDoPost(p) {
   return {
     titulo: tituloSite(q.site.titulo), subtitulo: sub, resumo, editoria: ed || "Editoria a definir", cor: COR_EDITORIA[ed] || "#9898b0",
     autor: q.autor || "Redação Revista Teen", cargo: ed ? "Pesquisa de " + ed : "Redação",
-    data: p.criadoEm, leitura: Math.max(1, Math.ceil(palavras / 200)), assuntos: [texto(p.selo)].filter(Boolean), corpo,
+    data: p.criadoEm, leitura: Math.max(1, Math.ceil(palavras / 200)), corpo, n: paragrafos.length,
+    assuntos: q.site.tags.length ? q.site.tags : [texto(p.selo)].filter(Boolean),
+    categoria: SLUG_EDITORIA[ed] || null, tags: q.site.tags, alt: q.site.alt,
   };
+}
+
+// ---------- Publicar no site (rota /api/operacao, acao=publicar) ----------
+// A rota confere tudo de novo com o schema do site; isto só avisa antes, na tela.
+function faltasParaSite(p) {
+  const a = artigoDoPost(p), f = [];
+  if (!p.temFoto) f.push("foto");
+  if (a.alt.length < 10) f.push("descrição da foto");
+  if (a.tags.length < 2) f.push("2 tags");
+  if (a.n < 3) f.push("os 3 parágrafos do site");
+  else if (!a.subtitulo) f.push("uma frase no 2º parágrafo (vira o subtítulo)");
+  if (!a.categoria) f.push("editoria");
+  if (!texto(p.autor)) f.push("autor");
+  return f;
+}
+const paraPublicar = (p) => {
+  const a = artigoDoPost(p);
+  return { id: p.id, artigo: { title: a.titulo, subtitle: a.subtitulo, excerpt: a.resumo, category: a.categoria, tags: a.tags,
+    author: { name: a.autor, role: a.cargo }, readingTime: a.leitura, body: a.corpo, alt: a.alt } };
+};
+let publicando = false;
+async function publicarNoSite(lista) {
+  if (publicando || !lista.length) return;
+  publicando = true; renderSitePrev(); toast("Publicando no site...", 60000);
+  try {
+    const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ acao: "publicar", itens: lista.map(paraPublicar) }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.status === 401) { pedirSenha(); return; }
+    if (!r.ok) { toast(d.detalhe ? "O site recusou: " + d.detalhe.join("; ") : d.erro || "Não consegui publicar agora.", 9000); return; }
+    for (const p of d.publicados) trocarPost(p);
+    toast((d.publicados.length > 1 ? d.publicados.length + " matérias publicadas." : "Matéria publicada.") + " O site atualiza em 1 a 2 minutos.", 6000);
+  } catch { toast("Não consegui falar com o servidor. Nada foi publicado.", 6000); }
+  finally { publicando = false; renderSitePrev(); }
+}
+function botaoPublicar(rotulo, lista) {
+  const b = botao(rotulo, "primary", () => confirmar(b, "Confirmar: publicar agora", () => publicarNoSite(lista)));
+  b.disabled = publicando || !lista.length;
+  return b;
 }
 
 let siteAberto = null, filtroSitePrev = "pendente";
@@ -1143,12 +1197,18 @@ function renderSitePrev() {
   quadro.hidden = !aberto && lista.length === 0;
   if (aberto) {
     const a = artigoDoPost(aberto);
+    const faltas = aberto.siteStatus === "publicado" ? [] : faltasParaSite(aberto);
     barra.replaceChildren(
       botao("‹ Voltar para a lista", "", () => { siteAberto = null; renderSitePrev(); }),
-      aberto.siteStatus === "publicado" ? botao("Voltar para pendente", "", () => marcarSite(aberto.id, false)) : botao("Marcar como publicado no site", "primary", () => marcarSite(aberto.id, true)),
+      ...(aberto.siteStatus === "publicado"
+        ? [...(aberto.siteSlug ? [botao("Ver no site", "", () => window.open("/artigos/" + aberto.siteSlug, "_blank", "noopener"))] : []),
+           botao("Voltar para pendente", "", () => marcarSite(aberto.id, false))]
+        : [botaoPublicar("Publicar no site", faltas.length ? [] : [aberto]),
+           botao("Já está no site", "", () => marcarSite(aberto.id, true))]),
       ...(aberto.temFoto ? [botao("Baixar foto", "", () => baixarFoto(aberto))] : []),
       botao("Abrir no editor", "", () => abrir(aberto.id)),
-      el("span", "aviso", "Prévia: é assim que a matéria fica no site depois de publicada."),
+      el("span", "aviso", faltas.length ? "Para publicar falta: " + faltas.join(", ") + ". Abra no editor e salve."
+        : "Prévia: é assim que a matéria fica no site depois de publicada."),
     );
     const hero = el("figure", "rt-hero");
     const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto);
@@ -1170,7 +1230,12 @@ function renderSitePrev() {
     art.append(trilha, badge, el("h1", "", a.titulo), el("p", "rt-sub", a.subtitulo), assina, prose, el("h2", "rt-overline", "Assuntos"), tags, el("div", "rt-estrela", "✦"));
     quadro.replaceChildren(cabecalhoSite(), hero, art);
   } else {
-    barra.replaceChildren();
+    const prontos = filtroSitePrev === "pendente" ? lista.filter((p) => !faltasParaSite(p).length) : [];
+    if (filtroSitePrev === "pendente" && lista.length) barra.replaceChildren(
+      botaoPublicar(prontos.length === 1 ? "Publicar no site o post pronto" : `Publicar no site os ${prontos.length} prontos`, prontos),
+      el("span", "aviso", lista.length > prontos.length ? `${lista.length - prontos.length} ainda com pendência: clique no card para ver o que falta.` : "Todos os pendentes estão prontos."),
+    );
+    else barra.replaceChildren();
     const wrap = el("div", "rt-wrap");
     wrap.append(el("h2", "rt-display-md", filtroSitePrev === "pendente" ? "Vem aí no site" : "Já publicados"));
     const grade = el("div", "rt-grid");
@@ -1209,11 +1274,11 @@ $("tituloOriginal").value = EXEMPLO.tituloOriginal; $("artigo").value = EXEMPLO.
 $("fonte").value = EXEMPLO.fonte; $("selo").value = EXEMPLO.selo;
 $("autor").value = store.get("rt-autor") || "";
 $("autor").addEventListener("input", (e) => store.set("rt-autor", e.target.value));
-for (const id of ["igTitulo", "igTexto", "siteTitulo", "p1", "p2", "p3", "fonte", "autor", "selo"]) $(id).addEventListener("input", atualizar);
+for (const id of ["igTitulo", "igTexto", "siteTitulo", "p1", "p2", "p3", "siteAlt", "siteTags", "fonte", "autor", "selo"]) $(id).addEventListener("input", atualizar);
 $("form").addEventListener("submit", (e) => { e.preventDefault(); montar(); });
 // Ao sair de um campo, o texto da tela também fica limpo, igual ao das imagens.
 $("igHashtags").addEventListener("change", (e) => { e.target.value = Cerebro.normalizarHashtags(e.target.value); if (e.target.value !== estado.hashtagsAuto) estado.hashtagsAuto = null; atualizar(); });
-for (const id of ["igTitulo", "igTexto", "igLegenda", "siteTitulo", "p1", "p2", "p3"]) $(id).addEventListener("change", (e) => { e.target.value = Cerebro.limpar(e.target.value); atualizar(); });
+for (const id of ["igTitulo", "igTexto", "igLegenda", "siteTitulo", "p1", "p2", "p3", "siteAlt"]) $(id).addEventListener("change", (e) => { e.target.value = Cerebro.limpar(e.target.value); atualizar(); });
 const abaSalva = store.get("rt-aba");
 aba(ABAS[abaSalva] ? abaSalva : "novo");
 renderListas();

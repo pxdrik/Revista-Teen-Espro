@@ -20,3 +20,7 @@ revista-teen-espro.vercel.app. Detalhes de arquitetura no README.
   `SENHA_EQUIPE` (variável da Vercel; cópia em `08_Seguranca`). A única entrada é o
   texto do copyright no rodapé, sem cara de link (pedido do Pedro); não criar outra.
   O adaptador da Vercel existe só por causa dessa rota; o resto continua estático.
+- **Publicar pelo app:** o botão da aba Site grava a matéria em
+  `src/data/posts-do-app.json` e a foto em `public/images/artigos/` direto no GitHub
+  (variável `GITHUB_TOKEN_SITE` na Vercel). Depois disso o git local fica atrás: rode
+  `bash scripts/pull-github.sh` e commite antes de qualquer `sync-github.sh`.
