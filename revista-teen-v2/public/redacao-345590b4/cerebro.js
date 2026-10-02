@@ -384,24 +384,61 @@
     }
     return out.join(" ");
   }
+  // Começo de frase que não é nome: chamada ("Confira"), mês e dia da semana.
+  const NAO_NOME = new Set(norm("confira veja assista saiba entenda conheca leia descubra janeiro fevereiro marco abril maio junho " +
+    "julho agosto setembro outubro novembro dezembro segunda terca quarta quinta sexta sabado domingo").split(" "));
   // Nomes próprios do título (pessoas, obras, marcas): viram hashtag no Instagram e tag no site.
+  // "Rio de Janeiro" é um nome só; "A Netflix" vira Netflix; "Alejandro G." perde a inicial solta.
   function nomesDe(titulo, texto) {
     const t = limpar(titulo), corpo = " " + limpar(texto);
     const meioDeFrase = (w) => new RegExp("[^.!?]\\s" + w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "u").test(corpo);
     const nomes = [];
-    const re = /(\p{Lu}[\p{L}\d'’]*(?:\s(?:\p{Lu}[\p{L}\d'’]*|\d+))*)/gu;
+    const re = /(\p{Lu}[\p{L}\d'’]*(?:\s(?:d[aeo]s?\s)?(?:\p{Lu}[\p{L}\d'’]*|\d+))*)/gu;
     let m;
     while ((m = re.exec(t)) && nomes.length < 3) {
-      const nome = m[1], noComeco = m.index === 0;
-      const ehNome = nome.includes(" ") || meioDeFrase(nome.split(" ")[0]) || !noComeco;
-      if (ehNome && !STOP.has(norm(nome)) && !TAG_GENERICA.has(norm(nome)) && nome.length > 2) nomes.push(nome);
+      const bruto = m[1], noComeco = m.index === 0;
+      const nome = bruto.replace(/^(?:A|O|As|Os|Um|Uma)\s+/u, "").replace(/\s+\p{Lu}$/u, "");
+      const ehNome = nome !== bruto || nome.includes(" ") || meioDeFrase(nome.split(" ")[0]) || !noComeco;
+      if (ehNome && nome.length > 2 && !/^\d+$/.test(nome) && !STOP.has(norm(nome)) && !TAG_GENERICA.has(norm(nome)) && !NAO_NOME.has(norm(nome))) nomes.push(nome);
     }
     return nomes;
   }
   function hashtags(titulo, texto, selo) {
     return normalizarHashtags([TAG_EDITORIA[selo] || "", ...nomesDe(titulo, texto).map(paraTag)].join(" "));
   }
-  const tags = (titulo, texto) => [...new Set(nomesDe(titulo, texto))];
+  // Tags do site: nomes do título e depois do texto. Com menos de 2, completa com a editoria,
+  // porque o site exige no mínimo 2.
+  const PALAVRAS_EDITORIA = { "Entretenimento e Famosos": ["Entretenimento", "Famosos"], "Moda e Beleza": ["Moda", "Beleza"], "Educação e Cultura": ["Educação", "Cultura"] };
+  const frasesSimples = (t) => (limpar(t).match(/[^.!?]+[.!?]+["”]?/g) || [limpar(t)]).map((f) => f.trim()).filter(Boolean);
+  function tags(titulo, texto, selo) {
+    const out = [];
+    // "Rio" e "Rio de Janeiro": fica só o nome mais completo.
+    const contem = (a, b) => (" " + norm(a) + " ").includes(" " + norm(b) + " ");
+    for (const n of [...nomesDe(titulo, texto), ...frasesSimples(texto).flatMap((f) => nomesDe(f, texto))]) {
+      if (out.some((o) => contem(o, n))) continue;
+      for (let k = out.length - 1; k >= 0; k--) if (contem(n, out[k])) out.splice(k, 1);
+      out.push(n);
+    }
+    for (const w of PALAVRAS_EDITORIA[selo] || ["Notícias", "Revista Teen"]) if (out.length < 2 && !out.includes(w)) out.push(w);
+    return out.slice(0, 4);
+  }
+
+  // Descrição da foto. O cérebro não vê a foto: usa a legenda que o artigo copiado traz
+  // ("Tom Cruise em "Digger" • YouTube/Warner", sem o crédito). Sem legenda, diz de quem ou
+  // do que é a notícia; a pessoa confere antes de publicar.
+  const juntar = (xs) => (xs.length > 1 ? xs.slice(0, -1).join(", ") + " e " + xs[xs.length - 1] : xs[0] || "");
+  function descricaoFoto(artigo, titulo) {
+    for (const bruta of String(artigo || "").split("\n")) {
+      const l = bruta.trim();
+      if (l.length >= 120 || DATA_PUBLICACAO.test(l) || !LEGENDA_FOTO.test(l)) continue;
+      const d = limpar(l.replace(LEGENDA_FOTO, "")).replace(/[\s.]+$/, "");
+      if (d.length >= 10) return d;
+    }
+    const nomes = nomesDe(titulo, artigo).slice(0, 2);
+    if (nomes.length) return "Imagem relacionada a " + juntar(nomes) + ", tema da notícia";
+    const t = limpar(titulo).replace(/[.!?]+$/, "");
+    return t ? "Imagem que ilustra a notícia: " + t : "";
+  }
 
   // Frase que diz quase o mesmo que uma já escolhida (metade das palavras em comum) fica de fora.
   // Só palavras comuns contam: nomes próprios se repetem em qualquer notícia.
@@ -451,13 +488,14 @@
     if (frases.length < 3) avisos.push("O artigo tem poucas frases, então o texto do site ficou curto. Complete à mão.");
     const t = titulos(titulo, lead && lead.f);
     const textoIg = costurar(ig, { semParenteses: true }).join(" ");
+    const seloSugerido = sugerirSelo(titulo, artigo);
     return {
       instagram: { titulo: t.ig, texto: textoIg, legenda: legenda(t.ig, textoIg) },
-      site: { titulo: t.site, paragrafos: emTres(costurar(site)) },
-      seloSugerido: sugerirSelo(titulo, artigo),
+      site: { titulo: t.site, paragrafos: emTres(costurar(site)), alt: descricaoFoto(artigo, titulo), tags: tags(t.ig, textoIg, seloSugerido) },
+      seloSugerido,
       avisos,
     };
   }
 
-  root.Cerebro = { gerar, limpar, dividirFrases, tituloCurto, sugerirSelo, emTres, jovem, manchete, legenda, hashtags, normalizarHashtags, tags };
+  root.Cerebro = { gerar, limpar, dividirFrases, tituloCurto, sugerirSelo, emTres, jovem, manchete, legenda, hashtags, normalizarHashtags, tags, descricaoFoto };
 })(typeof window !== "undefined" ? window : globalThis);

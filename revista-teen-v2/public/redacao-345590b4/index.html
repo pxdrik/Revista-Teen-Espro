@@ -328,10 +328,10 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
             <label>Parágrafo 1 <textarea id="p1"></textarea></label>
             <label>Parágrafo 2 <textarea id="p2"></textarea></label>
             <label>Parágrafo 3 <textarea id="p3"></textarea></label>
-            <label>Descrição da foto <span class="hint">O que aparece na foto, para quem usa leitor de tela. Obrigatória para publicar no site.</span>
+            <label>Descrição da foto <span class="hint">Para quem usa leitor de tela. O Montar post preenche pela legenda da foto no artigo, quando houver: confira se descreve a foto.</span>
               <input type="text" id="siteAlt" maxlength="300">
             </label>
-            <label>Tags do site <span class="hint">De 2 a 4, separadas por vírgula.</span>
+            <label>Tags do site <span class="hint">De 2 a 4, separadas por vírgula. O Montar post sugere.</span>
               <input type="text" id="siteTags" autocomplete="off">
             </label>
           </fieldset>
@@ -673,10 +673,10 @@ function preencher(s) {
   $("siteTitulo").value = Cerebro.limpar(s.site?.titulo);
   const ps = Array.isArray(s.site?.paragrafos) ? s.site.paragrafos : [];
   ["p1", "p2", "p3"].forEach((id, i) => ($(id).value = Cerebro.limpar(ps[i])));
-  $("siteAlt").value = Cerebro.limpar(s.site?.alt);
-  // Sem tags salvas (post novo ou antigo), sugere os nomes do título.
+  // Post sem descrição ou sem tags (antigo, ou texto vindo de fora): o cérebro preenche.
+  $("siteAlt").value = Cerebro.limpar(s.site?.alt) || Cerebro.descricaoFoto($("artigo").value, $("tituloOriginal").value || s.instagram?.titulo || "");
   const tagsSalvas = Array.isArray(s.site?.tags) ? s.site.tags.filter((t) => typeof t === "string") : [];
-  $("siteTags").value = (tagsSalvas.length ? tagsSalvas : Cerebro.tags(s.instagram?.titulo || "", s.instagram?.texto || "")).join(", ");
+  $("siteTags").value = (tagsSalvas.length ? tagsSalvas : Cerebro.tags(s.instagram?.titulo || "", s.instagram?.texto || "", $("selo").value)).join(", ");
   atualizar();
 }
 function mostrar(vista) {
