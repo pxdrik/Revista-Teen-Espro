@@ -31,8 +31,10 @@ function walk(dir, out = []) {
 }
 
 const files = walk(DIST);
-// O app da redação (public/redacao-*) é escondido de propósito: sem SEO para auditar.
-const htmlFiles = files.filter((f) => f.endsWith(".html") && !/[\\/]redacao-[^\\/]+[\\/]/.test(f));
+const allHtml = files.filter((f) => f.endsWith(".html"));
+// O app da redação (public/redacao-*) é escondido de propósito: existe como rota (o rodapé
+// leva até ele), mas fica fora da auditoria de SEO.
+const htmlFiles = allHtml.filter((f) => !/[\\/]redacao-[^\\/]+[\\/]/.test(f));
 
 const problems = [];
 const fail = (page, msg) => problems.push({ page, msg });
@@ -40,7 +42,7 @@ const fail = (page, msg) => problems.push({ page, msg });
 const routeOf = (file) =>
   "/" + relative(DIST, file).replace(/\\/g, "/").replace(/index\.html$/, "").replace(/\/$/, "");
 
-const routes = new Set(htmlFiles.map((f) => routeOf(f) || "/"));
+const routes = new Set(allHtml.map((f) => routeOf(f) || "/"));
 
 const attr = (tag, name) => {
   const m = tag.match(new RegExp(name + '="([^"]*)"'));

@@ -17,5 +17,6 @@ revista-teen-espro.vercel.app. Detalhes de arquitetura no README.
 - **App da redação (escondido):** `/redacao-345590b4`, fora do sitemap e com noindex.
   Arquivos em `public/redacao-345590b4/`; banco pela rota `src/pages/api/operacao.ts`
   (Upstash Redis do projeto na Vercel, variáveis `KV_REST_API_*`). Entra com a senha
-  `SENHA_EQUIPE` (variável da Vercel; cópia em `08_Seguranca`). Nunca linkar no site.
+  `SENHA_EQUIPE` (variável da Vercel; cópia em `08_Seguranca`). A única entrada é o
+  texto do copyright no rodapé, sem cara de link (pedido do Pedro); não criar outra.
   O adaptador da Vercel existe só por causa dessa rota; o resto continua estático.
