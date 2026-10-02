@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Estrela da logo da Revista Teen: preta na aba clara, branca na escura. -->
+  <style>polygon { stroke: #111118; } @media (prefers-color-scheme: dark) { polygon { stroke: #ffffff; } }</style>
+  <polygon points="50.00,7.50 61.46,38.72 94.70,39.98 68.55,60.53 77.63,92.52 50.00,74.00 22.37,92.52 31.45,60.53 5.30,39.98 38.54,38.72" fill="none" stroke-width="11" stroke-linejoin="miter" stroke-miterlimit="10"/>
+</svg>
