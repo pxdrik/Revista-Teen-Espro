@@ -121,6 +121,7 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
 .filters { display: flex; gap: 6px; flex-wrap: wrap; }
 .filters button { border-radius: 999px; padding: 6px 14px; font-size: 13px; background: transparent; color: var(--muted); }
 .filters button[aria-pressed="true"] { background: var(--raised); color: var(--fg); border-color: var(--muted); }
+select.cat { width: auto; padding: 6px 12px; font-size: 13px; border-radius: 999px; }
 .empty { padding: 32px 20px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--r); }
 .empty b { color: var(--fg); font-weight: 600; display: block; margin-bottom: 4px; }
 
@@ -352,7 +353,10 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
   <div id="aba-hist" role="tabpanel" aria-labelledby="tab-hist" hidden>
     <div class="listhead">
       <h2 class="sec">Histórico de posts</h2>
+      <div class="filters">
+      <select class="cat" id="catHist" aria-label="Filtrar por categoria"></select>
       <input type="search" id="busca" placeholder="Buscar por título, autor ou selo" aria-label="Buscar no histórico" style="max-width:320px">
+      </div>
     </div>
     <div class="grid" id="listaHist"></div>
     <div class="empty" id="vazioHist"></div>
@@ -362,9 +366,12 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
   <div id="aba-ig" role="tabpanel" aria-labelledby="tab-ig" hidden>
     <div class="listhead">
       <h2 class="sec">Posts do Instagram</h2>
+      <div class="filters">
+      <select class="cat" id="catIg" aria-label="Filtrar por categoria"></select>
       <div class="filters" role="group" aria-label="Filtrar posts do Instagram">
         <button type="button" id="fIgPend" aria-pressed="true">Para postar</button>
         <button type="button" id="fIgPub" aria-pressed="false">Publicados</button>
+      </div>
       </div>
     </div>
     <div class="iglist" id="listaIg"></div>
@@ -375,9 +382,12 @@ legend { font-weight: 600; font-size: 14px; padding: 0; margin-bottom: 4px; disp
   <div id="aba-site" role="tabpanel" aria-labelledby="tab-site" hidden>
     <div class="listhead">
       <h2 class="sec">Prévia do site</h2>
+      <div class="filters">
+      <select class="cat" id="catSite" aria-label="Filtrar por categoria"></select>
       <div class="filters" role="group" aria-label="Filtrar a prévia do site">
         <button type="button" id="fSitePend" aria-pressed="true">Pendentes</button>
         <button type="button" id="fSitePub" aria-pressed="false">Publicados no site</button>
+      </div>
       </div>
     </div>
     <div class="sitebar" id="siteBarra"></div>
@@ -872,6 +882,10 @@ function copiarParaDocs(lista) {
 
 // ---------- Histórico e filas: banco da equipe, pela rota /api/operacao do site ----------
 let conectado = false, posts = [], salvando = false, filtroSite = "pendente", filtroIg = "pendente";
+// Filtro por categoria (o selo do post), um só para as abas Histórico, Instagram e Site.
+let categoria = "";
+const naCategoria = (p) => !categoria || seloDe(texto(p.selo)).nome === categoria;
+const nadaNaCategoria = (vazio) => vazio.replaceChildren(el("b", "", "Nada em " + categoria + " aqui."), "Escolha outra categoria, ou Todas as categorias.");
 async function api(metodo, corpo, query = "") {
   const r = await fetch(API + query, { method: metodo, headers: corpo ? { "Content-Type": "application/json" } : {}, body: corpo ? JSON.stringify(corpo) : undefined });
   if (r.status === 401) { pedirSenha(); throw { code: "senha" }; }
@@ -970,7 +984,7 @@ const texto = (v) => (typeof v === "string" ? v : "");
 
 function renderHist() {
   const q = $("busca").value.trim().toLowerCase();
-  const lista = posts.filter((p) => !q || [p.instagram?.titulo, p.site?.titulo, p.autor, p.selo].some((x) => texto(x).toLowerCase().includes(q)));
+  const lista = posts.filter(naCategoria).filter((p) => !q || [p.instagram?.titulo, p.site?.titulo, p.autor, p.selo].some((x) => texto(x).toLowerCase().includes(q)));
   $("listaHist").replaceChildren(...lista.map((p) => {
     const card = el("article", "card");
     const body = el("div", "body");
@@ -991,11 +1005,12 @@ function renderHist() {
   vazio.hidden = lista.length > 0;
   vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : q ? "Nada encontrado." : "Nenhum post salvo ainda."),
     !conectado ? "Confira a internet e recarregue a página." : q ? "Tente outro termo." : "Trate um artigo na aba Novo post e clique em Salvar no histórico.");
+  if (conectado && categoria && !q && !lista.length) nadaNaCategoria(vazio);
 }
 // ---------- Aba Instagram ----------
 // A capa usa a miniatura salva; a imagem 2 não depende da foto, então é desenhada na hora.
 function renderIg() {
-  const lista = posts.filter((p) => (p.igStatus === "publicado" ? "publicado" : "pendente") === filtroIg);
+  const lista = posts.filter(naCategoria).filter((p) => (p.igStatus === "publicado" ? "publicado" : "pendente") === filtroIg);
   $("listaIg").replaceChildren(...lista.map((p) => {
     const card = el("article", "igcard");
     const par = el("div", "igpar");
@@ -1038,6 +1053,7 @@ function renderIg() {
   vazio.hidden = lista.length > 0;
   vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : filtroIg === "pendente" ? "Nada esperando para ir ao Instagram." : "Nenhum post marcado como publicado no Instagram."),
     !conectado ? "Confira a internet e recarregue a página." : filtroIg === "pendente" ? "Todo post salvo aparece aqui até alguém marcar como publicado." : "Depois de postar, marque o post como publicado na lista Para postar.");
+  if (conectado && categoria && !lista.length) nadaNaCategoria(vazio);
 }
 
 // ---------- Aba Docs: a pauta do site, no formato do Docs da equipe ----------
@@ -1194,7 +1210,7 @@ function linhaMeta(partes) {
 }
 
 function renderSitePrev() {
-  const lista = posts.filter((p) => (p.siteStatus === "publicado" ? "publicado" : "pendente") === filtroSitePrev);
+  const lista = posts.filter(naCategoria).filter((p) => (p.siteStatus === "publicado" ? "publicado" : "pendente") === filtroSitePrev);
   const aberto = siteAberto && posts.find((p) => p.id === siteAberto);
   const quadro = $("rtSite"), barra = $("siteBarra");
   quadro.hidden = !aberto && lista.length === 0;
@@ -1260,6 +1276,7 @@ function renderSitePrev() {
   vazio.hidden = !quadro.hidden;
   vazio.replaceChildren(el("b", "", !conectado ? "Não consegui carregar os posts." : filtroSitePrev === "pendente" ? "Nada esperando para ir ao site." : "Nenhum post marcado como publicado no site."),
     !conectado ? "Confira a internet e recarregue a página." : "Todo post salvo aparece aqui como card do site; clique para ver a matéria inteira.");
+  if (conectado && categoria && !lista.length) nadaNaCategoria(vazio);
 }
 filtro([["fSitePend", "pendente"], ["fSitePub", "publicado"]], "pendente", (v) => { filtroSitePrev = v; siteAberto = null; });
 
@@ -1273,6 +1290,11 @@ for (const k of Object.keys(ABAS)) $(ABAS[k][0]).onclick = () => aba(k);
 
 // ---------- Início ----------
 $("selo").append(...SELOS.map((s) => new Option(s.nome, s.nome)));
+const CATS = ["catHist", "catIg", "catSite"];
+for (const id of CATS) {
+  $(id).append(new Option("Todas as categorias", ""), ...SELOS.map((s) => new Option(s.nome, s.nome)));
+  $(id).onchange = (e) => { categoria = e.target.value; for (const c of CATS) $(c).value = categoria; renderListas(); };
+}
 $("tituloOriginal").value = EXEMPLO.tituloOriginal; $("artigo").value = EXEMPLO.artigo;
 $("fonte").value = EXEMPLO.fonte; $("selo").value = EXEMPLO.selo;
 $("autor").value = store.get("rt-autor") || "";
