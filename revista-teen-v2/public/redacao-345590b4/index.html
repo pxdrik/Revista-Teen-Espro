@@ -302,6 +302,8 @@ select.cat { width: auto; padding: 6px 12px; font-size: 13px; border-radius: 999
               <button type="button" id="btnPng" class="small primary">Baixar as 2 imagens</button>
               <button type="button" id="btnPngCapa" class="small">Baixar imagem 1</button>
               <button type="button" id="btnPngTexto" class="small">Baixar imagem 2</button>
+              <button type="button" id="btnCopiarCapa" class="small">Copiar imagem 1</button>
+              <button type="button" id="btnCopiarTexto" class="small">Copiar imagem 2</button>
             </div>
           </div>
 
@@ -660,7 +662,7 @@ function atualizar() {
   falhasAtuais = verificar(s, $("fonte").value, $("autor").value);
   $("violations").replaceChildren(...falhasAtuais.map((f) => el("div", "", f)));
   const ok = falhasAtuais.length === 0;
-  $("btnPng").disabled = $("btnPngCapa").disabled = $("btnPngTexto").disabled = !ok;
+  $("btnPng").disabled = $("btnPngCapa").disabled = $("btnPngTexto").disabled = $("btnCopiarCapa").disabled = $("btnCopiarTexto").disabled = !ok;
   $("btnSalvar").disabled = !ok || !conectado || salvando;
   const n = s.instagram.titulo.length;
   $("cntTitulo").textContent = n + " / 48"; $("cntTitulo").classList.toggle("bad", n > 48);
@@ -820,6 +822,18 @@ async function baixarUma(d, cv, n) {
 $("btnPng").addEventListener("click", () => baixarDuas(dadosEditor(), cvCapa, cvTexto));
 $("btnPngCapa").addEventListener("click", () => { mostrar("capa"); baixarUma(dadosEditor(), cvCapa, 1); });
 $("btnPngTexto").addEventListener("click", () => { mostrar("texto"); baixarUma(dadosEditor(), cvTexto, 2); });
+
+// Copiar uma imagem para colar direto (WhatsApp, Instagram no computador, Canva). Uma de cada
+// vez: a área de transferência guarda uma imagem só. `canvas` é uma promessa porque o Safari só
+// aceita escrever dentro do clique, e na aba Instagram a capa ainda está sendo montada.
+async function copiarImagem(canvas, n) {
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "image/png": canvas.then((cv) => blobDe(cv, "image/png")) })]);
+    toast(n === 1 ? "Imagem 1 (capa) copiada. Cole com Ctrl+V." : "Imagem 2 (texto) copiada. Cole com Ctrl+V.");
+  } catch { toast("Não consegui copiar a imagem aqui. Use Baixar imagem."); }
+}
+$("btnCopiarCapa").addEventListener("click", () => { mostrar("capa"); copiarImagem(Promise.resolve(cvCapa), 1); });
+$("btnCopiarTexto").addEventListener("click", () => { mostrar("texto"); copiarImagem(Promise.resolve(cvTexto), 2); });
 
 // ---------- Legenda do Instagram ----------
 // Legenda + fonte + hashtags. Fonte e #revistateen são garantidas pelo código, nunca dependem de alguém lembrar.
@@ -1040,6 +1054,8 @@ function renderIg() {
       acao("Baixar as 2 imagens", "primary", (d, capa, txt) => baixarDuas(d, capa, txt)),
       acao("Baixar imagem 1", "", (d, capa) => baixarUma(d, capa, 1)),
       acao("Baixar imagem 2", "", (d, capa, txt) => baixarUma(d, txt, 2)),
+      botao("Copiar imagem 1", "", () => copiarImagem(prontas().then(([, capa]) => capa), 1)),
+      botao("Copiar imagem 2", "", () => copiarImagem(prontas().then(([, , txt]) => txt), 2)),
       p.igStatus === "publicado" ? botao("Voltar para Para postar", "", () => marcarIg(p.id, false)) : botao("Marcar como publicado", "", () => marcarIg(p.id, true)),
       botao("Abrir no editor", "", () => abrir(p.id)),
     );
