@@ -26,7 +26,23 @@
       "src": "/images/artigos/pfw-louis-vuitton-verao-2027.jpg",
       "alt": "Imagem relacionada a PFW e Louis Vuitton, tema da notícia",
       "credit": "Reprodução",
-      "position": "50% 8%"
+      "frames": {
+        "hero": {
+          "x": 50,
+          "y": 8,
+          "zoom": 1
+        },
+        "heroMobile": {
+          "x": 50,
+          "y": 8,
+          "zoom": 1
+        },
+        "card": {
+          "x": 50,
+          "y": 8,
+          "zoom": 1
+        }
+      }
     }
   },
   {

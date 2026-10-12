@@ -345,6 +345,21 @@ input[type="checkbox"]:not(:disabled) {
   transform: scale(1.03);
 }
 
+/* Enquadramento do app da redação (image.frames): ponto em foco e zoom em volta dele.
+   O zoom usa a propriedade scale, que se soma ao transform do hover do card. */
+.framed {
+  object-position: var(--pos, 50% 50%);
+  transform-origin: var(--pos, 50% 50%);
+  scale: var(--zoom, 1);
+}
+@media (max-width: 639px) {
+  .framed {
+    object-position: var(--pos-m, var(--pos, 50% 50%));
+    transform-origin: var(--pos-m, var(--pos, 50% 50%));
+    scale: var(--zoom-m, var(--zoom, 1));
+  }
+}
+
 /* ─── Revelação no scroll (CSS puro, sem JS) ─── */
 @keyframes fadeInUp {
   from {

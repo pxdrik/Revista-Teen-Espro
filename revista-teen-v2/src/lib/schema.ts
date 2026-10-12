@@ -41,6 +41,13 @@ export const sourceSchema = z.object({
 
 export type Source = z.infer<typeof sourceSchema>;
 
+const frameSchema = z.object({ x: z.number().min(0).max(100), y: z.number().min(0).max(100), zoom: z.number().min(1).max(3) });
+export type ImageFrame = z.infer<typeof frameSchema>;
+
+/** Variáveis CSS lidas pela classe .framed (global.css). sufixo "-m" = celular. */
+export const frameVars = (f: ImageFrame | undefined, sufixo = "") =>
+  f ? `--pos${sufixo}:${f.x}% ${f.y}%;--zoom${sufixo}:${f.zoom};` : "";
+
 export const imageSchema = z.object({
   src: z.string().startsWith("/images/artigos/"),
   /** Descreve a imagem para quem não a enxerga. Nunca repete o título. */
@@ -55,8 +62,11 @@ export const imageSchema = z.object({
    * e peca grafica com texto: cortada, ela vira fragmento ilegivel.
    */
   fit: z.enum(["cover", "contain"]).optional(),
-  /** Ponto da foto que fica à vista no corte ("50% 20%" = centro, perto do topo). Padrão: centro. */
-  position: z.string().regex(/^\d{1,3}% \d{1,3}%$/, 'position deve ser "X% Y%"').optional(),
+  /**
+   * Enquadramento escolhido no app da redação, um por lugar onde a foto aparece:
+   * ponto da foto em foco (x, y em %) e zoom em volta dele. Padrão: centro, sem zoom.
+   */
+  frames: z.object({ hero: frameSchema, heroMobile: frameSchema, card: frameSchema }).partial().optional(),
 });
 
 const SLUG_RX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

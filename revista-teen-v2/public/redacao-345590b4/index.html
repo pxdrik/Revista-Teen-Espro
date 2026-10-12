@@ -106,9 +106,12 @@ canvas.dragging { cursor: grabbing; }
 .enq img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
 .enq .heroq::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, #08080D 10%, rgba(8,8,13,.45) 60%, transparent 100%); }
 .enq figcaption { position: absolute; left: 6px; top: 6px; z-index: 1; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: rgba(8,8,13,.75); color: #fff; }
-#enqPc { width: 100%; aspect-ratio: 5 / 2; }
-#enqCel { width: 30%; aspect-ratio: 4 / 5; }
-#enqCard { flex: 1; align-self: start; aspect-ratio: 3 / 2; }
+.enqq { display: grid; gap: 6px; align-content: start; }
+.zoomq { display: flex !important; gap: 8px; align-items: center; font-size: 12px; font-weight: 400; color: var(--muted); }
+.zoomq input { flex: 1; min-width: 0; accent-color: var(--accent); padding: 0; }
+#enqPc { aspect-ratio: 5 / 2; }
+#enqCel { aspect-ratio: 4 / 5; }
+#enqCard { aspect-ratio: 3 / 2; }
 #fotoSiteBox .tools { justify-content: flex-start; margin-top: 4px; }
 
 .field-head { display: flex; gap: 8px; align-items: baseline; }
@@ -350,11 +353,20 @@ select.cat { width: auto; padding: 6px 12px; font-size: 13px; border-radius: 999
             <label>Tags do site <span class="hint">De 2 a 4, separadas por vírgula. O Montar post sugere.</span>
               <input type="text" id="siteTags" autocomplete="off">
             </label>
-            <div class="lbl" id="fotoSiteBox" hidden>Foto no site <span class="hint">Enquadramento só do site, à parte da capa do Instagram. Arraste a foto em qualquer moldura para escolher o que aparece: o topo da matéria corta em faixa larga no computador e quase quadrada no celular.</span>
+            <div class="lbl" id="fotoSiteBox" hidden>Foto no site <span class="hint">Enquadramento só do site, à parte da capa do Instagram. Cada moldura é um lugar do site e tem o seu: arraste a foto para escolher o que aparece e use o zoom embaixo dela.</span>
               <div class="enq">
-                <figure id="enqPc" class="heroq"><img alt=""><figcaption>Topo da matéria no computador</figcaption></figure>
-                <figure id="enqCel" class="heroq"><img alt=""><figcaption>No celular</figcaption></figure>
-                <figure id="enqCard"><img alt=""><figcaption>Card</figcaption></figure>
+                <div class="enqq" style="width:100%">
+                  <figure id="enqPc" class="heroq" data-q="pc"><img alt=""><figcaption>Topo da matéria no computador</figcaption></figure>
+                  <label class="zoomq">Zoom <input type="range" min="1" max="3" step="0.01" value="1" data-q="pc" aria-label="Zoom do topo da matéria no computador"></label>
+                </div>
+                <div class="enqq" style="width:30%">
+                  <figure id="enqCel" class="heroq" data-q="cel"><img alt=""><figcaption>No celular</figcaption></figure>
+                  <label class="zoomq">Zoom <input type="range" min="1" max="3" step="0.01" value="1" data-q="cel" aria-label="Zoom do topo da matéria no celular"></label>
+                </div>
+                <div class="enqq" style="flex:1">
+                  <figure id="enqCard" data-q="card"><img alt=""><figcaption>Card</figcaption></figure>
+                  <label class="zoomq">Zoom <input type="range" min="1" max="3" step="0.01" value="1" data-q="card" aria-label="Zoom do card"></label>
+                </div>
               </div>
               <div class="tools">
                 <label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="siteInteira" style="width:auto"> Mostrar a foto inteira, sem cortar</label>
@@ -365,6 +377,7 @@ select.cat { width: auto; padding: 6px 12px; font-size: 13px; border-radius: 999
 
           <div class="actions">
             <button type="button" class="primary" id="btnSalvar">Salvar no histórico</button>
+            <button type="button" id="btnAtualizarSite" hidden>Salvar e atualizar no site</button>
           </div>
           <p class="status" id="statusSalvar" role="status"></p>
         </div>
@@ -480,7 +493,7 @@ function dataUrlParaBlob(u) {
 }
 
 // Estado do post aberto no editor
-const estado = { hashtagsAuto: "", foto: null, fotoBlob: null, fotoDataUrl: null, fotoMudou: false, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: { x: 0.5, y: 0.5, inteira: false }, id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, vista: "capa" };
+const estado = { hashtagsAuto: "", foto: null, fotoBlob: null, fotoDataUrl: null, fotoMudou: false, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: fotoSiteNova(), id: null, siteSlug: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, vista: "capa" };
 
 // ---------- O que o código não conserta sozinho ----------
 // Travessão, emoji e hashtag não viram aviso: o Cerebro.limpar tira de todo texto antes de desenhar e salvar.
@@ -659,7 +672,7 @@ function saidaAtual() {
   return {
     instagram: { titulo: Cerebro.limpar($("igTitulo").value), texto: Cerebro.limpar($("igTexto").value), legenda: Cerebro.limpar($("igLegenda").value), hashtags: Cerebro.normalizarHashtags($("igHashtags").value) },
     site: { titulo: Cerebro.limpar($("siteTitulo").value), paragrafos: ["p1", "p2", "p3"].map((id) => Cerebro.limpar($(id).value)),
-      alt: Cerebro.limpar($("siteAlt").value), tags: tagsDe($("siteTags").value), foto: { ...estado.fotoSite } },
+      alt: Cerebro.limpar($("siteAlt").value), tags: tagsDe($("siteTags").value), foto: structuredClone(estado.fotoSite) },
   };
 }
 const tagsDe = (v) => [...new Set(String(v || "").split(",").map((t) => Cerebro.limpar(t).slice(0, 40)).filter(Boolean))].slice(0, 4);
@@ -685,6 +698,8 @@ function atualizar() {
   const ok = falhasAtuais.length === 0;
   $("btnPng").disabled = $("btnPngCapa").disabled = $("btnPngTexto").disabled = $("btnCopiarCapa").disabled = $("btnCopiarTexto").disabled = !ok;
   $("btnSalvar").disabled = !ok || !conectado || salvando;
+  $("btnAtualizarSite").hidden = !(estado.siteStatus === "publicado" && estado.siteSlug);
+  $("btnAtualizarSite").disabled = !ok || !conectado || salvando || publicando;
   const n = s.instagram.titulo.length;
   $("cntTitulo").textContent = n + " / 48"; $("cntTitulo").classList.toggle("bad", n > 48);
   $("btnSalvar").textContent = estado.id ? "Salvar alterações" : "Salvar no histórico";
@@ -724,12 +739,12 @@ function mostrar(vista) {
 $("verCapa").onclick = () => mostrar("capa");
 $("verTexto").onclick = () => mostrar("texto");
 function limparFoto() {
-  Object.assign(estado, { foto: null, fotoBlob: null, fotoDataUrl: null, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: { x: 0.5, y: 0.5, inteira: false } });
+  Object.assign(estado, { foto: null, fotoBlob: null, fotoDataUrl: null, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: fotoSiteNova() });
   $("zoom").value = 1; $("thumb").style.backgroundImage = ""; $("thumb").textContent = "+"; $("foto").value = "";
   cvCapa.classList.remove("can-drag"); mostrar(estado.vista); redesenharSite();
 }
 function novoPost() {
-  Object.assign(estado, { id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, fotoMudou: false });
+  Object.assign(estado, { id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, siteSlug: null, fotoMudou: false });
   limparFoto();
   for (const id of ["tituloOriginal", "artigo", "fonte", "igTitulo", "igTexto", "igLegenda", "igHashtags", "siteTitulo", "p1", "p2", "p3", "siteAlt", "siteTags"]) $(id).value = "";
   estado.hashtagsAuto = "";
@@ -781,7 +796,7 @@ async function carregarFoto(file) {
   estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1;
   if (await usarFoto(URL.createObjectURL(file), file)) {
     // Foto em pé costuma ter o rosto no alto: o site começa mostrando a parte de cima.
-    estado.fotoSite = { x: 0.5, y: estado.foto.height > estado.foto.width ? 0.2 : 0.5, inteira: false };
+    estado.fotoSite = fotoSiteNova(estado.foto.height > estado.foto.width ? 0.2 : 0.5);
     estado.fotoMudou = true; status(""); redesenharSite();
   }
 }
@@ -814,50 +829,69 @@ cvCapa.addEventListener("pointerup", soltar); cvCapa.addEventListener("pointerca
 $("zoom").addEventListener("input", (e) => { estado.zoom = Number(e.target.value); redesenharCapa(); });
 $("btnCentro").addEventListener("click", () => { estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1; redesenharCapa(); });
 
-// ---------- Foto no site: enquadramento próprio (object-position no site), à parte da capa ----------
-function fotoSiteDe(p) {
-  const f = p.site?.foto, ok = (v) => typeof v === "number" && v >= 0 && v <= 1;
-  return f && ok(f.x) && ok(f.y) ? { x: f.x, y: f.y, inteira: !!f.inteira } : { x: 0.5, y: 0.5, inteira: false };
+// ---------- Foto no site: enquadramento próprio, à parte da capa ----------
+// Um por moldura (pc = topo da matéria no computador, cel = no celular, card): ponto em foco
+// (x, y de 0 a 1) e zoom em volta dele. No site vira image.frames (object-position + scale).
+const QUADROS = { pc: "enqPc", cel: "enqCel", card: "enqCard" };
+function fotoSiteNova(y = 0.5) {
+  const q = () => ({ x: 0.5, y, z: 1 });
+  return { pc: q(), cel: q(), card: q(), inteira: false };
 }
-function posicaoSite(f) { return `${Math.round(f.x * 100)}% ${Math.round(f.y * 100)}%`; }
-function enquadrarSite(imgEl, f) { imgEl.style.objectFit = f.inteira ? "contain" : "cover"; imgEl.style.objectPosition = posicaoSite(f); }
-function enqs() { return ["enqPc", "enqCel", "enqCard"].map($); }
+function fotoSiteDe(p) {
+  const f = p.site?.foto, ok = (v, a, b) => typeof v === "number" && v >= a && v <= b;
+  const q = (v) => (v && ok(v.x, 0, 1) && ok(v.y, 0, 1) ? { x: v.x, y: v.y, z: ok(v.z, 1, 3) ? v.z : 1 } : null);
+  const r = fotoSiteNova();
+  if (!f) return r;
+  const unico = q(f); // salvo antes de as molduras serem separadas: um foco para as três
+  for (const k in QUADROS) r[k] = q(f[k]) || unico || r[k];
+  r.inteira = !!f.inteira;
+  return r;
+}
+function enquadrarSite(imgEl, q, inteira) {
+  const pos = `${Math.round(q.x * 100)}% ${Math.round(q.y * 100)}%`;
+  Object.assign(imgEl.style, { objectFit: inteira ? "contain" : "cover", objectPosition: pos, transformOrigin: pos, scale: inteira ? "1" : String(q.z) });
+}
 function redesenharSite() {
   $("fotoSiteBox").hidden = !estado.foto;
   if (!estado.foto) return;
-  $("siteInteira").checked = estado.fotoSite.inteira;
-  for (const fig of enqs()) {
-    const i = fig.querySelector("img");
+  const fs = estado.fotoSite;
+  $("siteInteira").checked = fs.inteira;
+  for (const [k, id] of Object.entries(QUADROS)) {
+    const fig = $(id), i = fig.querySelector("img"), z = document.querySelector(`.zoomq input[data-q="${k}"]`);
     if (i.src !== estado.foto.src) i.src = estado.foto.src;
-    enquadrarSite(i, estado.fotoSite);
-    fig.style.cursor = estado.fotoSite.inteira ? "default" : "";
+    enquadrarSite(i, fs[k], fs.inteira);
+    fig.style.cursor = fs.inteira ? "default" : "";
+    z.value = fs[k].z; z.disabled = fs.inteira;
   }
 }
 let arrastoSite = null;
-for (const fig of enqs()) {
+for (const [k, id] of Object.entries(QUADROS)) {
+  const fig = $(id);
   fig.addEventListener("pointerdown", (e) => {
     if (!estado.foto || estado.fotoSite.inteira) return;
-    arrastoSite = { x: e.clientX, y: e.clientY, f: { ...estado.fotoSite } };
+    arrastoSite = { x: e.clientX, y: e.clientY, q: { ...estado.fotoSite[k] } };
     fig.setPointerCapture(e.pointerId); fig.classList.add("dragging");
   });
   fig.addEventListener("pointermove", (e) => {
     if (!arrastoSite) return;
-    // Com object-fit cover só um eixo sobra; arrastar a sobra inteira leva o foco de 0 a 1.
-    const r = fig.getBoundingClientRect(), f = estado.foto;
-    const esc = Math.max(r.width / f.width, r.height / f.height);
+    // A borda da foto fica em foco * (moldura - foto * zoom): arrastar a sobra inteira leva o foco de 0 a 1.
+    const r = fig.getBoundingClientRect(), f = estado.foto, a = arrastoSite.q;
+    const esc = Math.max(r.width / f.width, r.height / f.height) * a.z;
     const sobraX = f.width * esc - r.width, sobraY = f.height * esc - r.height;
     const cl = (v) => Math.min(1, Math.max(0, v));
-    const a = arrastoSite.f;
-    estado.fotoSite = { ...a,
+    estado.fotoSite[k] = { ...a,
       x: sobraX > 1 ? cl(a.x - (e.clientX - arrastoSite.x) / sobraX) : a.x,
       y: sobraY > 1 ? cl(a.y - (e.clientY - arrastoSite.y) / sobraY) : a.y };
     redesenharSite();
   });
   const fim = () => { arrastoSite = null; fig.classList.remove("dragging"); };
   fig.addEventListener("pointerup", fim); fig.addEventListener("pointercancel", fim);
+  document.querySelector(`.zoomq input[data-q="${k}"]`).addEventListener("input", (e) => {
+    estado.fotoSite[k] = { ...estado.fotoSite[k], z: Number(e.target.value) }; redesenharSite();
+  });
 }
-$("siteInteira").addEventListener("change", (e) => { estado.fotoSite = { ...estado.fotoSite, inteira: e.target.checked }; redesenharSite(); });
-$("btnCentroSite").addEventListener("click", () => { estado.fotoSite = { x: 0.5, y: 0.5, inteira: false }; redesenharSite(); });
+$("siteInteira").addEventListener("change", (e) => { estado.fotoSite.inteira = e.target.checked; redesenharSite(); });
+$("btnCentroSite").addEventListener("click", () => { estado.fotoSite = fotoSiteNova(); redesenharSite(); });
 
 // ---------- Baixar e copiar ----------
 function toast(t, ms = 2800) { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (e.hidden = true), ms); }
@@ -965,7 +999,7 @@ function copiarParaDocs(lista) {
 }
 
 // ---------- Histórico e filas: banco da equipe, pela rota /api/operacao do site ----------
-let conectado = false, posts = [], salvando = false, filtroSite = "pendente", filtroIg = "pendente";
+let conectado = false, posts = [], salvando = false, publicando = false, filtroSite = "pendente", filtroIg = "pendente";
 // Filtro por categoria (o selo do post), um só para as abas Histórico, Instagram e Site.
 let categoria = "";
 const naCategoria = (p) => !categoria || seloDe(texto(p.selo)).nome === categoria;
@@ -989,8 +1023,12 @@ async function carregar() {
   catch (e) { if (e?.code !== "senha") toast(msgDb(e)); }
 }
 
-$("btnSalvar").addEventListener("click", async () => {
-  if (!conectado || salvando) return;
+$("btnSalvar").addEventListener("click", () => salvar());
+$("btnAtualizarSite").addEventListener("click", (e) => confirmar(e.currentTarget, "Confirmar: salvar e atualizar", async () => {
+  if (await salvar()) publicarNoSite([posts.find((p) => p.id === estado.id)], true);
+}));
+async function salvar() {
+  if (!conectado || salvando) return false;
   salvando = true; atualizar(); $("statusSalvar").textContent = "Salvando...";
   const agora = new Date().toISOString();
   const selo = seloDe($("selo").value);
@@ -1009,11 +1047,14 @@ $("btnSalvar").addEventListener("click", async () => {
     const salvo = await api("PUT", corpo);
     Object.assign(estado, { id: salvo.id, criadoEm: salvo.criadoEm, fotoMudou: false });
     trocarPost(salvo);
-    $("statusSalvar").textContent = "Salvo. Está no Histórico, no Instagram e no Docs.";
+    $("statusSalvar").textContent = estado.siteSlug ? "Salvo. Esta matéria já está no site: a mudança só chega lá com Salvar e atualizar no site."
+      : "Salvo. Está no Histórico, no Instagram e no Docs.";
+    return true;
   } catch (e) {
     $("statusSalvar").textContent = msgDb(e);
+    return false;
   } finally { salvando = false; atualizar(); }
-});
+}
 
 async function abrir(id) {
   let p;
@@ -1021,7 +1062,7 @@ async function abrir(id) {
   $("tituloOriginal").value = p.tituloOriginal || ""; $("artigo").value = p.artigo || "";
   $("fonte").value = p.fonte || ""; $("selo").value = seloDe(p.selo).nome; $("autor").value = p.autor || $("autor").value;
   Object.assign(estado, { id, criadoEm: p.criadoEm, siteStatus: p.siteStatus || "pendente", publicadoEm: p.publicadoEm || null,
-    igStatus: p.igStatus || "pendente", igPublicadoEm: p.igPublicadoEm || null, fotoMudou: false });
+    igStatus: p.igStatus || "pendente", igPublicadoEm: p.igPublicadoEm || null, siteSlug: p.siteSlug || null, fotoMudou: false });
   limparFoto();
   estado.foco = p.foco && typeof p.foco.x === "number" ? { x: p.foco.x, y: p.foco.y } : { x: 0.5, y: 0.5 };
   estado.zoom = Number(p.zoom) || 1; $("zoom").value = estado.zoom;
@@ -1254,25 +1295,34 @@ function faltasParaSite(p) {
   if (!texto(p.autor)) f.push("autor");
   return f;
 }
+const quadroSite = (q) => ({ x: Math.round(q.x * 100), y: Math.round(q.y * 100), zoom: Math.round(q.z * 100) / 100 });
+// Salvo depois da última ida ao site: a matéria no ar está atrás do app.
+const mudouDepois = (p) => !!p.siteSlug && !!p.atualizadoEm && p.atualizadoEm > (p.siteAtualizadoEm || p.publicadoEm || "");
 const paraPublicar = (p) => {
   const a = artigoDoPost(p);
   return { id: p.id, artigo: { title: a.titulo, subtitle: a.subtitulo, excerpt: a.resumo, category: a.categoria, tags: a.tags,
     author: { name: a.autor, role: a.cargo }, readingTime: a.leitura, body: a.corpo, alt: a.alt,
-    ...(a.fotoSite.inteira && { fit: "contain" }), ...(posicaoSite(a.fotoSite) !== "50% 50%" && { position: posicaoSite(a.fotoSite) }) } };
+    ...(a.fotoSite.inteira ? { fit: "contain" } : { frames: { hero: quadroSite(a.fotoSite.pc), heroMobile: quadroSite(a.fotoSite.cel), card: quadroSite(a.fotoSite.card) } }) } };
 };
-let publicando = false;
-async function publicarNoSite(lista) {
+// publicando: declarado junto de conectado, porque atualizar() o lê.
+const atualizarEditor = () => { if (conectado) atualizar(); };
+async function publicarNoSite(lista, atualizar = false) {
   if (publicando || !lista.length) return;
-  publicando = true; renderSitePrev(); toast("Publicando no site...", 60000);
+  publicando = true; renderSitePrev(); atualizarEditor(); toast(atualizar ? "Atualizando no site..." : "Publicando no site...", 60000);
   try {
-    const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ acao: "publicar", itens: lista.map(paraPublicar) }) });
+    const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ acao: atualizar ? "atualizar" : "publicar", itens: lista.map(paraPublicar) }) });
     const d = await r.json().catch(() => ({}));
     if (r.status === 401) { pedirSenha(); return; }
-    if (!r.ok) { toast(d.detalhe ? "O site recusou: " + d.detalhe.join("; ") : d.erro || "Não consegui publicar agora.", 9000); return; }
+    if (!r.ok) { toast(d.detalhe ? "O site recusou: " + d.detalhe.join("; ") : d.erro || (atualizar ? "Não consegui atualizar agora." : "Não consegui publicar agora."), 9000); return; }
     for (const p of d.publicados) trocarPost(p);
-    toast((d.publicados.length > 1 ? d.publicados.length + " matérias publicadas." : "Matéria publicada.") + " O site atualiza em 1 a 2 minutos.", 6000);
-  } catch { toast("Não consegui falar com o servidor. Nada foi publicado.", 6000); }
-  finally { publicando = false; renderSitePrev(); }
+    toast((atualizar ? "Matéria atualizada." : d.publicados.length > 1 ? d.publicados.length + " matérias publicadas." : "Matéria publicada.") + " O site atualiza em 1 a 2 minutos.", 6000);
+  } catch { toast("Não consegui falar com o servidor. " + (atualizar ? "O site continua como estava." : "Nada foi publicado."), 6000); }
+  finally { publicando = false; renderSitePrev(); atualizarEditor(); }
+}
+function botaoAtualizar(p) {
+  const b = botao("Atualizar no site", mudouDepois(p) ? "primary" : "", () => confirmar(b, "Confirmar: atualizar agora", () => publicarNoSite([p], true)));
+  b.disabled = publicando || faltasParaSite(p).length > 0;
+  return b;
 }
 function botaoPublicar(rotulo, lista) {
   const b = botao(rotulo, "primary", () => confirmar(b, "Confirmar: publicar agora", () => publicarNoSite(lista)));
@@ -1309,16 +1359,18 @@ function renderSitePrev() {
       botao("‹ Voltar para a lista", "", () => { siteAberto = null; renderSitePrev(); }),
       ...(aberto.siteStatus === "publicado"
         ? [...(aberto.siteSlug ? [botao("Ver no site", "", () => window.open("/artigos/" + aberto.siteSlug, "_blank", "noopener"))] : []),
+           ...(aberto.siteSlug ? [botaoAtualizar(aberto)] : []),
            botao("Voltar para pendente", "", () => marcarSite(aberto.id, false))]
         : [botaoPublicar("Publicar no site", faltas.length ? [] : [aberto]),
            botao("Já está no site", "", () => marcarSite(aberto.id, true))]),
       ...(aberto.temFoto ? [botao("Baixar foto", "", () => baixarFoto(aberto))] : []),
       botao("Abrir no editor", "", () => abrir(aberto.id)),
       el("span", "aviso", faltas.length ? "Para publicar falta: " + faltas.join(", ") + ". Abra no editor e salve."
+        : mudouDepois(aberto) ? "Tem mudança salva que ainda não está no site: clique em Atualizar no site."
         : "Prévia: é assim que a matéria fica no site depois de publicada."),
     );
     const hero = el("figure", "rt-hero");
-    const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto); enquadrarSite(foto, a.fotoSite);
+    const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto); enquadrarSite(foto, a.fotoSite.pc, a.fotoSite.inteira);
     const leg = el("figcaption", "rt-caption", "Foto: Reprodução");
     hero.append(foto, leg);
     const art = el("article", "rt-artigo");
@@ -1351,7 +1403,7 @@ function renderSitePrev() {
       const card = el("button", "rt-card"); card.type = "button";
       card.setAttribute("aria-label", "Abrir prévia: " + a.titulo);
       card.onclick = () => { siteAberto = p.id; renderSitePrev(); $("aba-site").scrollIntoView({ block: "start" }); };
-      const media = el("div", "rt-media"); const foto = el("img"); foto.alt = ""; fotoEm(foto, p); enquadrarSite(foto, a.fotoSite); media.append(foto);
+      const media = el("div", "rt-media"); const foto = el("img"); foto.alt = ""; fotoEm(foto, p); enquadrarSite(foto, a.fotoSite.card, a.fotoSite.inteira); media.append(foto);
       const corpo = el("div"); corpo.style.marginTop = "16px";
       corpo.append(seloSite(a), el("h3", "", a.titulo), el("p", "rt-resumo", a.resumo), linhaMeta([a.autor, dataSite(a.data), a.leitura + " min de leitura"]));
       card.append(media, corpo);

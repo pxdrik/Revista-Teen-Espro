@@ -8,7 +8,7 @@
  *
  * Todo card mostra: imagem, editoria, título, resumo, autor, data e tempo de leitura.
  */
-import type { Article } from "@/lib/schema";
+import { frameVars, type Article } from "@/lib/schema";
 import CategoryBadge from "./CategoryBadge.astro";
 import { formatDate, formatViews } from "@/lib/content";
 
@@ -41,8 +41,8 @@ const titleClass = isLead ? "type-display-md" : "type-heading";
       <img
         src={article.image.src}
         alt={article.image.alt}
-        class="card-image"
-        style={`object-fit:${objectFit};object-position:${article.image.position ?? "50% 50%"}`}
+        class="card-image framed"
+        style={`object-fit:${objectFit};${frameVars(article.image.frames?.card)}`}
         width={isLead ? 1600 : 800}
         height={isLead ? 1000 : 533}
         loading={priority ? "eager" : "lazy"}

@@ -11,7 +11,7 @@ import ArticleCard from "@/components/ArticleCard.astro";
 import Breadcrumb from "@/components/Breadcrumb.astro";
 import CategoryBadge from "@/components/CategoryBadge.astro";
 import { articles, getRelated, formatDate, formatViews } from "@/lib/content";
-import type { Article } from "@/lib/schema";
+import { frameVars, type Article } from "@/lib/schema";
 
 export async function getStaticPaths() {
   return articles.map((article) => ({
@@ -48,8 +48,8 @@ const shareText = article.title;
     <img
       src={article.image.src}
       alt={article.image.alt}
-      class="absolute inset-0 h-full w-full"
-      style={`object-fit:${article.image.fit ?? "cover"};object-position:${article.image.position ?? "50% 50%"}`}
+      class="framed absolute inset-0 h-full w-full"
+      style={`object-fit:${article.image.fit ?? "cover"};${frameVars(article.image.frames?.hero)}${frameVars(article.image.frames?.heroMobile, "-m")}`}
       width="1600"
       height="900"
       fetchpriority="high"
