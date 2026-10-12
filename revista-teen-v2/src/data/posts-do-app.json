@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": 100,
+    "slug": "pfw-louis-vuitton-verao-2027",
+    "title": "PFW: Louis Vuitton, Verão 2027",
+    "subtitle": "Parece que até as peças de alfaiataria são feitas de tricô ou jérsei supersolto",
+    "excerpt": "Agora, apesar de o cenário sugerir o contrário, o estilista faz a viagem de volta à realidade. A primeira coisa que chama a atenção é a leveza dos materiais, uma tendência importante nesta temporada.",
+    "category": "moda-e-beleza",
+    "tags": [
+      "Louis Vuitton",
+      "Moda"
+    ],
+    "author": {
+      "name": "Pedro Funes",
+      "role": "Pesquisa de Moda e Beleza"
+    },
+    "readingTime": 1,
+    "body": [
+      "Agora, apesar de o cenário sugerir o contrário, o estilista faz a viagem de volta à realidade. A primeira coisa que chama a atenção é a leveza dos materiais, uma tendência importante nesta temporada.",
+      "Parece que até as peças de alfaiataria são feitas de tricô ou jérsei supersolto. Há vestidos e conjuntos de saia, blusa e casaco, tudo com o mesmo peso-pena e caimento fluido.Pesados de verdade, só os sapatos e um ou outro bordado, e olhe lá.",
+      "O corte é quase sempre reto, geométrico, mas a ausência de estruturas internas e qualquer rigidez faz as roupas envolverem o corpo natural e delicadamente.",
+      "A reportagem tem como fonte original o ELLE."
+    ],
+    "publishedAt": "2026-10-12",
+    "image": {
+      "src": "/images/artigos/pfw-louis-vuitton-verao-2027.jpg",
+      "alt": "Imagem relacionada a PFW e Louis Vuitton, tema da notícia",
+      "credit": "Reprodução"
+    }
+  },
+  {
+    "id": 101,
+    "slug": "o-filme-elize-sombras-de-uma-mulher-da-netflix-ganhou",
+    "title": "O Filme “Elize: Sombras de uma Mulher”, da Netflix, Ganhou Destaque ao Levar",
+    "subtitle": "Em entrevista ao UOL, os roteiristas Raphael Montes e Mariana Torres explicaram que a produção busca apresentar a história por uma perspectiva feminina e discutir temas como violência e relacionamentos tóxicos",
+    "excerpt": "Lançado em julho de 2026, “Elize: Sombras de Uma Mulher” rapidamente chegou ao topo das produções mais assistidas da Netflix no Brasil.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Sombras de Uma Mulher",
+      "Netflix",
+      "Elize Matsunaga"
+    ],
+    "author": {
+      "name": "Maria Eduarda Teixeira",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "Lançado em julho de 2026, “Elize: Sombras de Uma Mulher” rapidamente chegou ao topo das produções mais assistidas da Netflix no Brasil. O filme acompanha a trajetória de Elize Matsunaga e transforma um caso criminal que marcou o país em uma obra de ficção.",
+      "Em entrevista ao UOL, os roteiristas Raphael Montes e Mariana Torres explicaram que a produção busca apresentar a história por uma perspectiva feminina e discutir temas como violência e relacionamentos tóxicos. A equipe também destacou o cuidado para não romantizar os acontecimentos.",
+      "A protagonista é interpretada por Lorena Comparato. Segundo os roteiristas, a atriz trabalhou para transmitir diferentes lados da personagem durante a trama. Para construir o roteiro, a equipe pesquisou documentos do processo e depoimentos relacionados ao caso.",
+      "A reportagem tem como fonte original o UOL Splash."
+    ],
+    "publishedAt": "2026-10-12",
+    "image": {
+      "src": "/images/artigos/o-filme-elize-sombras-de-uma-mulher-da-netflix-ganhou.jpg",
+      "alt": "Imagem relacionada a Elize e Sombras de Uma Mulher, tema da notícia",
+      "credit": "Reprodução"
+    }
+  },
+  {
+    "id": 102,
+    "slug": "nando-entre-dois-mundos-chegou-a-netflix-nesta-quarta-feira",
+    "title": "“Nando Entre Dois Mundos” Chegou à Netflix Nesta Quarta Feira, 12 de Agosto, Retomando a História de Nando",
+    "subtitle": "Na história, Nando vive na Sérvia quando sua filha adolescente, Bruninha, desaparece",
+    "excerpt": "“Nando Entre Dois Mundos”, novo filme da Netflix ligado à série “Sintonia”, estreou nesta quarta feira, 12 de agosto.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Nando Entre Dois Mundos",
+      "Netflix",
+      "Sintonia",
+      "Christian Malheiros"
+    ],
+    "author": {
+      "name": "Maria Eduarda Teixeira",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "“Nando Entre Dois Mundos”, novo filme da Netflix ligado à série “Sintonia”, estreou nesta quarta feira, 12 de agosto. A produção acompanha Nando, interpretado por Christian Malheiros, cinco anos após os acontecimentos da série.",
+      "Na história, Nando vive na Sérvia quando sua filha adolescente, Bruninha, desaparece. Ele então retorna ao Brasil para descobrir o que aconteceu e precisa lidar com o desafio de proteger a filha sem permitir que sua ligação com o crime volte a afetar sua família.",
+      "O filme também traz de volta personagens conhecidos de “Sintonia”, como Rita, interpretada por Bruna Mascarenhas, e Doni, vivido por Jottapê. A produção é dirigida por Johnny Araújo e mantém a discussão sobre as consequências da criminalidade presente na série.",
+      "A reportagem tem como fonte original o UOL Splash."
+    ],
+    "publishedAt": "2026-10-12",
+    "image": {
+      "src": "/images/artigos/nando-entre-dois-mundos-chegou-a-netflix-nesta-quarta-feira.jpg",
+      "alt": "Imagem relacionada a Nando Entre Dois Mundos e Netflix, tema da notícia",
+      "credit": "Reprodução"
+    }
+  },
+  {
+    "id": 103,
+    "slug": "de-desastre-a-espetacular-novo-filme-de-tom-cruise-divide",
+    "title": "De \"Desastre\" a \"Espetacular\", Novo Filme de Tom Cruise Divide Opiniões",
+    "subtitle": "Em uma comédia de proporções catastróficas, o filme acompanha Digger Rockwell, dito o homem mais poderoso do mundo",
+    "excerpt": "\"Digger\", do diretor Alejandro G. Iñárritu, chegou aos cinemas nesta quinta-feira.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Tom Cruise",
+      "Digger",
+      "Alejandro"
+    ],
+    "author": {
+      "name": "Pedro Funes",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "\"Digger\", do diretor Alejandro G. Iñárritu, de \"O Regresso\", chegou aos cinemas nesta quinta-feira. A nova aposta de Tom Cruise junto ao diretor Alejandro G. Iñárritu para os cinemas anda dividindo a opinião da crítica especializada. Intitulada \"Digger\", a obra estreou nesta quinta-feira, com uma média de 52% de aprovação, segundo o site agregador de críticas Rotten Tomatoes.",
+      "Em uma comédia de proporções catastróficas, o filme acompanha Digger Rockwell, dito o homem mais poderoso do mundo. Determinado a provar que é o salvador da humanidade, ele embarca em uma missão frenética para impedir que o desastre que ele mesmo desencadeou destrua o planeta.",
+      "De \"desastre\" a \"espetacular\", \"Digger\" apresentou opiniões controversas, dividindo os críticos, especialmente sobre a trama e a atuação de Tom Cruise. \"Tom Cruise tentou levar o Oscar a todo custo, e, meu Deus, como errou feio\", escreveu Kristy Puchko, do Mashable. Para Tom Cruise, o papel-título é um marco em sua trajetória. O elenco reúne ainda Riz Ahmed, John Goodman, Sandra Hüller, Jesse Plemons e Michael Stuhlbarg.",
+      "A reportagem tem como fonte original a CNN."
+    ],
+    "publishedAt": "2026-10-12",
+    "image": {
+      "src": "/images/artigos/de-desastre-a-espetacular-novo-filme-de-tom-cruise-divide.jpg",
+      "alt": "Tom Cruise em \"Digger\"",
+      "credit": "Reprodução"
+    }
+  }
+]
