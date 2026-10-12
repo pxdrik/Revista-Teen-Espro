@@ -55,6 +55,8 @@ export const imageSchema = z.object({
    * e peca grafica com texto: cortada, ela vira fragmento ilegivel.
    */
   fit: z.enum(["cover", "contain"]).optional(),
+  /** Ponto da foto que fica à vista no corte ("50% 20%" = centro, perto do topo). Padrão: centro. */
+  position: z.string().regex(/^\d{1,3}% \d{1,3}%$/, 'position deve ser "X% Y%"').optional(),
 });
 
 const SLUG_RX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;

@@ -100,6 +100,16 @@ canvas.can-drag { cursor: grab; }
 canvas.dragging { cursor: grabbing; }
 .tools { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: center; font-size: 13px; color: var(--muted); }
 .tools input[type=range] { width: 140px; accent-color: var(--accent); }
+.enq { display: flex; flex-wrap: wrap; gap: 10px; }
+.enq figure { position: relative; margin: 0; overflow: hidden; border-radius: 8px; background: #08080D; cursor: grab; touch-action: none; }
+.enq figure.dragging { cursor: grabbing; }
+.enq img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; user-select: none; }
+.enq .heroq::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, #08080D 10%, rgba(8,8,13,.45) 60%, transparent 100%); }
+.enq figcaption { position: absolute; left: 6px; top: 6px; z-index: 1; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px; background: rgba(8,8,13,.75); color: #fff; }
+#enqPc { width: 100%; aspect-ratio: 5 / 2; }
+#enqCel { width: 30%; aspect-ratio: 4 / 5; }
+#enqCard { flex: 1; align-self: start; aspect-ratio: 3 / 2; }
+#fotoSiteBox .tools { justify-content: flex-start; margin-top: 4px; }
 
 .field-head { display: flex; gap: 8px; align-items: baseline; }
 .field-head .count { margin-left: auto; }
@@ -340,6 +350,17 @@ select.cat { width: auto; padding: 6px 12px; font-size: 13px; border-radius: 999
             <label>Tags do site <span class="hint">De 2 a 4, separadas por vírgula. O Montar post sugere.</span>
               <input type="text" id="siteTags" autocomplete="off">
             </label>
+            <div class="lbl" id="fotoSiteBox" hidden>Foto no site <span class="hint">Enquadramento só do site, à parte da capa do Instagram. Arraste a foto em qualquer moldura para escolher o que aparece: o topo da matéria corta em faixa larga no computador e quase quadrada no celular.</span>
+              <div class="enq">
+                <figure id="enqPc" class="heroq"><img alt=""><figcaption>Topo da matéria no computador</figcaption></figure>
+                <figure id="enqCel" class="heroq"><img alt=""><figcaption>No celular</figcaption></figure>
+                <figure id="enqCard"><img alt=""><figcaption>Card</figcaption></figure>
+              </div>
+              <div class="tools">
+                <label style="display:flex;gap:8px;align-items:center;font-weight:400"><input type="checkbox" id="siteInteira" style="width:auto"> Mostrar a foto inteira, sem cortar</label>
+                <button type="button" id="btnCentroSite" class="small">Centralizar</button>
+              </div>
+            </div>
           </fieldset>
 
           <div class="actions">
@@ -459,7 +480,7 @@ function dataUrlParaBlob(u) {
 }
 
 // Estado do post aberto no editor
-const estado = { hashtagsAuto: "", foto: null, fotoBlob: null, fotoDataUrl: null, fotoMudou: false, foco: { x: 0.5, y: 0.5 }, zoom: 1, id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, vista: "capa" };
+const estado = { hashtagsAuto: "", foto: null, fotoBlob: null, fotoDataUrl: null, fotoMudou: false, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: { x: 0.5, y: 0.5, inteira: false }, id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, vista: "capa" };
 
 // ---------- O que o código não conserta sozinho ----------
 // Travessão, emoji e hashtag não viram aviso: o Cerebro.limpar tira de todo texto antes de desenhar e salvar.
@@ -638,7 +659,7 @@ function saidaAtual() {
   return {
     instagram: { titulo: Cerebro.limpar($("igTitulo").value), texto: Cerebro.limpar($("igTexto").value), legenda: Cerebro.limpar($("igLegenda").value), hashtags: Cerebro.normalizarHashtags($("igHashtags").value) },
     site: { titulo: Cerebro.limpar($("siteTitulo").value), paragrafos: ["p1", "p2", "p3"].map((id) => Cerebro.limpar($(id).value)),
-      alt: Cerebro.limpar($("siteAlt").value), tags: tagsDe($("siteTags").value) },
+      alt: Cerebro.limpar($("siteAlt").value), tags: tagsDe($("siteTags").value), foto: { ...estado.fotoSite } },
   };
 }
 const tagsDe = (v) => [...new Set(String(v || "").split(",").map((t) => Cerebro.limpar(t).slice(0, 40)).filter(Boolean))].slice(0, 4);
@@ -703,9 +724,9 @@ function mostrar(vista) {
 $("verCapa").onclick = () => mostrar("capa");
 $("verTexto").onclick = () => mostrar("texto");
 function limparFoto() {
-  Object.assign(estado, { foto: null, fotoBlob: null, fotoDataUrl: null, foco: { x: 0.5, y: 0.5 }, zoom: 1 });
+  Object.assign(estado, { foto: null, fotoBlob: null, fotoDataUrl: null, foco: { x: 0.5, y: 0.5 }, zoom: 1, fotoSite: { x: 0.5, y: 0.5, inteira: false } });
   $("zoom").value = 1; $("thumb").style.backgroundImage = ""; $("thumb").textContent = "+"; $("foto").value = "";
-  cvCapa.classList.remove("can-drag"); mostrar(estado.vista);
+  cvCapa.classList.remove("can-drag"); mostrar(estado.vista); redesenharSite();
 }
 function novoPost() {
   Object.assign(estado, { id: null, criadoEm: null, siteStatus: "pendente", publicadoEm: null, igStatus: "pendente", igPublicadoEm: null, fotoMudou: false });
@@ -752,13 +773,17 @@ async function usarFoto(src, blob, dataUrl) {
   if (!i) { status("Não consegui abrir essa foto.", true); return false; }
   Object.assign(estado, { foto: i, fotoBlob: blob, fotoDataUrl: dataUrl || reduzir(i) });
   $("thumb").style.backgroundImage = `url("${src}")`; $("thumb").textContent = "";
-  cvCapa.classList.add("can-drag"); mostrar("capa"); atualizar();
+  cvCapa.classList.add("can-drag"); mostrar("capa"); atualizar(); redesenharSite();
   return true;
 }
 async function carregarFoto(file) {
   if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type)) { status("Use uma foto em JPG, PNG ou WebP.", true); return; }
   estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1;
-  if (await usarFoto(URL.createObjectURL(file), file)) { estado.fotoMudou = true; status(""); }
+  if (await usarFoto(URL.createObjectURL(file), file)) {
+    // Foto em pé costuma ter o rosto no alto: o site começa mostrando a parte de cima.
+    estado.fotoSite = { x: 0.5, y: estado.foto.height > estado.foto.width ? 0.2 : 0.5, inteira: false };
+    estado.fotoMudou = true; status(""); redesenharSite();
+  }
 }
 $("foto").addEventListener("change", (e) => carregarFoto(e.target.files[0]));
 const drop = $("drop");
@@ -788,6 +813,51 @@ const soltar = () => { arrasto = null; cvCapa.classList.remove("dragging"); };
 cvCapa.addEventListener("pointerup", soltar); cvCapa.addEventListener("pointercancel", soltar);
 $("zoom").addEventListener("input", (e) => { estado.zoom = Number(e.target.value); redesenharCapa(); });
 $("btnCentro").addEventListener("click", () => { estado.foco = { x: 0.5, y: 0.5 }; estado.zoom = 1; $("zoom").value = 1; redesenharCapa(); });
+
+// ---------- Foto no site: enquadramento próprio (object-position no site), à parte da capa ----------
+function fotoSiteDe(p) {
+  const f = p.site?.foto, ok = (v) => typeof v === "number" && v >= 0 && v <= 1;
+  return f && ok(f.x) && ok(f.y) ? { x: f.x, y: f.y, inteira: !!f.inteira } : { x: 0.5, y: 0.5, inteira: false };
+}
+function posicaoSite(f) { return `${Math.round(f.x * 100)}% ${Math.round(f.y * 100)}%`; }
+function enquadrarSite(imgEl, f) { imgEl.style.objectFit = f.inteira ? "contain" : "cover"; imgEl.style.objectPosition = posicaoSite(f); }
+function enqs() { return ["enqPc", "enqCel", "enqCard"].map($); }
+function redesenharSite() {
+  $("fotoSiteBox").hidden = !estado.foto;
+  if (!estado.foto) return;
+  $("siteInteira").checked = estado.fotoSite.inteira;
+  for (const fig of enqs()) {
+    const i = fig.querySelector("img");
+    if (i.src !== estado.foto.src) i.src = estado.foto.src;
+    enquadrarSite(i, estado.fotoSite);
+    fig.style.cursor = estado.fotoSite.inteira ? "default" : "";
+  }
+}
+let arrastoSite = null;
+for (const fig of enqs()) {
+  fig.addEventListener("pointerdown", (e) => {
+    if (!estado.foto || estado.fotoSite.inteira) return;
+    arrastoSite = { x: e.clientX, y: e.clientY, f: { ...estado.fotoSite } };
+    fig.setPointerCapture(e.pointerId); fig.classList.add("dragging");
+  });
+  fig.addEventListener("pointermove", (e) => {
+    if (!arrastoSite) return;
+    // Com object-fit cover só um eixo sobra; arrastar a sobra inteira leva o foco de 0 a 1.
+    const r = fig.getBoundingClientRect(), f = estado.foto;
+    const esc = Math.max(r.width / f.width, r.height / f.height);
+    const sobraX = f.width * esc - r.width, sobraY = f.height * esc - r.height;
+    const cl = (v) => Math.min(1, Math.max(0, v));
+    const a = arrastoSite.f;
+    estado.fotoSite = { ...a,
+      x: sobraX > 1 ? cl(a.x - (e.clientX - arrastoSite.x) / sobraX) : a.x,
+      y: sobraY > 1 ? cl(a.y - (e.clientY - arrastoSite.y) / sobraY) : a.y };
+    redesenharSite();
+  });
+  const fim = () => { arrastoSite = null; fig.classList.remove("dragging"); };
+  fig.addEventListener("pointerup", fim); fig.addEventListener("pointercancel", fim);
+}
+$("siteInteira").addEventListener("change", (e) => { estado.fotoSite = { ...estado.fotoSite, inteira: e.target.checked }; redesenharSite(); });
+$("btnCentroSite").addEventListener("click", () => { estado.fotoSite = { x: 0.5, y: 0.5, inteira: false }; redesenharSite(); });
 
 // ---------- Baixar e copiar ----------
 function toast(t, ms = 2800) { const e = $("toast"); e.textContent = t; e.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => (e.hidden = true), ms); }
@@ -955,6 +1025,7 @@ async function abrir(id) {
   limparFoto();
   estado.foco = p.foco && typeof p.foco.x === "number" ? { x: p.foco.x, y: p.foco.y } : { x: 0.5, y: 0.5 };
   estado.zoom = Number(p.zoom) || 1; $("zoom").value = estado.zoom;
+  estado.fotoSite = fotoSiteDe(p);
   $("banner").hidden = true; status(""); $("statusSalvar").textContent = "";
   preencher(p); aba("novo"); window.scrollTo({ top: 0 });
   if (p.temFoto) {
@@ -1166,7 +1237,7 @@ function artigoDoPost(p) {
     autor: q.autor || "Redação Revista Teen", cargo: ed ? "Pesquisa de " + ed : "Redação",
     data: p.criadoEm, leitura: Math.max(1, Math.ceil(palavras / 200)), corpo, n: paragrafos.length,
     assuntos: q.site.tags.length ? q.site.tags : [texto(p.selo)].filter(Boolean),
-    categoria: SLUG_EDITORIA[ed] || null, tags: q.site.tags, alt: q.site.alt,
+    categoria: SLUG_EDITORIA[ed] || null, tags: q.site.tags, alt: q.site.alt, fotoSite: fotoSiteDe(p),
   };
 }
 
@@ -1186,7 +1257,8 @@ function faltasParaSite(p) {
 const paraPublicar = (p) => {
   const a = artigoDoPost(p);
   return { id: p.id, artigo: { title: a.titulo, subtitle: a.subtitulo, excerpt: a.resumo, category: a.categoria, tags: a.tags,
-    author: { name: a.autor, role: a.cargo }, readingTime: a.leitura, body: a.corpo, alt: a.alt } };
+    author: { name: a.autor, role: a.cargo }, readingTime: a.leitura, body: a.corpo, alt: a.alt,
+    ...(a.fotoSite.inteira && { fit: "contain" }), ...(posicaoSite(a.fotoSite) !== "50% 50%" && { position: posicaoSite(a.fotoSite) }) } };
 };
 let publicando = false;
 async function publicarNoSite(lista) {
@@ -1246,7 +1318,7 @@ function renderSitePrev() {
         : "Prévia: é assim que a matéria fica no site depois de publicada."),
     );
     const hero = el("figure", "rt-hero");
-    const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto);
+    const foto = el("img"); foto.alt = "Foto da matéria"; fotoEm(foto, aberto); enquadrarSite(foto, a.fotoSite);
     const leg = el("figcaption", "rt-caption", "Foto: Reprodução");
     hero.append(foto, leg);
     const art = el("article", "rt-artigo");
@@ -1279,7 +1351,7 @@ function renderSitePrev() {
       const card = el("button", "rt-card"); card.type = "button";
       card.setAttribute("aria-label", "Abrir prévia: " + a.titulo);
       card.onclick = () => { siteAberto = p.id; renderSitePrev(); $("aba-site").scrollIntoView({ block: "start" }); };
-      const media = el("div", "rt-media"); const foto = el("img"); foto.alt = ""; fotoEm(foto, p); media.append(foto);
+      const media = el("div", "rt-media"); const foto = el("img"); foto.alt = ""; fotoEm(foto, p); enquadrarSite(foto, a.fotoSite); media.append(foto);
       const corpo = el("div"); corpo.style.marginTop = "16px";
       corpo.append(seloSite(a), el("h3", "", a.titulo), el("p", "rt-resumo", a.resumo), linhaMeta([a.autor, dataSite(a.data), a.leitura + " min de leitura"]));
       card.append(media, corpo);

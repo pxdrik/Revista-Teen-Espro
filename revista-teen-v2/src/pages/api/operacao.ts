@@ -16,7 +16,7 @@
 import type { APIRoute } from "astro";
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { z } from "zod";
-import { articleSchema, type ArticleInput } from "@/lib/schema";
+import { articleSchema, imageSchema, type ArticleInput } from "@/lib/schema";
 import { categoryStyles } from "@/data/edition-2026";
 
 export const prerender = false;
@@ -58,7 +58,9 @@ const postSchema = z.object({
   autor: txt(120), selo: txt(80), editoria: txt(80), fonte: txt(200),
   tituloOriginal: txt(500), artigo: txt(20000),
   instagram: z.object({ titulo: txt(200), texto: txt(2000), legenda: txt(3000), hashtags: txt(600) }),
-  site: z.object({ titulo: txt(300), paragrafos: z.array(txt(3000)).max(3), alt: txt(300).optional(), tags: z.array(txt(40)).max(6).optional() }),
+  site: z.object({ titulo: txt(300), paragrafos: z.array(txt(3000)).max(3), alt: txt(300).optional(), tags: z.array(txt(40)).max(6).optional(),
+    /** Enquadramento da foto no site, à parte do da capa do Instagram. */
+    foto: z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1), inteira: z.boolean() }).optional() }),
   foco: z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) }),
   zoom: z.number().min(1).max(3),
   temFoto: z.boolean(),
@@ -215,7 +217,7 @@ const pedidoSchema = z.object({
     id: ID,
     artigo: articleSchema
       .pick({ title: true, subtitle: true, excerpt: true, category: true, tags: true, author: true, readingTime: true, body: true })
-      .extend({ alt: z.string().min(10) }),
+      .extend({ alt: z.string().min(10), fit: imageSchema.shape.fit, position: imageSchema.shape.position }),
   })).min(1).max(20),
 });
 const detalhe = (e: z.ZodError) => e.issues.slice(0, 5).map((i) => i.path.join(".") + ": " + i.message);
@@ -258,10 +260,10 @@ async function publicar(corpo: unknown) {
         let slug = raiz;
         for (let n = 2; slugs.has(slug) || imagens.has(`/images/artigos/${slug}.jpg`); n++) slug = `${raiz}-${n}`;
         slugs.add(slug);
-        const { alt, ...resto } = artigo;
+        const { alt, fit, position, ...resto } = artigo;
         const novo: ArticleInput = {
           id: proximo++, slug, ...resto, publishedAt: hojeSP(),
-          image: { src: `/images/artigos/${slug}.jpg`, alt, credit: "Reprodução" },
+          image: { src: `/images/artigos/${slug}.jpg`, alt, credit: "Reprodução", ...(fit && { fit }), ...(position && { position }) },
         };
         const ok = articleSchema.safeParse(novo);
         if (!ok.success) return json({ erro: "dados", detalhe: detalhe(ok.error) }, 400);
