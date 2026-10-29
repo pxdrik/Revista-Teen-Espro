@@ -229,5 +229,37 @@
         }
       }
     }
+  },
+  {
+    "id": 106,
+    "slug": "lollapalooza-2027",
+    "title": "Lollapalooza 2027",
+    "subtitle": "O Lollapalooza Brasil anunciou, nesta quarta-feira, a data em que cada atração vai se apresentar na edição de 2027 do festival paulistano",
+    "excerpt": "O festival acontece entre os dias 19, 20 e 21 de março, no Autódromo de Interlagos, em São Paulo; Travis Scott, Charli XCX, The Killers e David Guetta estão entre as atrações principais.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Lollapalooza 2027",
+      "Autódromo de Interlagos",
+      "São Paulo",
+      "Travis Scott"
+    ],
+    "author": {
+      "name": "Isabelly Pereira",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "O festival acontece entre os dias 19, 20 e 21 de março, no Autódromo de Interlagos, em São Paulo; Travis Scott, Charli XCX, The Killers e David Guetta estão entre as atrações principais.",
+      "O Lollapalooza Brasil anunciou, nesta quarta-feira, a data em que cada atração vai se apresentar na edição de 2027 do festival paulistano.",
+      "Dentre os headliners, Travis Scott, David Guetta e Sombr cantam na sexta-feira; The Killers, Queens Of The Stone Age e Mochakk se apresentam no sábado; e Charli XCX, The Neightbourhood, Fontaines D.C e The Prodigy sobem ao palco no domingo.",
+      "A reportagem tem como fonte original a CNN Brasil."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/lollapalooza-2027.jpg",
+      "alt": "Festival Lollapalooza será realizado no Autódromo de Interlagos, em São Paulo, neste final de semana",
+      "credit": "Reprodução",
+      "fit": "contain"
+    }
   }
 ]
