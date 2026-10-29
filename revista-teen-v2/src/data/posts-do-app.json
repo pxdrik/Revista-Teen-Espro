@@ -323,5 +323,51 @@
       "credit": "Reprodução",
       "fit": "contain"
     }
+  },
+  {
+    "id": 109,
+    "slug": "victor-e-leo-anunciaram-o-fim-da-turne",
+    "title": "Victor e Leo Anunciaram o Fim da Turnê",
+    "subtitle": "Inicialmente, a ideia era a dupla fazer uma turnê de um ano, mas o plano se prolongou por três",
+    "excerpt": "Victor e Leo anunciaram o fim da turnê que marcou o retorno da dupla aos palcos. A venda de ingressos tem início nesta quinta-feira.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Leo",
+      "Entretenimento"
+    ],
+    "author": {
+      "name": "Isabele",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "Victor e Leo anunciaram o fim da turnê que marcou o retorno da dupla aos palcos. A última apresentação do projeto \"Essência\" acontece em 20 de dezembro, na Suhai Music Hall, em São Paulo. A venda de ingressos tem início nesta quinta-feira.",
+      "Inicialmente, a ideia era a dupla fazer uma turnê de um ano, mas o plano se prolongou por três. Mas o público transformou em três anos. Na divulgação, não fica claro se os dois vão retomar seus projetos solos.",
+      "Victor e Leo anunciaram, em 2018, uma pausa \"prolongada sem data de retorno\" após 26 anos de carreira. Em entrevista ao g1 na época na pausa, Leo disse que queriam um período sabático. Desde a separação, os dois focaram em seus projetos particulares.",
+      "A reportagem tem como fonte original o g1."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/victor-e-leo-anunciaram-o-fim-da-turne.jpg",
+      "alt": "Imagem relacionada a Victor e Leo, tema da notícia",
+      "credit": "Reprodução",
+      "frames": {
+        "hero": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        },
+        "heroMobile": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        },
+        "card": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        }
+      }
+    }
   }
 ]
