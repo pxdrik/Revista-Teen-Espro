@@ -291,5 +291,37 @@
       "credit": "Reprodução",
       "fit": "contain"
     }
+  },
+  {
+    "id": 108,
+    "slug": "outra-mamae-terror-psicologico",
+    "title": "Outra Mamãe Terror Psicológico",
+    "subtitle": "A trama acompanha uma menina que começa a ser assombrada por uma entidade sobrenatural capaz de imitar a aparência da própria mãe",
+    "excerpt": "Imagine ser uma criança de oito anos e perceber que a pessoa que parece ser sua mãe talvez não seja sua mãe de verdade.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Outra Mamãe",
+      "Outra Mamãe’",
+      "Jessica Chastain",
+      "James Wan"
+    ],
+    "author": {
+      "name": "Isabelly Pereira",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "Imagine ser uma criança de oito anos e perceber que a pessoa que parece ser sua mãe talvez não seja sua mãe de verdade. É justamente essa ideia que move ‘Outra Mamãe’ (‘Other Mommy’), terror estrelado por Jessica Chastain e produzido por James Wan, conhecido por comandar franquias como ‘Invocação do Mal’.",
+      "A trama acompanha uma menina que começa a ser assombrada por uma entidade sobrenatural capaz de imitar a aparência da própria mãe.",
+      "E aí o negócio fica bem mais perturbador, porque o filme mexe com uma das ideias mais básicas do terror: transformar aquilo que deveria representar segurança em uma ameaça. Ou seja, é uma das apostas perfeitas para entrar no clima do Halloween logo no começo do mês.",
+      "A reportagem tem como fonte original o Portal Exemplo."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/outra-mamae-terror-psicologico.jpg",
+      "alt": "Imagem relacionada a Outra Mamãe, tema da notícia",
+      "credit": "Reprodução",
+      "fit": "contain"
+    }
   }
 ]
