@@ -135,5 +135,53 @@
       "alt": "Tom Cruise em \"Digger\"",
       "credit": "Reprodução"
     }
+  },
+  {
+    "id": 104,
+    "slug": "bianca-andrade-gloria-groove-e-mais",
+    "title": "Bianca Andrade, Gloria Groove e Mais",
+    "subtitle": "A empresária apostou em um macacão de látex rosa, com nadadeiras nas costas e um adereço de cabeça",
+    "excerpt": "O Baile de Halloween da Sephora acontece nesta quinta-feira, em São Paulo, e reúne celebridades e influenciadores com fantasias inspiradas no tema \"As Sombras da Floresta\".",
+    "category": "moda-e-beleza",
+    "tags": [
+      "Bianca Andrade",
+      "Gloria Groove",
+      "Baile de Halloween da Sephora",
+      "São Paulo"
+    ],
+    "author": {
+      "name": "Maria Eduarda",
+      "role": "Pesquisa de Moda e Beleza"
+    },
+    "readingTime": 1,
+    "body": [
+      "O Baile de Halloween da Sephora acontece nesta quinta-feira, em São Paulo, e reúne celebridades e influenciadores com fantasias inspiradas no tema \"As Sombras da Floresta\". A festa, realizada no Hotel Unique, conta com apresentações de Iza, Gloria Groove e Pedro Sampaio. Bianca Andrade, a Boca Rosa, escolheu se transformar no boto-cor-de-rosa, personagem do folclore brasileiro.",
+      "A empresária apostou em um macacão de látex rosa, com nadadeiras nas costas e um adereço de cabeça. Gloria Groove, uma das atrações musicais da noite, escolheu uma gárgula como inspiração para sua fantasia. Já a cantora Priscila Senna fez sua estreia no evento fantasiada de planta carnívora.",
+      "Roberta Freitas, ex-participante do BBB 17, escolheu uma produção inspirada em Oxóssi, orixá associado às matas e à caça. O visual, assinado por Befemeha, com acessórios de Victor Hugo Mattos, faz referência ao mito em que Oxóssi se torna o caçador de uma flecha só. A bióloga e influenciadora Mari Krüger apostou em uma fantasia de Aedes aegypti, mosquito transmissor de doenças como dengue, zika e chikungunya.",
+      "A reportagem tem como fonte original a folha uol."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/bianca-andrade-gloria-groove-e-mais.jpg",
+      "alt": "Imagem relacionada a Bianca Andrade e Gloria Groove, tema da notícia",
+      "credit": "Reprodução",
+      "frames": {
+        "hero": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        },
+        "heroMobile": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        },
+        "card": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        }
+      }
+    }
   }
 ]
