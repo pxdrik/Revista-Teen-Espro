@@ -261,5 +261,35 @@
       "credit": "Reprodução",
       "fit": "contain"
     }
+  },
+  {
+    "id": 107,
+    "slug": "os-melhores-filmes-de-terror-que-estreiam-em-outubro",
+    "title": "Os Melhores Filmes de Terror que Estreiam em Outubro",
+    "subtitle": "À medida que a entidade se aproxima, a garota passa a enfrentar uma ameaça que coloca toda a família em perigo",
+    "excerpt": "Filmes de terror sempre têm espaço na agenda dos fãs do gênero, mas em outubro, mês em que o Halloween é celebrado, assistir a produções de horror parece ganhar um significado ainda melhor.",
+    "category": "entretenimento-e-famosos",
+    "tags": [
+      "Halloween",
+      "Ellen"
+    ],
+    "author": {
+      "name": "Isabelly Pereira",
+      "role": "Pesquisa de Entretenimento e Famosos"
+    },
+    "readingTime": 1,
+    "body": [
+      "Filmes de terror sempre têm espaço na agenda dos fãs do gênero, mas em outubro, mês em que o Halloween é celebrado, assistir a produções de horror parece ganhar um significado ainda melhor. Estrelado por Jessica Chastain, o filme acompanha Bela, uma menina de 8 anos que vive em uma família marcada por conflitos.",
+      "À medida que a entidade se aproxima, a garota passa a enfrentar uma ameaça que coloca toda a família em perigo. O terror sul-coreano, que também estreou na quinta (8/10), acompanha os moradores de uma pequena cidade que precisam enfrentar uma ameaça de origem extraterrestre. Com estreia marcada para 22 de outubro, o filme acompanha Ellen, uma mulher que se muda para uma pequena cidade após a morte da mãe.",
+      "Em sua nova casa, ela acolhe o primo Winthrop, um veterano de guerra que carrega traumas do passado. A convivência começa a despertar suspeitas quando acontecimentos inexplicáveis passam a atingir a comunidade. O filme chega à HBO Max nesta sexta-feira (9/10). Lançado nos cinemas em abril de 2025, \"Pecadores\" entrou no catálogo da Netflix em 4 de outubro.",
+      "A reportagem tem como fonte original o OTEMPO."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/os-melhores-filmes-de-terror-que-estreiam-em-outubro.jpg",
+      "alt": "Imagem que ilustra a notícia: os melhores filmes de terror que estreiam em outubro",
+      "credit": "Reprodução",
+      "fit": "contain"
+    }
   }
 ]
