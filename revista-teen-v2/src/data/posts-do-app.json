@@ -183,5 +183,51 @@
         }
       }
     }
+  },
+  {
+    "id": 105,
+    "slug": "nivel-mundial-o-dia-das-criancas-acontece-em-20-de-novembro",
+    "title": "Nível Mundial, o Dia das Crianças Acontece em 20 de Novembro",
+    "subtitle": "A nível mundial, o Dia das Crianças acontece em 20 de novembro",
+    "excerpt": "A data se popularizou somente na década de 1950, após a realização de uma campanha publicitária realizada por empresas. A nível mundial, o Dia das Crianças acontece em 20 de novembro.",
+    "category": "moda-e-beleza",
+    "tags": [
+      "Dia das Crianças",
+      "Educação"
+    ],
+    "author": {
+      "name": "Maria eduarda Lima",
+      "role": "Pesquisa de Moda e Beleza"
+    },
+    "readingTime": 1,
+    "body": [
+      "O Dia das Crianças foi criado no Brasil no ano de 1924 a partir de um decreto assinado pelo presidente Artur Bernardes. A data se popularizou somente na década de 1950, após a realização de uma campanha publicitária realizada por empresas.",
+      "A nível mundial, o Dia das Crianças acontece em 20 de novembro. A data tem relação com a Declaração Universal dos Direitos das Crianças e passou a ser comemorada em 1954.",
+      "O Dia das Crianças reforça debates essenciais para a sociedade que envolvem aspectos sobre os direitos das crianças, tais como a qualidade de vida, saúde e educação. Em outros países a data é celebrada em diferentes dias. Primeiro de junho e 20 de novembro são as datas em que mais países comemoram o Dia das Crianças.",
+      "A reportagem tem como fonte original o Brasil Escola."
+    ],
+    "publishedAt": "2026-10-29",
+    "image": {
+      "src": "/images/artigos/nivel-mundial-o-dia-das-criancas-acontece-em-20-de-novembro.jpg",
+      "alt": "Imagem relacionada a Dia das Crianças, tema da notícia",
+      "credit": "Reprodução",
+      "frames": {
+        "hero": {
+          "x": 50,
+          "y": 0,
+          "zoom": 1
+        },
+        "heroMobile": {
+          "x": 54,
+          "y": 50,
+          "zoom": 1
+        },
+        "card": {
+          "x": 50,
+          "y": 50,
+          "zoom": 1
+        }
+      }
+    }
   }
 ]
